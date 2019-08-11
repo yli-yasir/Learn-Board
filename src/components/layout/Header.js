@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     "&:hover": {
       backgroundColor: fade(theme.palette.grey[300], 0.7)
     },
-    marginLeft: theme.spacing(2),
+    marginLeft: theme.spacing(2)
   },
   searchIconContainer: {
     position: "absolute",
@@ -22,14 +22,22 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center"
   },
   inputRoot: {},
-  input: { padding: theme.spacing(1, 1, 1, 7)},
+  input: { padding: theme.spacing(1, 1, 1, 7),
+    transition: theme.transitions.create('width'),
+    [theme.breakpoints.up('sm')]: {
+      width: 120,
+      '&:focus': {
+        width: 200,
+      }
+   }
+  }
 
-}))
+}));
 
 export default function Header(props) {
   const classes = useStyles();
   return (
-    <AppBar  color="default">
+    <AppBar color="default">
       <Toolbar>
         <Typography variant="h6" noWrap>
           Learnboard
