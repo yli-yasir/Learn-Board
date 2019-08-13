@@ -10,7 +10,7 @@ import { Language } from "@material-ui/icons";
 import {School} from "@material-ui/icons"
 
 
-function ResultCard() {
+function ResultCard(props) {
   return (
     <Card raised="true">
       <CardContent>
@@ -19,11 +19,13 @@ function ResultCard() {
         </Typography>
 
         <Box display="inline" ml={2}>
+          
           <StarRounded color="primary" />
           <StarRounded color="primary" />
         </Box>
 
         <Box mt={1}>
+          
           <Box mr={1} clone>
             <Chip icon={<Language />} label="English" />
           </Box>

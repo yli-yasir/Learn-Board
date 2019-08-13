@@ -11,10 +11,9 @@ function App() {
   return (
     <div className="App">
       <Header></Header>
-      <Box pt={8}>
+      <Box pt={15} mx={8} >
         <ResultCard></ResultCard>
       </Box>
-      <Footer></Footer>
     </div>
   );
 }
