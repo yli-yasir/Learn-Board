@@ -5,6 +5,7 @@ import { Header, Footer } from "./layout";
 import ResultCard from "./ResultCard";
 import Box from "@material-ui/core/Box";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import ResultsGrid from './ResultsGrid';
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function MainScreen({location}) {
     <div>
       <Header q={q} cat={cat} />
       <Box pt={15} mx={8}>
-        <ResultCard />
+      <ResultsGrid></ResultsGrid>
       </Box>
     </div>
   );

@@ -37,10 +37,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function SearchBar(props) {
+
   const classes = useStyles();
 
   const [text, setText] = useState(props.q ? props.q : "");
 
+  const {q,history,location,match,staticContext,...boxProps} = props;
+
+  console.log(boxProps)
   let query = () => {
     let params = new URLSearchParams(props.location.search);
     //If there is text then update the params and return the string
@@ -55,7 +59,7 @@ function SearchBar(props) {
   };
 
   return (
-    <Box {...props} className={classes.searchContainer}>
+    <Box  {...boxProps} className={classes.searchContainer}>
 
       <Link to={{pathname: '/search',search: query() }}>
         <Button className={classes.searchIconContainer}>
