@@ -1,36 +1,43 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import {withRouter} from 'react-router';
+import { Link } from "react-router-dom";
 
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
-});
 
-export default function CategoryTabs() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
 
-  function handleChange(event, newValue) {
-    setValue(newValue);
+function CategoryTabs(props) {
+
+  const catIndex = { all: 0, offers: 1 , requests: 2}
+  //If one has already been chosen
+  const chosenTabIndex = catIndex[props.cat] ? catIndex[props.cat] : 0
+
+  let query = (category)=>{
+    //get the old params
+    const params = new URLSearchParams(props.location.search);
+    //update the cat param with the category
+    params.set('cat',category);
+    return '?' + params.toString();
   }
 
+
   return (
-    <Paper className={classes.root}>
       <Tabs
-        value={value}
-        onChange={handleChange}
+        value={chosenTabIndex}
         indicatorColor="primary"
         textColor="primary"
         centered
       >
-        <Tab label="All" />
-        <Tab label="Offers" />
-        <Tab label="Requests" />
+        {/* must correspond to the tabsIndex variable above*/ }
+        <Tab label="All" component={Link} to={{pathname:"/search",search: query('all')}} />
+        <Tab label="Offers" component={Link} to={{pathname:"/search",search: query('offers')}} />
+        <Tab label="Requests" component={Link} to={{pathname:"/search",search: query('requests')}}/>
       </Tabs>
-    </Paper>
+      
   );
 }
+
+export default withRouter(CategoryTabs);
+
+

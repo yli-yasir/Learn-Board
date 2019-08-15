@@ -12,7 +12,7 @@ import {School} from "@material-ui/icons"
 
 function ResultCard(props) {
   return (
-    <Card raised="true">
+    <Card raised={true}>
       <CardContent>
         <Typography display="inline" variant="h5" gutterBottom>
           Alex Smith

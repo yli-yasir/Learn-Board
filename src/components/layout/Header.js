@@ -18,10 +18,10 @@ export default function Header(props) {
         </Typography> */}
 
         {/*SEARCH CONTAINER */}
-        <SearchBar mx={'auto'}/>
+        <SearchBar q={props.q} mx={'auto'}/>
         <UserBar/>
       </Toolbar>
-      <CatergoryTabs/>
+      <CatergoryTabs cat={props.cat}/>
     </AppBar>
   );
 }
