@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 function ResultsGrid(){
     return (
         <Grid container justify="center" spacing={2}>
-         {[0, 1, 2].map(value => (
+         {[0, 1, 2,4,5,6].map(value => (
             <Grid key={value} item>
               <ResultCard height={350} width={250} />
             </Grid>))} 

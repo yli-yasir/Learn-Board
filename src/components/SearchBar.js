@@ -44,7 +44,6 @@ function SearchBar(props) {
 
   const {q,history,location,match,staticContext,...boxProps} = props;
 
-  console.log(boxProps)
   let query = () => {
     let params = new URLSearchParams(props.location.search);
     //If there is text then update the params and return the string
