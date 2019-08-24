@@ -10,11 +10,20 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 
 function ResultCard(props) {
+
+  let languages = '';
+  if (props.languages){
+    languages =  props.languages.map(language=>(
+      <Box m={1} clone>
+      <Chip icon={<Language />} label={language} />
+    </Box>) )
+  }
+
   return (
     <Card style={{ height: props.height, width: props.width }}>
       <CardContent>
         <Box mb={1}>
-          <Chip color="primary" icon={<School />} label="Python" />
+          <Chip color="primary" icon={<School />} label={props.subject} />
         </Box>
 
         <Divider />
@@ -30,24 +39,14 @@ function ResultCard(props) {
         <Divider />
 
         <Box my={1}>
-          <Box m={1} clone>
-            <Chip icon={<Language />} label="English" />
-          </Box>
-
-          <Box m={1} clone>
-            <Chip icon={<Language />} label="French" />
-          </Box>
-
-          <Box m={1} clone>
-            <Chip icon={<Language />} label="Arabic" />
-          </Box>
+          {languages
+              }
         </Box>
 
         <Divider />
 
         <Box my={1}>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-          commodo ligula eget dolor. Aenean m
+          {props.shortDescription}
         </Box>
 
         <Divider />
@@ -58,9 +57,6 @@ function ResultCard(props) {
           <More/>
           </Button>
         </Box>
-
-        
-
       </CardContent>
     </Card>
   );

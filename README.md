@@ -1,3 +1,28 @@
+Learns Schema
+
+subject : String
+
+shortDescription: String
+
+description: String
+
+rating: Number
+
+languages: [String]
+
+category: 'request' | 'offer'
+
+contact: map
+
+by: String
+
+date: Date
+
+city: String
+
+tags: Array
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

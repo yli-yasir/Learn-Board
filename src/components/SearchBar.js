@@ -23,7 +23,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.primary.light,
     borderRadius: theme.spacing(2)
   },
-  inputRoot: {},
+  inputRoot: {
+  },
   input: {
     padding: theme.spacing(1, 7, 1, 2),
     transition: theme.transitions.create("width"),

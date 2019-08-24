@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Header } from "./layout";
 import Box from "@material-ui/core/Box";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route} from "react-router-dom";
 import ResultsGrid from "./ResultsGrid";
-import db from "../firestore";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {Q,LEARN_TYPE} from "../values/SearchParams";
+import db from '../mongodb';
+import Register from './Register';
+import ConfirmEmail from './ConfirmEmail';
+import Login from './Login';
+import NewLearn from './NewLearn';
 
 function App() {
   return (
@@ -15,6 +20,10 @@ function App() {
         exact
         component={SearchScreen}
       />
+      <Route path="/register" exact component={Register}/>
+      <Route path="/confirmEmail" exact component={ConfirmEmail}/>
+      <Route path="/login" exact component={Login}/>
+      <Route path="/newLearn" exact component={NewLearn}/>
     </Router>
   );
 }
@@ -24,41 +33,54 @@ function InitialScreen() {
 }
 
 function SearchScreen({ location }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [results, setResults] = useState([]);
 
   let params = new URLSearchParams(location.search);
-  let q = params.get("q");
-  let cat = params.get("cat");
+  let q = params.get(Q.PARAM_NAME);
+  let learnType = params.get(LEARN_TYPE.PARAM_NAME);
 
   useEffect(() => {
     setIsLoading(true);
-    console.log("loading");
-    db.collection("learns")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          console.log(`${doc.id} => ${doc.data()}`);
-        });
-        setIsLoading(false);
-      });
-  }, [q, cat]);
+
+    async function fetchResults(){
+
+      //This will be built and then used to execute the mongo query
+      let filter = {};
+
+      //If there is a specified query i.e. search term
+      if (q){
+        filter.courseName = q
+      }
+  
+      if (learnType && learnType !== 'all' ){
+        filter.type = learnType
+      }
+      
+      const queryResults = await db.collection('learns').find(filter).asArray(); 
+
+      setResults(queryResults);
+ 
+      setIsLoading(false);
+
+    }
+    
+    fetchResults();
+
+  }, [q, learnType]);
 
   const content = isLoading ? (
     <CircularProgress size={50} color="primary" />
   ) : (
-    <ResultsGrid />
+    <ResultsGrid dataset={results} />
   );
 
-  //QUERY PARAMS
-  // q : the search query
-  // cat: the category that is selected, valid values : all | offers | requests
-  // let params = new URLSearchParams(location.search);
-  // let q = params.get("q");
-  // let cat = params.get("cat");
+  
+ 
 
   return (
     <div>
-      <Header q={q} cat={cat} />
+      <Header q={q} learnType={learnType} />
       <Box
         display="flex"
         justifyContent="center"
@@ -67,6 +89,7 @@ function SearchScreen({ location }) {
         pt={15}
         mx={4}
       >
+        {/*this is either the loading spinner, or the results grid */}
         {content}
       </Box>
     </div>

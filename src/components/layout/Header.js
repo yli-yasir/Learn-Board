@@ -1,27 +1,33 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, InputBase } from "@material-ui/core";
-import { fade, makeStyles } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
+import { AppBar, Toolbar} from "@material-ui/core";
 import Box from '@material-ui/core/Box'
 import SearchBar from '../SearchBar'
 import UserBar from '../UserBar';
-import CatergoryTabs from '../CategoryTabs'
+import CatergoryTabs from '../LearnTypeTabs'
+import logo from '../../logo.svg'
+
 
 export default function Header(props) {
 
 
   return (
     <AppBar color="default">
-      <Toolbar>
-        {/* <Typography variant="h6" noWrap>
-          Learnboard
-        </Typography> */}
+      <Toolbar> 
+
+        {/**The logo*/}
+        <Box flex={1}>
+        <img height='40px' src={logo}></img>
+        </Box>
 
         {/*SEARCH CONTAINER */}
-        <SearchBar q={props.q} mx={'auto'}/>
-        <UserBar/>
+        <Box mx={1} display="flex" justifyContent="center" flex={2}>
+        <SearchBar width="500x" q={props.q}/>
+        </Box>
+
+        <UserBar flex={1} display="flex" flexDirection="row-reverse"/>
+
       </Toolbar>
-      <CatergoryTabs cat={props.cat}/>
+      <CatergoryTabs learnType={props.learnType}/>
     </AppBar>
   );
 }
