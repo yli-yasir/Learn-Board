@@ -2,11 +2,17 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 import {Stitch,UserPasswordAuthProviderClient} from "mongodb-stitch-browser-sdk";
+import FormPage from './abstract/FormPage';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import {Link} from 'react-router-dom';
 
 function RegisterPage(){
 
 const [email, setEmail] = React.useState('');
 const [password, setPassword] = React.useState('');
+const [confirmPassword, setConfirmPassword] = React.useState('');
+
 
 let registerUser = () => {
     console.log('initing user registeation')
@@ -30,29 +36,54 @@ let handlePasswordChange = (event) => {
     setPassword(event.target.value)
 }
 
+let handleConfirmPasswordChange = (event) => {
+  setConfirmPassword(event.target.value)
+}
+
+
 return   (
-<div>
+
+<FormPage>
+
+
  <TextField
 id="email"
 label="Email"
 value={email}
 onChange={handleEmailChange}
 margin="normal"
+variant="outlined"
 />
 
 <TextField
 id="password"
-label="password"
+label="Password"
 value={password}
 onChange= {handlePasswordChange}
 margin="normal"
+variant="outlined"
 />
 
-<Button onClick={registerUser}>
-    R
-</Button>
+<TextField
+id="confirmPassword"
+label="Confirm Password"
+value={confirmPassword}
+onChange= {handleConfirmPasswordChange}
+margin="normal"
+variant="outlined"
+/>
 
-</div>
+<Box my={1} clone>
+<Button variant="contained" color="primary" onClick={registerUser}>
+    Register
+</Button>
+</Box>
+
+<Typography variant="caption">
+        Already have an account? <Link to="/login">Login here!</Link>
+      </Typography>
+
+</FormPage>
 );
 
 }

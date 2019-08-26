@@ -13,15 +13,13 @@ import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import {Language} from '@material-ui/icons';
 import {languages} from '../values/strings/english';
+import FormPage from '../pages/abstract/FormPage';
 import db from "../mongodb";
 
 import {makeStyles} from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme)=>({
-    block: {
-        margin: theme.spacing(3),
-        display:'block'
-    }
+
 })
 )
 
@@ -82,7 +80,7 @@ const cities = ['Lefkoşa','Girne','Mağusa','Lefke','Güzelyurt'];
 
 return   (
 
-<form>
+<FormPage>
 
 <FormControl component="fieldset" className={classes.block}>
         <FormLabel component="legend">Type</FormLabel>
@@ -104,7 +102,6 @@ return   (
  <TextField
 id="topic"
 label="Topic"
-className={classes.block}
 variant="outlined"
 value={topic}
 onChange={handleTopicChange}
@@ -114,7 +111,6 @@ margin="normal"
 <TextField
 id="shortDescription"
 label="Short Description"
-className={classes.block}
 variant="outlined"
 value={shortDescription}
 onChange= {handleShortDescriptionChange}
@@ -125,7 +121,6 @@ multiline={true}
 <TextField
 id="description"
 label="Description"
-className={classes.block}
 variant="outlined"
 value={description}
 onChange= {handleDescriptionChange}
@@ -170,7 +165,7 @@ multiline={true}
     {addedLanguages.map((language)=><Chip icon={<Language/>} label={language} onDelete={(e) => handleDeleteAddedLanguage(language, e)} />
 )}
     </Box>
-</form>
+    </FormPage>
 
 
 );

@@ -2,26 +2,13 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import {Stitch,UserPasswordCredential} from "mongodb-stitch-browser-sdk";
-import {makeStyles} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography';
-import logo from '../assets/logo.svg';
 import {Link} from 'react-router-dom';
+import FormPage from './abstract/FormPage'
 
 
-const useStyles = makeStyles((theme)=>({
-    paper: {
-        marginTop:theme.spacing(3),
-        display:'flex',
-        flexDirection:'column',
-        padding: theme.spacing(2),
-        [theme.breakpoints.up('sm')]:{
-            width: '40%'
-        }
-    }
-})
-)
+
 
 function LoginPage(){
 
@@ -46,13 +33,12 @@ let handlePasswordChange = (event) => {
     setPassword(event.target.value)
 }
 
-const classes = useStyles();
 
 return   (
 
-<Box component={Paper} className={classes.paper} mx="auto">
+<FormPage>
 
-<img src={logo} alt="logo" height="100"></img>
+
  <TextField
 id="email"
 label="Email"
@@ -78,11 +64,10 @@ margin="normal"
 </Button>
 </Box>
 
-
 <Typography variant="caption">
         Don't have an account? <Link to="/register">Register here!</Link>
       </Typography>
-</Box>
+</FormPage>
 );
 
 }
