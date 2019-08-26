@@ -6,6 +6,8 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import {withRouter} from 'react-router';
+import {getSearchParams} from '../utils';
+import {Q} from '../values/SearchParams';
 
 const useStyles = makeStyles(theme => ({
   searchContainer: {
@@ -39,17 +41,18 @@ const useStyles = makeStyles(theme => ({
 
 function SearchBar(props) {
 
+  let {q} = getSearchParams(props.location.search);
+
   const classes = useStyles();
 
-  const [text, setText] = useState(props.q ? props.q : "");
+  const [text, setText] = useState(q ? q : "");
 
-  const {q,history,location,match,staticContext,...boxProps} = props;
-
-  let query = () => {
+  let buildQueryString = () => {
     let params = new URLSearchParams(props.location.search);
-    //If there is text then update the params and return the string
+    //If there is text in the search bar, return the query string updated with
+    //after update the q param with the text.
     if (text){
-    params.set('q',text)
+    params.set(Q.PARAM_NAME,text)
     return '?' + params.toString();
     }
     //If there is no text, then just return the current params
@@ -59,9 +62,9 @@ function SearchBar(props) {
   };
 
   return (
-    <Box  {...boxProps} className={classes.searchContainer}>
+    <Box className={classes.searchContainer}>
 
-      <Link to={{pathname: '/search',search: query() }}>
+      <Link to={{pathname: '/search',search: buildQueryString() }}>
         <Button className={classes.searchIconContainer}>
           <SearchIcon color="primary" />
         </Button>

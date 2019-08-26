@@ -1,13 +1,13 @@
 import React from "react";
 import { AppBar, Toolbar} from "@material-ui/core";
-import Box from '@material-ui/core/Box'
-import SearchBar from '../SearchBar'
-import UserBar from '../UserBar';
-import CatergoryTabs from '../LearnTypeTabs'
-import logo from '../../logo.svg'
+import Box from '@material-ui/core/Box';
+import SearchBar from './SearchBar';
+import UserBar from './UserBar';
+import Tabs from './SearchTabs';
+import logo from '../assets/logo.svg';
 
 
-export default function Header(props) {
+function SearchHeader() {
 
 
   return (
@@ -21,13 +21,15 @@ export default function Header(props) {
 
         {/*SEARCH CONTAINER */}
         <Box mx={1} display="flex" justifyContent="center" flex={2}>
-        <SearchBar width="500x" q={props.q}/>
+        <SearchBar/>
         </Box>
 
         <UserBar flex={1} display="flex" flexDirection="row-reverse"/>
 
       </Toolbar>
-      <CatergoryTabs learnType={props.learnType}/>
+      <Tabs/>
     </AppBar>
   );
 }
+
+export default SearchHeader;

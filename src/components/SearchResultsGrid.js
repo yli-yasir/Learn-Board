@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Grid from '@material-ui/core/Grid';
-import ResultCard from './ResultCard'
+import ResultCard from './PostCard'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles';
 import { LanguageRounded } from "@material-ui/icons";

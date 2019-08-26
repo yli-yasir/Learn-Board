@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import {Language} from '@material-ui/icons';
+import {languages} from '../values/strings/english';
 
 import db from "../mongodb";
 import {makeStyles} from '@material-ui/core/styles'
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme)=>({
 })
 )
 
-function Login(){
+function NewPostPage(){
 
 
 const [postType,setPostType] = React.useState('offer');
@@ -78,119 +79,6 @@ const classes = useStyles();
 
 
 const cities = ['Lefkoşa','Girne','Mağusa','Lefke','Güzelyurt'];
-
-
-
-const languages = ['English',
-    'Turkish',
-    'Arabic',
-    'Russian',
-    'Persian',
-    'Kurdish/Kurdî',
-    'Urdu',
-    'Uzbek',
-    'Afrikaans',
-    'Akan',
-    'Albanian',
-    'Armenian',
-    'Aymara',
-    'Balinese',
-    'Basque',
-    'Betawi',
-    'Bosnian',
-    'Breton',
-    'Bulgarian',
-    'Cantonese',
-    'Catalan',
-    'Cherokee',
-    'Chickasaw',
-    'Chinese',
-    'Coptic',
-    'Cornish',
-    'Corsican',
-    'Crimean Tatar',
-    'Croatian',
-    'Czech',
-    'Danish',
-    'Dutch',
-    'Dawro',
-    'Esperanto',
-    'Estonian',
-    'Ewe',
-    'Fiji Hindi',
-    'Filipino',
-    'Finnish',
-    'French',
-    'Galician',
-    'Georgian',
-    'German',
-    'Greek', 
-    'Modern',
-    'Greenlandic',
-    'Haitian Creole',
-    'Hawaiian',
-    'Hebrew',
-    'Hindi',
-    'Hungarian',
-    'Icelandic',
-    'Indonesian',
-    'Inuktitut',
-    'Interlingua',
-    'Irish',
-    'Italian',
-    'Japanese',
-    'Javanese',
-    'Kabardian',
-    'Kalasha',
-    'Kannada',
-    'Kashubian',
-    'Khmer',
-    'Kinyarwanda',
-    'Korean',
-    'Macedonian',
-    'Malay',
-    'Malayalam',
-    'Mandarin',
-    'Manx',
-    'Maori',
-    'Mauritian Creole',
-    'Mongolian',
-    'Norwegian',
-    'Oriya',
-    'Pitjantjatjara',
-    'Polish',
-    'Portuguese',
-    'Proto-Slavic',
-    'Quenya',
-    'Rajasthani',
-    'Rapa Nui',
-    'Romanian',
-    'Sanskrit',
-    'Scots',
-    'Serbian',
-    'Serbo-Croatian',
-    'Slovak',
-    'Slovene',
-    'Spanish',
-    'Sinhalese',
-    'Swahili',
-    'Swedish',
-    'Tagalog',
-    'Tajik',
-    'Tamil',
-    'Tarantino',
-    'Telugu',
-    'Thai',
-    'Twi',
-    'Ukrainian',
-    'Upper Sorbian',
-    'Venetian',
-    'Vietnamese',
-    'Vilamovian',
-    'Welsh',
-    'Zulu',
-    ]
-    
 
 return   (
 
@@ -289,4 +177,4 @@ multiline={true}
 
 }
 
-export default Login;
+export default NewPostPage;

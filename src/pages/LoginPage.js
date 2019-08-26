@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 import {Stitch,UserPasswordCredential} from "mongodb-stitch-browser-sdk";
 
-function Login(){
+function LoginPage(){
 
 const [email, setEmail] = React.useState('');
 const [password, setPassword] = React.useState('');
@@ -53,4 +53,4 @@ margin="normal"
 
 }
 
-export default Login;
+export default LoginPage;

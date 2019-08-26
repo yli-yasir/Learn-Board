@@ -3,7 +3,7 @@ import {withRouter} from 'react-router';
 import {Stitch,UserPasswordAuthProviderClient} from "mongodb-stitch-browser-sdk";
 
 
-function ConfirmEmail({location}){
+function ConfirmEmailPage({location}){
 
     const [isSuccessful,setIsSuccessful]= React.useState(''
     )
@@ -41,4 +41,4 @@ function ConfirmEmail({location}){
     
 }
 
-export default withRouter(ConfirmEmail);
+export default withRouter(ConfirmEmailPage);

@@ -5,8 +5,8 @@ export const Q = {
 }
 
 //each 'learn' has a type. valid values are: 'request' | 'offer'  | all
-export const LEARN_TYPE = {
-    PARAM_NAME: 'learntype',
+export const POST_TYPE = {
+    PARAM_NAME: 'postType',
     REQUEST: 'request',
     OFFER: 'offer',
     ALL : 'all'
