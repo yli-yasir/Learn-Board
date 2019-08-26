@@ -7,3 +7,4 @@ export function getSearchParams(queryString){
     return {q,postType};
 
 }
+

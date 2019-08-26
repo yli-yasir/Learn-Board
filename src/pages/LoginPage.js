@@ -1,7 +1,27 @@
 import React from 'react';
+import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 import {Stitch,UserPasswordCredential} from "mongodb-stitch-browser-sdk";
+import {makeStyles} from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography';
+import logo from '../assets/logo.svg';
+import {Link} from 'react-router-dom';
+
+
+const useStyles = makeStyles((theme)=>({
+    paper: {
+        marginTop:theme.spacing(3),
+        display:'flex',
+        flexDirection:'column',
+        padding: theme.spacing(2),
+        [theme.breakpoints.up('sm')]:{
+            width: '40%'
+        }
+    }
+})
+)
 
 function LoginPage(){
 
@@ -26,29 +46,43 @@ let handlePasswordChange = (event) => {
     setPassword(event.target.value)
 }
 
+const classes = useStyles();
+
 return   (
-<div>
+
+<Box component={Paper} className={classes.paper} mx="auto">
+
+<img src={logo} alt="logo" height="100"></img>
  <TextField
 id="email"
 label="Email"
 value={email}
 onChange={handleEmailChange}
+variant="outlined"
 margin="normal"
 />
+
 
 <TextField
 id="password"
-label="password"
+label="Password"
 value={password}
 onChange= {handlePasswordChange}
+variant="outlined"
 margin="normal"
 />
 
-<Button onClick={doLogin}>
-    L
+<Box my={1} clone>
+<Button variant="contained" color="primary" onClick={doLogin}>
+    Login
 </Button>
+</Box>
 
-</div>
+
+<Typography variant="caption">
+        Don't have an account? <Link to="/register">Register here!</Link>
+      </Typography>
+</Box>
 );
 
 }
