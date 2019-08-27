@@ -11,7 +11,7 @@ export default function UserBar(props) {
         <VpnKey />
       </Box>
 
-      <Box component={Link} m={1} to="/newlearn">
+      <Box component={Link} m={1} to="/posts/new">
         <NoteAdd />
       </Box>
 
