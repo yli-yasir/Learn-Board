@@ -19,7 +19,13 @@ import db from "../mongodb";
 import {makeStyles} from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme)=>({
-
+  formControl:{
+    marginTop:theme.spacing(3),
+    marginBottom: theme.spacing(2)
+  },
+  langaugeChip:{
+    margin: theme.spacing(1)
+  }
 })
 )
 
@@ -35,11 +41,11 @@ const [description, setDescription] = React.useState('');
 const [city,setCity] = React.useState('Lefkoşa');
 
 
-// let doPost = () => {
-//     console.log('initing user login')
-//     db.collection('learns').insertOne({email, password})
-//     console.log('posted')
-// }
+let doPost = () => {
+    console.log('initing user login')
+    // db.collection('learns').insertOne({email, password})
+    console.log('posted')
+}
 
 let handlePostTypeChange = (event)=>{
     setPostType(event.target.value)
@@ -82,8 +88,8 @@ return   (
 
 <FormPage>
 
-<FormControl component="fieldset" className={classes.block}>
-        <FormLabel component="legend">Type</FormLabel>
+<FormControl component="fieldset" className={classes.formControl}>
+        <FormLabel component="legend">Type:</FormLabel>
         <RadioGroup
     aria-label="type"
     name="type"
@@ -93,7 +99,6 @@ return   (
   >
     <FormControlLabel value="offer" control={<Radio/>} label="Offer" />
     <FormControlLabel value="request" control={<Radio />} label="Request" />
-
   </RadioGroup>
       </FormControl>
     
@@ -128,7 +133,7 @@ margin="normal"
 multiline={true}
 />
 
-<FormControl className={classes.block}>
+<FormControl className={classes.formControl}>
         <InputLabel htmlFor="cities">City</InputLabel>
         <Select
           value={city}
@@ -145,7 +150,7 @@ multiline={true}
       </FormControl>
 
 
-      <FormControl className={classes.block}>
+      <FormControl className={classes.formControl}>
         <InputLabel htmlFor="languages">Add Language</InputLabel>
         <Select
           value={selectedLanguage}
@@ -161,10 +166,17 @@ multiline={true}
         </Select>
       </FormControl>
 
-    <Box border={1} borderRadius={16} minHeight={100}>
-    {addedLanguages.map((language)=><Chip icon={<Language/>} label={language} onDelete={(e) => handleDeleteAddedLanguage(language, e)} />
+    <Box border={1} borderRadius={16} minHeight={100} padding={1}>
+    {addedLanguages.map((language)=><Chip className={classes.langaugeChip} icon={<Language/>} label={language} onDelete={(e) => handleDeleteAddedLanguage(language, e)} />
 )}
     </Box>
+
+    <Box mt={2} clone>
+<Button variant="contained" color="primary" onClick={doPost}>
+    Post
+</Button>
+</Box>
+
     </FormPage>
 
 
