@@ -23,7 +23,6 @@ function LoginPage() {
       setIsDone(true);
       //console.log(authedUser);
     } catch (error) {
-      console.log(JSON.stringify(error));
       setErrorMessage(error.message)
     }
   };

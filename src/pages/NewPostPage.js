@@ -14,7 +14,7 @@ import Chip from '@material-ui/core/Chip';
 import {Language} from '@material-ui/icons';
 import {languages} from '../values/strings/english';
 import FormPage from '../pages/abstract/FormPage';
-import db from "../mongodb";
+import db from "../stitch";
 
 import {makeStyles} from '@material-ui/core/styles'
 
@@ -41,10 +41,14 @@ const [description, setDescription] = React.useState('');
 const [city,setCity] = React.useState('Lefkoşa');
 
 
-let doPost = () => {
-    console.log('initing user login')
-    // db.collection('learns').insertOne({email, password})
-    console.log('posted')
+let post = async () => {
+  let document = {postType, topic, languages: addedLanguages, shortDescription, description,city}
+  try{
+  await db.collection('learns').insertOne(document);
+  }
+  catch(error){
+
+  }
 }
 
 let handlePostTypeChange = (event)=>{
@@ -172,7 +176,7 @@ multiline={true}
     </Box>
 
     <Box mt={2} clone>
-<Button variant="contained" color="primary" onClick={doPost}>
+<Button variant="contained" color="primary" onClick={post}>
     Post
 </Button>
 </Box>

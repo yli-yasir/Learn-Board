@@ -1,10 +1,11 @@
 import {
   Stitch,
   RemoteMongoClient,
-  AnonymousCredential
+  AnonymousCredential,
+  AnonymousAuthProvider
 } from "mongodb-stitch-browser-sdk";
 
-const client = Stitch.initializeDefaultAppClient("learnboard-ksqnz");
+export const client = Stitch.initializeDefaultAppClient("learnboard-ksqnz");
 
 const db = client
   .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
@@ -22,6 +23,11 @@ client.auth
   });
 }
 else{
-  console.log('already logged in as ' + client.auth.user.id)
+  console.log('already logged in as ' + client.auth.user.id + ' - ' + client.auth.user.loggedInProviderType );
 }
-  export default db; 
+
+export function isAnon(){
+  return client.auth.user.loggedInProviderType === AnonymousAuthProvider.TYPE
+}
+
+ export default db; 

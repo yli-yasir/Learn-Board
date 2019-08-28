@@ -2,7 +2,7 @@ import React from "react";
 import { AppBar, Toolbar} from "@material-ui/core";
 import Box from '@material-ui/core/Box';
 import SearchBar from './SearchBar';
-import UserBar from './UserBar';
+import UserControlBar from './UserControlBar';
 import Tabs from './SearchTabs';
 import logo from '../assets/logo.svg';
 
@@ -24,7 +24,7 @@ function SearchHeader() {
         <SearchBar/>
         </Box>
 
-        <UserBar flex={1} display="flex" flexDirection="row-reverse"/>
+        <UserControlBar flex={1} display="flex" flexDirection="row-reverse"/>
 
       </Toolbar>
       <Tabs/>

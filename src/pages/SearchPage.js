@@ -4,8 +4,8 @@ import Box from "@material-ui/core/Box";
 import ResultsGrid from "../components/SearchResultsGrid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {getSearchParams} from "../utils";
-import db from "../mongodb";
-import { POST_TYPE } from "../values/SearchParams";
+import db from "../stitch";
+
 
 function SearchPage({ location }) {
   const [isLoading, setIsLoading] = React.useState(true);
