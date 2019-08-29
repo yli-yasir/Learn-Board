@@ -1,26 +1,24 @@
-Learns Schema
+posts Schema
 
-subject : String
+topic : String
 
-shortDescription: String
+shortDescription: String (max 150 chars)
 
 description: String
 
-rating: Number
-
 languages: [String]
 
-category: 'request' | 'offer'
+postType: 'request' | 'offer'
 
-contact: map
+by: {name,_id}
 
-by: String
+createdAt: Date
 
-date: Date
+updatedAt: Date
 
 city: String
 
-tags: Array
+tags: [String]
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
