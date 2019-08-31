@@ -44,12 +44,13 @@ function SearchPage({ location }) {
       setResults([{
         _id:'cx',
         postType: 'request',
-        topic: 'Machine Learning',
+        topic: 'Machine learning and AI with Python full mastery course cool',
         shortDescription: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu',
         description: 'I have been teaching machine learning and AI in general for the last 10 years',
         City:'Girne',
         Languages:['Arabic','English','French'],
-        rating: 3
+        likes: 429,
+        by:{_id: 'chaos29@yahoo.com',name:'yasir basil abood al-baldawiol'}
       }]);
 
       setIsLoading(false);
@@ -69,12 +70,7 @@ function SearchPage({ location }) {
     <div>
       <Header/>
       <Box
-        display="flex"
-        justifyContent="center"
-        minHeight={200}
-        alignItems="center"
-        pt={12}
-        mx={4}
+        pt={15}
       >
         {/*this is either the loading spinner, or the results grid */}
         {content}

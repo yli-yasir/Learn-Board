@@ -12,19 +12,21 @@ function ResultsGrid(props){
 
   if (props.dataset){
    dataset =  props.dataset.map(item => (
-      <Grid key={item._id} item>
         <ResultCard 
+        key={item._id}
         topic={item.topic}
         languages={item.languages}
-        shortDescription={item.shortDescription} />
-      </Grid>))
+        shortDescription={item.shortDescription}
+        likes={item.likes}
+        by={item.by} />
+      ))
   }
 
 
     return (
         <Grid container spacing={2}>
           <Grid key="leftSide" sm item></Grid>
-          <Grid key="middle" sm={6} item>{dataset}</Grid>
+          <Grid key="middle" xs={12} sm={10} md={6} item>{dataset}</Grid>
           <Grid key="rightSide" sm item></Grid>
         </Grid>
     );

@@ -1,8 +1,8 @@
 posts Schema
 
-topic : String
+topic : String (max 60 chars)
 
-shortDescription: String (max 150 chars)
+shortDescription: String (max 200 chars)
 
 description: String
 
@@ -10,7 +10,7 @@ languages: [String]
 
 postType: 'request' | 'offer'
 
-by: {name,_id}
+by: {name: String (max 30 chars),_id: String(email)}
 
 createdAt: Date
 
@@ -19,6 +19,8 @@ updatedAt: Date
 city: String
 
 tags: [String]
+
+likes: int
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
