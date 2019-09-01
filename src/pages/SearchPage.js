@@ -4,6 +4,7 @@ import Box from "@material-ui/core/Box";
 import ResultsGrid from "../components/SearchResultsGrid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {getSearchParams} from "../utils";
+import {POST_TYPE} from "../values/SearchParams";
 import db from "../stitch";
 
 
@@ -20,38 +21,26 @@ function SearchPage({ location }) {
     setIsLoading(true);
 
     async function fetchResults() {
-      // //Build a filter accordingly, and use it to execute the query.
-      // let filter = {};
+      //Build a filter accordingly, and use it to execute the query.
+      let filter = {};
 
-      // //If there is a specified query i.e. search term
-      // if (q) {
-      //   filter.topic = q;
-      // }
+      //If there is a specified query i.e. search term
+      if (q) {
+        filter.topic = q;
+      }
 
-      // //If there is a postType,and that type isn't 'all' we consider it.
-      // //( no need to consider postType if we are looking for everything)
-      // if (postType && postType !== POST_TYPE.ALL) {
-      //   filter.type = postType;
-      // }
+      //If there is a postType,and that type isn't 'all' we consider it.
+      //( no need to consider postType if we are looking for everything)
+      if (postType && postType !== POST_TYPE.ALL) {
+        filter.postType = postType;
+      }
 
-      // const queryResults = await db
-      //   .collection("posts")
-      //   .find(filter)
-      //   .asArray();
+      const queryResults = await db
+        .collection("posts")
+        .find(filter)
+        .asArray();
 
-      // setResults(queryResults);
-
-      setResults([{
-        _id:'cx',
-        postType: 'request',
-        topic: 'Machine learning and AI with Python full mastery course cool',
-        shortDescription: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu',
-        description: 'I have been teaching machine learning and AI in general for the last 10 years',
-        City:'Girne',
-        Languages:['Arabic','English','French'],
-        likes: 429,
-        by:{_id: 'chaos29@yahoo.com',name:'yasir basil abood al-baldawiol'}
-      }]);
+      setResults(queryResults);
 
       setIsLoading(false);
     }

@@ -18,7 +18,8 @@ function ResultsGrid(props){
         languages={item.languages}
         shortDescription={item.shortDescription}
         likes={item.likes}
-        by={item.by} />
+        by={item.by}
+        postType={item.postType} />
       ))
   }
 

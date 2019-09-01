@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button'
+import ProgressButton from '../components/ProgressButton';
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -12,11 +12,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import {Language} from '@material-ui/icons';
-import {languages} from '../values/strings/english';
+import {languages as languagesList,cities as citiesList} from '../values/strings/global';
 import FormPage from '../pages/abstract/FormPage';
 import db from "../stitch";
+import {Redirect} from 'react-router-dom';
 
 import {makeStyles} from '@material-ui/core/styles'
+import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles((theme)=>({
   formControl:{
@@ -31,6 +33,9 @@ const useStyles = makeStyles((theme)=>({
 
 function NewPostPage(){
 
+//if the page is working on inserting your data to the db
+const [isWorking,setIsWorking]= React.useState(false);
+const [isDone,setIsDone] =React.useState(false);
 
 const [postType,setPostType] = React.useState('offer');
 const [topic, setTopic] = React.useState('');
@@ -41,13 +46,16 @@ const [description, setDescription] = React.useState('');
 const [city,setCity] = React.useState('Lefkoşa');
 
 
+
 let post = async () => {
   let document = {postType, topic, languages: addedLanguages, shortDescription, description,city}
   try{
-  await db.collection('learns').insertOne(document);
+  setIsWorking(true);
+  await db.collection('posts').insertOne(document);
+  setIsDone(true);
   }
   catch(error){
-
+    setIsWorking(false);
   }
 }
 
@@ -80,13 +88,14 @@ let handleSelectedLanguageChange= (event)=>{
 }
 
 let handleDeleteAddedLanguage = (targetLanguage,e) =>{
-    setAddedLanguages(addedLanguages.filter((language)=> language!=targetLanguage));
+    setAddedLanguages(addedLanguages.filter((language)=> language!==targetLanguage));
 }
 
 const classes = useStyles();
 
-
-const cities = ['Lefkoşa','Girne','Mağusa','Lefke','Güzelyurt'];
+if (isDone){
+  return <Redirect to="/search"/>
+}
 
 return   (
 
@@ -148,7 +157,7 @@ multiline={true}
         >
 
 
-    {cities.map((city)=><MenuItem value={city}>{city}</MenuItem>)}
+    {citiesList.map((city)=><MenuItem key={city} value={city}>{city}</MenuItem>)}
 
         </Select>
       </FormControl>
@@ -165,21 +174,17 @@ multiline={true}
         >
 
 
-    {languages.map((language)=><MenuItem value={language}>{language}</MenuItem>)}
+    {languagesList.map((language)=><MenuItem key={language} value={language}>{language}</MenuItem>)}
 
         </Select>
       </FormControl>
 
-    <Box border={1} borderRadius={16} minHeight={100} padding={1}>
-    {addedLanguages.map((language)=><Chip className={classes.langaugeChip} icon={<Language/>} label={language} onDelete={(e) => handleDeleteAddedLanguage(language, e)} />
+    <Box mb={1} border={1} borderRadius={16} minHeight={100} padding={1}>
+    {addedLanguages.map((language)=><Chip key={language} className={classes.langaugeChip} icon={<Language/>} label={language} onDelete={(e) => handleDeleteAddedLanguage(language, e)} />
 )}
     </Box>
 
-    <Box mt={2} clone>
-<Button variant="contained" color="primary" onClick={post}>
-    Post
-</Button>
-</Box>
+    <ProgressButton variant="contained" color="primary" label="Submit" isWorking={isWorking} onClick={post}/>
 
     </FormPage>
 

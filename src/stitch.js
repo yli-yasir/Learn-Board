@@ -11,23 +11,28 @@ const db = client
   .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
   .db("main");
 
-
-if(!client.auth.isLoggedIn){
-client.auth
-  .loginWithCredential(new AnonymousCredential())
-  .then(() => {
-    console.log("Logged in as anon");
-  })
-  .catch(err => {
-    console.error(err);
-  });
+export function login() {
+  if (!client.auth.isLoggedIn) {
+    return client.auth
+      .loginWithCredential(new AnonymousCredential())
+      .then(() => {
+        console.log("Logged in as anon");
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  } else {
+    console.log(
+      "already logged in as " +
+        client.auth.user.id +
+        " - " +
+        client.auth.user.loggedInProviderType
+    );
+    return Promise.resolve();
+  }
 }
-else{
-  console.log('already logged in as ' + client.auth.user.id + ' - ' + client.auth.user.loggedInProviderType );
+export function isAnon() {
+  return client.auth.user.loggedInProviderType === AnonymousAuthProvider.TYPE;
 }
 
-export function isAnon(){
-  return client.auth.user.loggedInProviderType === AnonymousAuthProvider.TYPE
-}
-
- export default db; 
+export default db;
