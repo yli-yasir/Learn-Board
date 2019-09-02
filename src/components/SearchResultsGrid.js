@@ -14,6 +14,7 @@ function ResultsGrid(props){
    dataset =  props.dataset.map(item => (
         <ResultCard 
         key={item._id}
+        id={item._id}
         topic={item.topic}
         languages={item.languages}
         shortDescription={item.shortDescription}

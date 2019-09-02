@@ -2,14 +2,16 @@ import {
   Stitch,
   RemoteMongoClient,
   AnonymousCredential,
-  AnonymousAuthProvider
+  AnonymousAuthProvider,
+  BSON
 } from "mongodb-stitch-browser-sdk";
 
 export const client = Stitch.initializeDefaultAppClient("learnboard-ksqnz");
-
 const db = client
   .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
   .db("main");
+
+export default db;
 
 export function login() {
   if (!client.auth.isLoggedIn) {
@@ -35,4 +37,3 @@ export function isAnon() {
   return client.auth.user.loggedInProviderType === AnonymousAuthProvider.TYPE;
 }
 
-export default db;

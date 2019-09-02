@@ -91,7 +91,7 @@ function SearchResultCard(props) {
       alt="a cat"
       />
       <Box>
-        <Link className={classes.link} to="#">
+        <Link className={classes.link} to={`/posts/${props.id}`}>
       <Typography className={classes.topic} variant="body1">{props.topic}</Typography>
       </Link>
       <Typography className={classes.body} variant="body2">{props.shortDescription}</Typography>
