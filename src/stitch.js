@@ -28,12 +28,18 @@ export function login() {
       "already logged in as " +
         client.auth.user.id +
         " - " +
-        client.auth.user.loggedInProviderType
+        client.auth.user.loggedInProviderType +
+        "- " + client.auth.user.profile.email
     );
     return Promise.resolve();
   }
 }
+
 export function isAnon() {
   return client.auth.user.loggedInProviderType === AnonymousAuthProvider.TYPE;
+}
+
+export function getEmail(){
+  return client.auth.user.profile.email ? client.auth.user.profile.email : 'no email';
 }
 

@@ -7,6 +7,8 @@ import ConfirmEmailPage from "./pages/ConfirmEmailPage";
 import LoginPage from "./pages/LoginPage";
 import NewPostPage from "./pages/NewPostPage";
 import PostDetailsPage from "./pages/PostDetailsPage";
+import UserSettingsPage from "./pages/UserSettingsPage";
+
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { login } from "./stitch";
 
@@ -40,6 +42,8 @@ function App() {
       <Route path="/login" exact component={LoginPage} />
       <Route path="/posts/new" exact component={NewPostPage} />
       <Route path="/posts/:id" exact component={PostDetailsPage} />
+      <Route path="/user/settings" exact component={UserSettingsPage} />
+
       </Switch>
     </Router>
   );

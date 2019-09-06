@@ -19,7 +19,7 @@ import { Badge } from "@material-ui/core";
 const useStyles = makeStyles(theme=>({
   badge:{
     margin: theme.spacing(1),
-    width: '100%'
+    width: '100%',
   },
   topic:{
     margin:theme.spacing(1,0,0,0),

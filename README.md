@@ -1,27 +1,51 @@
-posts Schema
+Collections 
 
-topic : String (max 60 chars)
+* posts
 
-shortDescription: String (max 200 chars)
+* users
 
-description: String
+Posts Schema
 
-languages: [String]
+`topic` : String (max 60 chars)
 
-postType: 'request' | 'offer'
+`shortDescription` : String (max 200 chars)
 
-by: {name: String (max 30 chars),_id: String(email)}
+`description` : String
 
-createdAt: Date
+`languages` : [String]
 
-updatedAt: Date
+`postType` :  String ('request' | 'offer')
 
-city: String
+`by` : String (email)
 
-tags: [String]
+`city` : String
 
-likes: int
+`likes` : int
 
+
+Users Schema
+
+`id` : String (email)
+
+`displayName` : String
+
+`contact` : String
+
+
+### Rules for `posts` collection:
+
+* Can be read by anyone
+
+* Can only be written to by non-anon who have a document in the `users` collection.
+
+* Can only be edited by owners. Owners are determined by comparing the current email with the email in the `by` field.
+
+### Rules for `users` collection:
+
+* Can only be read and written to by their owners.
+owners are determined by comparing the current user mail to the email stored in the `id` field.
+
+## --------------------------------
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

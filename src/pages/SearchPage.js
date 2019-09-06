@@ -59,7 +59,7 @@ function SearchPage({ location }) {
     <div>
       <Header/>
       <Box
-        pt={15}
+        pt={18}
       >
         {/*this is either the loading spinner, or the results grid */}
         {content}

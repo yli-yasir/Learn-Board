@@ -5,6 +5,7 @@ import {withRouter} from 'react-router';
 import { Link } from "react-router-dom";
 import {POST_TYPE} from '../values/SearchParams';
 import {getSearchParams} from '../utils';
+import {School,Create,Language} from '@material-ui/icons'
 
 function SearchTabs(props) {
 
@@ -34,9 +35,9 @@ function SearchTabs(props) {
         centered
       >
         {/* must correspond to the tabsIndex variable above*/ }
-        <Tab label="All" component={Link} to={{pathname:"/search",search: buildQueryString(POST_TYPE.ALL)}} />
-        <Tab label="Offers" component={Link} to={{pathname:"/search",search: buildQueryString(POST_TYPE.OFFER)}} />
-        <Tab label="Requests" component={Link} to={{pathname:"/search",search: buildQueryString(POST_TYPE.REQUEST)}}/>
+        <Tab label="All" icon={<Language/>} component={Link} to={{pathname:"/search",search: buildQueryString(POST_TYPE.ALL)}} />
+        <Tab label="Offers" icon={<School/>} component={Link} to={{pathname:"/search",search: buildQueryString(POST_TYPE.OFFER)}} />
+        <Tab label="Requests" icon={<Create/>} component={Link} to={{pathname:"/search",search: buildQueryString(POST_TYPE.REQUEST)}}/>
       </Tabs>
   );
 }
