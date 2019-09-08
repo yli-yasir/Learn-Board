@@ -11,7 +11,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Box from "@material-ui/core/Box";
 import Chip from "@material-ui/core/Chip";
-import { Language } from "@material-ui/icons";
+import { Chat } from "@material-ui/icons";
 import {
   languages as languagesList,
   cities as citiesList
@@ -244,7 +244,7 @@ function NewPostPage() {
           <Chip
             key={language}
             className={classes.langaugeChip}
-            icon={<Language />}
+            icon={<Chat />}
             label={language}
             onDelete={e => handleDeleteAddedLanguage(language, e)}
           />

@@ -6,7 +6,7 @@ import db from "../stitch";
 import { BSON } from "mongodb-stitch-browser-sdk";
 import LoadingPage from "./LoadingPage";
 import { Typography, Divider } from "@material-ui/core";
-import { Person, Language } from "@material-ui/icons";
+import { Person, Chat } from "@material-ui/icons";
 import Chip from "@material-ui/core/Chip"
 
 const useStyles = makeStyles(theme => ({
@@ -53,7 +53,7 @@ function PostDetailsPage({ match }) {
           {doc.topic}
         </Typography>
         <Box>
-            {doc.languages.map(language=><Chip className={classes.chip} key={language} label={language} icon={<Language/>}></Chip>)}
+            {doc.languages.map(language=><Chip className={classes.chip} key={language} label={language} icon={<Chat/>}></Chip>)}
         </Box>
         <Typography variant="body1">{doc.description}</Typography>
       </Box>
