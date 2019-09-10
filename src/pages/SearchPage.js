@@ -6,11 +6,13 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import {getSearchParams} from "../utils";
 import {POST_TYPE} from "../values/SearchParams";
 import db from "../stitch";
-
+import SimpleSnackbar from '../components/SimpleSnackbar'
+import {getEmail} from '../stitch'
 
 function SearchPage({ location }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [results, setResults] = React.useState([]);
+  const [wlcSnackBarIsShown,SetWlcSnackbarIsShown]= React.useState(true);
 
   //Grab the query parameters in order to perform search according to them.
   let {q,postType} = getSearchParams(location.search);
@@ -48,6 +50,10 @@ function SearchPage({ location }) {
     fetchResults();
   }, [q, postType]);
 
+  const handleWlcSnackbarClose= ()=>{
+    SetWlcSnackbarIsShown(false);
+  }
+
   //Either a loading bar, if we are loading, or a grid with the results.
   const content = isLoading ? (
     <CircularProgress size={50} color="primary" />
@@ -64,6 +70,8 @@ function SearchPage({ location }) {
         {/*this is either the loading spinner, or the results grid */}
         {content}
       </Box>
+      
+      <SimpleSnackbar open={wlcSnackBarIsShown} onClose={handleWlcSnackbarClose} message={`Welcome ${getEmail()}`}/>
     </div>
   );
 }

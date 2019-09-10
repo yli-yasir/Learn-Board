@@ -29,7 +29,7 @@ export function login() {
         client.auth.user.id +
         " - " +
         client.auth.user.loggedInProviderType +
-        "- " + client.auth.user.profile.email
+        " - " + client.auth.user.profile.email
     );
     return Promise.resolve();
   }
@@ -40,6 +40,6 @@ export function isAnon() {
 }
 
 export function getEmail(){
-  return client.auth.user.profile.email ? client.auth.user.profile.email : 'no email';
+  return client.auth.user.profile.email ? client.auth.user.profile.email : 'guest';
 }
 

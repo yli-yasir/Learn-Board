@@ -42,6 +42,7 @@ function App() {
       <Route path="/login" exact component={LoginPage} />
       <Route path="/posts/new" exact component={NewPostPage} />
       <Route path="/posts/:id" exact component={PostDetailsPage} />
+      <Route path="/posts/:id/edit" exact component={NewPostPage} />
       <Route path="/user/settings" exact component={UserSettingsPage} />
 
       </Switch>

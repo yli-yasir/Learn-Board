@@ -1,3 +1,9 @@
+//todo
+ 
+add a role that allows everyone to read other users info
+
+add a filter that omits the email field when reading other users info
+
 Collections 
 
 * posts

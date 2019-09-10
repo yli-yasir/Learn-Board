@@ -3,17 +3,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import { ThumbUpOutlined,MoreOutlined, Person } from "@material-ui/icons";
-import Chip from "@material-ui/core/Chip"
-import Divider from "@material-ui/core/Divider";
+import { ThumbUpOutlined,TextFormatOutlined} from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
 import test from '../assets/test.svg';
 import {Link} from 'react-router-dom';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import {getEmail} from '../stitch'
 import { Badge } from "@material-ui/core";
 
 const useStyles = makeStyles(theme=>({
@@ -51,37 +45,9 @@ overflow:'hidden'
 
 function SearchResultCard(props) {
 
-  const [moreDialogIsOpen,setMoreDialogIsOpen] = React.useState(false);
   const classes = useStyles();
 
-
-  const toggleMoreDialog=()=>{
-    setMoreDialogIsOpen(!moreDialogIsOpen);
-}
   
-
-  const moreDialog= (
-    <Dialog
-    open={moreDialogIsOpen}
-    onClose={toggleMoreDialog}
-    aria-labelledby="moreDialogTitle"
-    aria-describedby="moreDialogDescription"
-  >
-    <DialogTitle id="moreDialogTitle">{props.topic}</DialogTitle>
-    <DialogContent>
-      <DialogContentText id="moreDialogDescription">
-        Languages
-      </DialogContentText>
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={toggleMoreDialog} color="primary">
-        Disagree
-      </Button>
-    </DialogActions>
-  </Dialog>
-
-  );
-
   return (
     <Badge className={classes.badge} badgeContent={props.postType} color="primary">
     <Paper className={classes.card}>
@@ -96,8 +62,10 @@ function SearchResultCard(props) {
       </Link>
       <Typography className={classes.body} variant="body2">{props.shortDescription}</Typography>
       <Box className={classes.controlsContainer} mb={1}>
-        <Button className={classes.control} variant="outlined" onClick={toggleMoreDialog}><MoreOutlined></MoreOutlined></Button>
-        {moreDialog}
+        {props.by===getEmail() &&
+        <Link to={`/posts/${props.id}/edit`}>
+        <Button className={classes.control} variant="outlined"><TextFormatOutlined/>&nbsp;Edit</Button> 
+        </Link>}
         <Button className={classes.control} variant="outlined"><ThumbUpOutlined></ThumbUpOutlined>&nbsp;{props.likes}</Button>
       </Box>
       </Box>

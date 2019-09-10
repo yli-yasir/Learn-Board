@@ -25,18 +25,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function PostDetailsPage({ match }) {
-  const [doc, setDoc] = React.useState({});
+  const [postDoc, setPostDoc] = React.useState({});
+  const [authorDoc, setAuthorDoc] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = useStyles();
 
   React.useEffect(() => {
     async function fetchData() {
       try {
-        const _id = new BSON.ObjectID(match.params.id);
-        const doc = await db.collection("posts").findOne({ _id });
-        setDoc(doc);
+        const postId = new BSON.ObjectID(match.params.id);
+        const mPostDoc = await db.collection("posts").findOne({ _id:postId });
+        const mAuthorDoc = await db.collection("users").findOne({_id: mPostDoc.by});
+        setAuthorDoc(mAuthorDoc);
+        setPostDoc(mPostDoc);
         setIsLoading(false);
-        console.log(doc.language)
       } catch (e) {
         console.log(e);
       }
@@ -46,16 +48,19 @@ function PostDetailsPage({ match }) {
 
   if (isLoading) {
     return <LoadingPage />;
+
   } else {
     return (
       <Box component={Paper} className={classes.paper} mx="auto">
         <Typography gutterBottom={true} align="center" variant="h6">
-          {doc.topic}
+          {postDoc.topic}
         </Typography>
         <Box>
-            {doc.languages.map(language=><Chip className={classes.chip} key={language} label={language} icon={<Chat/>}></Chip>)}
+
+         <Chip className={classes.chip} label={authorDoc.displayName} icon={<Person/>}></Chip> 
+            {postDoc.languages.map(language=><Chip className={classes.chip} key={language} label={language} icon={<Chat/>}></Chip>)}
         </Box>
-        <Typography variant="body1">{doc.description}</Typography>
+        <Typography variant="body1">{postDoc.description}</Typography>
       </Box>
     );
   }

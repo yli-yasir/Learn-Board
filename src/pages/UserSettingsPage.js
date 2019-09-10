@@ -24,7 +24,6 @@ function UserSettingsPage(props) {
   React.useEffect(()=>{
 
    async function load(){
-     console.log('loading')
      try{
      let currentDoc = await db.collection('users').findOne({_id:getEmail()});
      if(currentDoc){

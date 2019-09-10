@@ -29,6 +29,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import { BSON } from "mongodb-stitch-core-sdk";
+import LoadingPage from "./LoadingPage";
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -43,9 +45,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function NewPostPage() {
+function NewPostPage({match}) {
+
+  //if fetching data (in case of edit)
+  const [isLoading,setIsLoading] = React.useState(true);
   //if the page is working on inserting your data to the db
   const [isWorking, setIsWorking] = React.useState(false);
+  //If it's done submitting
   const [isDone, setIsDone] = React.useState(false);
   const [postType, setPostType] = React.useState("offer");
   const [topic, setTopic] = React.useState("");
@@ -63,6 +69,36 @@ function NewPostPage() {
   const addedLanguagesError = addedLanguages.length === 0;
 
   const hasError = topicError || shortDescriptionError || addedLanguagesError;
+
+  React.useEffect(()=>{
+    const id = match.params.id
+    //if there is an id define fetch Data and call it 
+    if (id){
+      async function fetchData(){
+        try{
+        const doc = await db.collection('posts').findOne({_id: new BSON.ObjectID(id)});
+        if (doc){
+          console.log('fetch')
+          setPostType(doc.postType);
+          setTopic(doc.topic);
+          setShortDescription(doc.shortDescription);
+          setDescription(doc.description);
+          setAddedLanguages(doc.languages);
+        }
+      }
+      catch(e){
+        console.log(e)
+      }
+      finally{
+        setIsLoading(false);
+      }
+    }
+    fetchData();
+    }
+    else{
+      setIsLoading(false);
+    }
+  },[match.params.id])
 
   const post = async () => {
     //check if there is any error
@@ -89,8 +125,15 @@ function NewPostPage() {
           city,
           by: getEmail()
         };
+
+        const query = { _id: new BSON.ObjectID(match.params.id) };
+        
         //if so then continue to insert
-        await db.collection("posts").insertOne(document);
+        await db.collection("posts").updateOne(
+          query,
+          { $set: document },
+          { upsert: true }
+        );
         setIsDone(true);
       }
 
@@ -148,6 +191,10 @@ function NewPostPage() {
     return <Redirect to="/search" />;
   }
 
+
+  if (isLoading){
+    return <LoadingPage/>
+  }
   return (
     <FormPage>
       <FormControl component="fieldset" className={classes.formControl}>
