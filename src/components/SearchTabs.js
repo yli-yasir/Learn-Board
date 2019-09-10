@@ -5,12 +5,14 @@ import {withRouter} from 'react-router';
 import { Link } from "react-router-dom";
 import {POST_TYPE} from '../values/SearchParams';
 import {getSearchParams} from '../utils';
-import {School,Create,Language} from '@material-ui/icons'
+import {School,Create,Language} from '@material-ui/icons';
+
 
 function SearchTabs(props) {
 
   let {postType} = getSearchParams(props.location.search);
 
+  
   //simple dictionary to map the post types to an index of its tab.
   const learnTypeIndex = { all: 0, offer: 1 , request: 2};
   
@@ -26,13 +28,13 @@ function SearchTabs(props) {
     return '?' + params.toString();
   }
 
-
+  const {tabProps} = props
   return (
       <Tabs
         value={chosenTabIndex}
         indicatorColor="primary"
         textColor="primary"
-        centered
+        {...tabProps}
       >
         {/* must correspond to the tabsIndex variable above*/ }
         <Tab label="All" icon={<Language/>} component={Link} to={{pathname:"/search",search: buildQueryString(POST_TYPE.ALL)}} />

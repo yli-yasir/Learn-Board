@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { InputBase } from "@material-ui/core";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import {fade,makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -15,26 +15,21 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "row-reverse",
     borderRadius: theme.spacing(2),
+    width:'100%',
     backgroundColor: theme.palette.grey[300],
     "&:hover": {
-      backgroundColor: fade(theme.palette.grey[300], 0.7)
+      backgroundColor: fade(theme.palette.grey[300],0.6)
     }
-    // marginLeft: theme.spacing(2)
-  },
-  searchIconContainer: {
-    backgroundColor: theme.palette.primary.light,
-    borderRadius: theme.spacing(2)
   },
   inputRoot: {
+    width:'100%',
+    paddingLeft: theme.spacing(2)
   },
-  input: {
-    padding: theme.spacing(1, 7, 1, 2),
-    transition: theme.transitions.create("width"),
-    [theme.breakpoints.up("sm")]: {
-      width: 300,
-      "&:focus": {
-        width: 350
-      }
+  searchButton:{
+
+    borderRadius: theme.spacing(2),
+    '&:hover':{
+      backgroundColor: fade(theme.palette.primary.light,0.5)
     }
   }
 }));
@@ -65,7 +60,7 @@ function SearchBar(props) {
     <Box className={classes.searchContainer}>
 
       <Link to={{pathname: '/search',search: buildQueryString() }}>
-        <Button className={classes.searchIconContainer}>
+        <Button className={classes.searchButton}>
           <SearchIcon color="primary" />
         </Button>
       </Link>
