@@ -1,4 +1,4 @@
-import { Q, POST_TYPE } from "../values/SearchParams";
+import { Q, POST_TYPE } from "../values/searchParams";
 
 export function getSearchParams(queryString){
     let params = new URLSearchParams(queryString);

@@ -3,7 +3,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import {withRouter} from 'react-router';
 import { Link } from "react-router-dom";
-import {POST_TYPE} from '../values/SearchParams';
+import {POST_TYPE} from '../values/searchParams';
 import {getSearchParams} from '../utils';
 import {School,Create,Language} from '@material-ui/icons';
 

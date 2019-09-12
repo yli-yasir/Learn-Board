@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import {withRouter} from 'react-router';
 import {getSearchParams} from '../utils';
-import {Q} from '../values/SearchParams';
+import {Q} from '../values/searchParams';
 
 const useStyles = makeStyles(theme => ({
   searchContainer: {

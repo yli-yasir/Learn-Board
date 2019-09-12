@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import ResultsGrid from "../components/SearchResultsGrid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {getSearchParams} from "../utils";
-import {POST_TYPE} from "../values/SearchParams";
+import {POST_TYPE} from "../values/searchParams";
 import db from "../stitch";
 import SimpleSnackbar from '../components/SimpleSnackbar'
 import {getEmail} from '../stitch'
