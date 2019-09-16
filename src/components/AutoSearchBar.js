@@ -6,8 +6,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
-import { getSearchParams } from "../utils";
-import { Q } from "../values/searchParams";
+import { getSearchParams,params as appParams } from "../utils/URLUtils";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import Autosuggest from "react-autosuggest";
@@ -101,26 +100,13 @@ function getSuggestionValue(suggestion) {
 
 
 function SearchBar(props) {
-  const { q } = getSearchParams(props.location.search);
+
+  const { q } = getSearchParams(props.location.search,appParams.q.PARAM_NAME);
 
   const [text, setText] = useState(q ? q : "");
   const [suggestions, setSuggestions] = useState([]);
 
   const classes = useStyles();
-
-  const buildQueryString = () => {
-    let params = new URLSearchParams(props.location.search);
-    //If there is text in the search bar, return the query string updated with
-    //after update the q param with the text.
-    if (props.value) {
-      params.set(Q.PARAM_NAME, props.value);
-      return "?" + params.toString();
-    }
-    //If there is no text, then just return the current params
-    else {
-      return "?" + params.toString();
-    }
-  };
 
   const handleSuggestionsFetchRequested = ({ value }) => {
     setSuggestions(getSuggestions(value));
