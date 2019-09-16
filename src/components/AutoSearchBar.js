@@ -6,24 +6,29 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
-import { getSearchParams,params as appParams } from "../utils/URLUtils";
+import { getSearchParams,buildQueryString,params as appParams } from "../utils/URLUtils";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import Autosuggest from "react-autosuggest";
-import { flexbox } from "@material-ui/system";
 
 const useStyles = makeStyles(theme => ({
   autoSuggestRoot: {
     width: "100%",
-    display: flexbox,
     position:"relative"
   },
+    link:{
+      width:'100%',
+      textDecoration:'none',
+      color: theme.palette.grey[700]
+
+    }
+  ,
   suggestionsContainerOpen: {
     position: 'absolute',
     zIndex: 1,
     marginTop: theme.spacing(1),
-    left: 0,
-    right: 0,
+    left: theme.spacing(3),
+    right: theme.spacing(3),
   },
   suggestionsList: {
     margin: 0,
@@ -65,7 +70,7 @@ function renderInputComponent(props) {
         inputProps={{ "aria-label": "search" }}
         {...other}
       />
-      <Link to={{ pathname: "/search", search: 'props.queryString' }}>
+      <Link to={{ pathname: "/search", search: buildQueryString(props.queryString,{q:props.value}) }}>
         <Button className={classes.searchButton}>
           <SearchIcon color="primary" />
         </Button>
@@ -76,17 +81,23 @@ function renderInputComponent(props) {
 
 function renderSuggestionsContainer(options) {
   return (
-    <Paper {...options.containerProps} square>
+    <Paper {...options.containerProps}>
       {options.children}
     </Paper>
   );
   }
+  
 //Render a suggestion item
-function renderSuggestion(suggestion) {
+function renderSuggestion(suggestion,queryString,classes) {
   return (
+    <Link 
+    className={classes.link}
+    to={{ pathname: "/search", search: buildQueryString(queryString,{q:suggestion}) }}>
     <MenuItem component="div">
        <SearchIcon color="primary" />&nbsp;&nbsp;&nbsp;{suggestion}
     </MenuItem>
+    </Link>
+
   );
 }
 
@@ -101,7 +112,8 @@ function getSuggestionValue(suggestion) {
 
 function SearchBar(props) {
 
-  const { q } = getSearchParams(props.location.search,appParams.q.PARAM_NAME);
+  const queryString =props.location.search
+  const { q } = getSearchParams(queryString,appParams.q.PARAM_NAME);
 
   const [text, setText] = useState(q ? q : "");
   const [suggestions, setSuggestions] = useState([]);
@@ -131,7 +143,8 @@ function SearchBar(props) {
       inputProps={{
         classes,
         value: text,
-        onChange: handleChange
+        onChange: handleChange,
+        queryString
       }}
       theme={{
         container: classes.autoSuggestRoot,
@@ -141,7 +154,7 @@ function SearchBar(props) {
       }}
       renderSuggestionsContainer={renderSuggestionsContainer}
       renderInputComponent={renderInputComponent}
-      renderSuggestion={renderSuggestion}
+      renderSuggestion={(suggestion)=> renderSuggestion(suggestion,queryString,classes)}
     />
   );
 
