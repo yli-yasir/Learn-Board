@@ -3,7 +3,6 @@ import { VpnKey, NoteAdd, Lock, Person} from "@material-ui/icons";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
 import { client, isAnon as isAnonStitch } from "../stitch";
-import Button from "@material-ui/core/Button";
 import { AnonymousCredential } from "mongodb-stitch-core-sdk";
 import { Tooltip } from "@material-ui/core";
 import {makeStyles} from '@material-ui/core/styles';
@@ -18,6 +17,10 @@ import Drawer from "@material-ui/core/Drawer"
 const useStyles = makeStyles(theme=>({
   button:{
     color:'rgba(0,0,0,0.54)'
+  },
+  link:{
+    color: theme.palette.grey[800],
+    textDecoration:"none"
   }
 }))
 
@@ -55,9 +58,9 @@ export default function UserBar(props) {
   const loginButton = (
     <Link to="/login">
       <Tooltip title="Login">
-      <Button className={classes.button}>
+      <IconButton className={classes.button}>
         <VpnKey />
-      </Button>
+      </IconButton>
       </Tooltip>
     </Link>
   );
@@ -65,18 +68,18 @@ export default function UserBar(props) {
   
   const logoutButton = (
     <Tooltip title="Log Out">
-      <Button className={classes.button} onClick={logout}>
+      <IconButton className={classes.button} onClick={logout}>
         <Lock />
-      </Button>
+      </IconButton>
     </Tooltip>
   );
 
   const profileButton = (
     <Link to="/user/settings">
       <Tooltip title="Settings">
-        <Button className={classes.button}>
+        <IconButton className={classes.button}>
           <Person />
-        </Button>
+        </IconButton>
       </Tooltip>
     </Link>
   );
@@ -84,9 +87,9 @@ export default function UserBar(props) {
   const newPostButton = (
     <Link to="/posts/new">
       <Tooltip title="New Post">
-      <Button className={classes.button}>
+      <IconButton className={classes.button}>
         <NoteAdd />
-      </Button>
+      </IconButton>
       </Tooltip>
     </Link>
   );
@@ -102,18 +105,61 @@ export default function UserBar(props) {
   }
 
   else{
+
+    const loginButton = (
+      <Link className={classes.link} to="/login">
+      <ListItem button key="login">
+      <ListItemIcon>
+        <VpnKey />
+      </ListItemIcon>
+      <ListItemText primary="Login" />
+    </ListItem>
+    </Link>
+    );
+  
+    
+    const logoutButton = (
+      <ListItem  button onClick={logout} key="logout">
+      <ListItemIcon>
+        <Lock />
+      </ListItemIcon>
+      <ListItemText primary="Log Out" />
+    </ListItem>
+    );
+  
+    const profileButton = (
+      <Link className={classes.link} to="/user/settings">
+      <ListItem button key="accountSettings">
+      <ListItemIcon>
+        <Person />
+      </ListItemIcon>
+      <ListItemText primary="Account Settings" />
+    </ListItem>
+    </Link>
+    );
+  
+    const newPostButton = (
+      <Link  className={classes.link} to="/posts/new">
+      <ListItem button key="newPost">
+      <ListItemIcon>
+        <NoteAdd />
+      </ListItemIcon>
+      <ListItemText primary="New Post" />
+    </ListItem>
+    </Link>
+    )
+    ;
+
     const drawerContent = (
       <div role="presentation"
       onClick={closeDrawer}>
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                <MenuIcon />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+      {isAnon ? loginButton : logoutButton}
+
+      {!isAnon && profileButton}
+
+      {!isAnon && newPostButton}
+
         </List>
       </div>
     );

@@ -1,7 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
-import SearchBar from "./SearchBar";
+import SearchBar from "./AutoSearchBar";
 import UserControlsView from "./UserControlsView";
 import SearchTabs from "./SearchTabs";
 import logo from "../assets/logo.svg";
