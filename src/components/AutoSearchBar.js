@@ -6,34 +6,37 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
-import { getSearchParams,buildQueryString,params as appParams } from "../utils/URLUtils";
+import {
+  getSearchParams,
+  buildQueryString,
+  params as appParams
+} from "../utils/URLUtils";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import Autosuggest from "react-autosuggest";
+import {searchPosts} from "../utils/DBUtils"
 
 const useStyles = makeStyles(theme => ({
   autoSuggestRoot: {
     width: "100%",
-    position:"relative"
+    position: "relative"
   },
-    link:{
-      width:'100%',
-      textDecoration:'none',
-      color: theme.palette.grey[700]
-
-    }
-  ,
+  link: {
+    width: "100%",
+    textDecoration: "none",
+    color: theme.palette.grey[700]
+  },
   suggestionsContainerOpen: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
     marginTop: theme.spacing(1),
     left: theme.spacing(3),
-    right: theme.spacing(3),
+    right: theme.spacing(3)
   },
   suggestionsList: {
     margin: 0,
     padding: 0,
-    listStyleType: 'none',
+    listStyleType: "none"
   },
   searchInputContainer: {
     display: "flex",
@@ -58,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 
 //Render the input component contained in the autosuggest root
 function renderInputComponent(props) {
-  const { classes, ...other } = props;
+  const { classes, queryString, ...other } = props;
   return (
     <Box className={classes.searchInputContainer}>
       <InputBase
@@ -70,7 +73,12 @@ function renderInputComponent(props) {
         inputProps={{ "aria-label": "search" }}
         {...other}
       />
-      <Link to={{ pathname: "/search", search: buildQueryString(props.queryString,{q:props.value}) }}>
+      <Link
+        to={{
+          pathname: "/search",
+          search: buildQueryString(queryString, { q: props.value })
+        }}
+      >
         <Button className={classes.searchButton}>
           <SearchIcon color="primary" />
         </Button>
@@ -80,57 +88,53 @@ function renderInputComponent(props) {
 }
 
 function renderSuggestionsContainer(options) {
-  return (
-    <Paper {...options.containerProps}>
-      {options.children}
-    </Paper>
-  );
-  }
-  
+  return <Paper {...options.containerProps}>{options.children}</Paper>;
+}
+
 //Render a suggestion item
-function renderSuggestion(suggestion,queryString,classes) {
+function renderSuggestion(suggestionItem, queryString, classes) {
   return (
-    <Link 
-    className={classes.link}
-    to={{ pathname: "/search", search: buildQueryString(queryString,{q:suggestion}) }}>
-    <MenuItem component="div">
-       <SearchIcon color="primary" />&nbsp;&nbsp;&nbsp;{suggestion}
-    </MenuItem>
+    <Link
+      className={classes.link}
+      to={{
+        pathname: "/search",
+        search: buildQueryString(queryString, { q: suggestionItem.topic })
+      }}
+    >
+      <MenuItem component="div">
+        <SearchIcon color="primary" />
+        &nbsp;&nbsp;&nbsp;{suggestionItem.topic}
+      </MenuItem>
     </Link>
-
   );
 }
 
-function getSuggestions(term) {
-  return ["1", "2", "3", "4"];
+function getSuggestionValue(suggestionItem) {
+  return suggestionItem.topic;
 }
-
-function getSuggestionValue(suggestion) {
-  return suggestion;
-}
-
 
 function SearchBar(props) {
-
-  const queryString =props.location.search
-  const { q } = getSearchParams(queryString,appParams.q.PARAM_NAME);
+  const queryString = props.location.search;
+  const { q } = getSearchParams(queryString, appParams.q.PARAM_NAME);
 
   const [text, setText] = useState(q ? q : "");
   const [suggestions, setSuggestions] = useState([]);
 
   const classes = useStyles();
 
-  const handleSuggestionsFetchRequested = ({ value }) => {
-    setSuggestions(getSuggestions(value));
+  const handleSuggestionsFetchRequested = async ({ value }) => {
+    const mSuggestions = await searchPosts(queryString,value,6,{_id:0,topic:1});
+    console.log(mSuggestions)
+    setSuggestions(mSuggestions);
   };
 
   const handleSuggestionsClearRequested = () => {
     setSuggestions([]);
   };
 
-  const handleChange = (event,{newValue}) => {
+  const handleChange = (event, { newValue }) => {
     //do not use event.target.value, it will not contain the value
-        //when the input changes via another method than typing (e.g. suggestion click)
+    //when the input changes via another method than typing (e.g. suggestion click)
     setText(newValue);
   };
 
@@ -154,33 +158,12 @@ function SearchBar(props) {
       }}
       renderSuggestionsContainer={renderSuggestionsContainer}
       renderInputComponent={renderInputComponent}
-      renderSuggestion={(suggestion)=> renderSuggestion(suggestion,queryString,classes)}
+      renderSuggestion={suggestion =>
+        renderSuggestion(suggestion, queryString, classes)
+      }
     />
   );
 
-  // return (
-  //   // <Box className={classes.searchContainer}>
-
-  //   //   <Link to={{pathname: '/search',search: buildQueryString() }}>
-  //   //     <Button className={classes.searchButton}>
-  //   //       <SearchIcon color="primary" />
-  //   //     </Button>
-  //   //   </Link>
-
-  //     {/* <InputBase
-  //       placeholder="What do you wanna learn?"
-  //       classes={{
-  //         root: classes.inputRoot,
-  //         input: classes.input
-  //       }}
-  //       inputProps={{ "aria-label": "search" }}
-  //       onChange={event => {
-  //         setText(event.target.value);
-  //       }}
-  //       value={text}
-  //     /> */}
-  //   </Box>
-  // );
 }
 
 export default withRouter(SearchBar);

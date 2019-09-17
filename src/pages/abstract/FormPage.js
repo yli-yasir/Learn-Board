@@ -6,11 +6,11 @@ import logo from '../../assets/logo.svg';
 
 const useStyles = makeStyles((theme)=>({
     paper: {
-        marginTop:theme.spacing(3),
+        margin:theme.spacing(3,2,1,2),
         display:'flex',
         flexDirection:'column',
         padding: theme.spacing(2),
-        [theme.breakpoints.up('sm')]:{
+        [theme.breakpoints.up('md')]:{
             width: '40%'
         }
     }

@@ -8,7 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import NewPostPage from "./pages/NewPostPage";
 import PostDetailsPage from "./pages/PostDetailsPage";
 import UserSettingsPage from "./pages/UserSettingsPage";
-
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { login } from "./stitch";
 
@@ -33,6 +33,8 @@ function App() {
   }
   
   return (
+    <React.Fragment>
+    <CssBaseline />
     <Router>
       <Switch>
       <Route path="/" exact component={StartPage} />
@@ -44,9 +46,9 @@ function App() {
       <Route path="/posts/:id" exact component={PostDetailsPage} />
       <Route path="/posts/:id/edit" exact component={NewPostPage} />
       <Route path="/user/settings" exact component={UserSettingsPage} />
-
       </Switch>
     </Router>
+    </React.Fragment>
   );
 }
 

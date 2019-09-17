@@ -28,7 +28,7 @@ function SearchHeader() {
         {/**Show the logo if we are on desktop*/}
         {isDesktop && (
           <Box flex={1}>
-            <img height="40px" src={logo}></img>
+            <img height="50px" src={logo}></img>
           </Box>
         )}
 

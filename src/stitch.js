@@ -3,10 +3,10 @@ import {
   RemoteMongoClient,
   AnonymousCredential,
   AnonymousAuthProvider,
-  BSON
 } from "mongodb-stitch-browser-sdk";
 
 export const client = Stitch.initializeDefaultAppClient("learnboard-ksqnz");
+
 const db = client
   .getServiceClient(RemoteMongoClient.factory, "mongodb-atlas")
   .db("main");
@@ -42,4 +42,5 @@ export function isAnon() {
 export function getEmail(){
   return client.auth.user.profile.email ? client.auth.user.profile.email : 'guest';
 }
+
 

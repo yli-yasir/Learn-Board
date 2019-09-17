@@ -36,7 +36,7 @@ function ResultsGrid(props){
 
 
     return (
-        <Grid container spacing={2}>
+        <Grid container>
           <Grid key="leftSide" sm item></Grid>
           <Grid key="middle" justify="center" xs={12} sm={10} md={8} container item>{dataset}</Grid>
           <Grid key="rightSide" sm item></Grid>

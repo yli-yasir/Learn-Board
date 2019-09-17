@@ -5,7 +5,7 @@ import ResultsGrid from "../components/SearchResultsGrid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getSearchParams } from "../utils/URLUtils";
 import { params as appParams } from "../utils/URLUtils";
-import db from "../stitch";
+import {searchPosts} from "../utils/DBUtils"
 import SimpleSnackbar from "../components/SimpleSnackbar";
 import { getEmail } from "../stitch";
 
@@ -27,24 +27,7 @@ function SearchPage({ location }) {
     setIsLoading(true);
 
     async function fetchResults() {
-      //Build a filter accordingly, and use it to execute the query.
-      let filter = {};
-
-      //If there is a specified query i.e. search term
-      if (q) {
-        filter.topic = q;
-      }
-
-      //If there is a postType,and that type isn't 'all' we consider it.
-      //( no need to consider postType if we are looking for everything)
-      if (postType && postType !== appParams.postType.ALL) {
-        filter.postType = postType;
-      }
-
-      const queryResults = await db
-        .collection("posts")
-        .find(filter)
-        .asArray();
+      const queryResults = await searchPosts(location.search);
 
       setResults(queryResults);
 
@@ -68,7 +51,7 @@ function SearchPage({ location }) {
   return (
     <div>
       <Header />
-      <Box pt={18}>
+      <Box pt={20}>
         {/*this is either the loading spinner, or the results grid */}
         {content}
       </Box>
