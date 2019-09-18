@@ -5,7 +5,7 @@ import { params as appParams, getSearchParams } from "./URLUtils";
 
 // if term is provided then it will replace q 
 // if not then the value of q is the value from the params
-export async function searchPosts(queryString,term,limit,projection) {
+export async function searchPosts(queryString,term,options,continueFrom) {
   let { q, postType } = getSearchParams(
     queryString,
     appParams.q.PARAM_NAME,
@@ -46,17 +46,11 @@ export async function searchPosts(queryString,term,limit,projection) {
     filter.postType = postType;
   }
 
-  //build the query options
-  const options = {};
-
-  if (limit){
-    options.limit = limit;
+  if (continueFrom){
+    filter._id={$lt:continueFrom}
   }
 
-  if (projection){
-    options.projection = projection
-  }
-
+  console.log(filter)
   const queryResults = await db
     .collection("posts")
     .find(filter,options)

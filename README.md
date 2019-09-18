@@ -1,8 +1,24 @@
+//TODO 
+
+1- infinitie scroll - 18th
+2- server validation and schemas -19th
+3-finish post details page (text formatting,show author contact info) 20th 
+4-styling 20th
+5- code refactor 21st
+6- language support 22nd
+7- testing 23rd
+
+3-make a profile page for users
+
+
 //todo
  
 add a role that allows everyone to read other users info
 
 add a filter that omits the email field when reading other users info
+
+
+
 
 Collections 
 
@@ -16,24 +32,25 @@ Posts Schema
 
 `shortDescription` : String (max 200 chars)
 
-`description` : String
+`description` : String (max 800 chars)
 
-`languages` : [String]
+`languages` : [String] (has to be in our list of languages)
 
 `postType` :  String ('request' | 'offer')
 
-`by` : String (email)
+`by` : String (displayName of user)
 
 `city` : String
 
-`likes` : int
+`likes` : int (default 0 )
 
+'icon': String
 
 Users Schema
 
-`id` : String (email)
+`_id` : String (email,unqiue) (has to be filtered out when read by users)
 
-`displayName` : String
+`displayName` : ( String,unique)
 
 `contact` : String
 

@@ -14,7 +14,7 @@ import {
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import Autosuggest from "react-autosuggest";
-import {searchPosts} from "../utils/DBUtils"
+import { searchPosts } from "../utils/DBUtils";
 
 const useStyles = makeStyles(theme => ({
   autoSuggestRoot: {
@@ -123,8 +123,16 @@ function SearchBar(props) {
   const classes = useStyles();
 
   const handleSuggestionsFetchRequested = async ({ value }) => {
-    const mSuggestions = await searchPosts(queryString,value,6,{_id:0,topic:1});
-    console.log(mSuggestions)
+    const mSuggestions = await searchPosts(queryString, value, {
+      limit: 5,
+      projection:{
+      topic: 1
+      },
+      sort:{
+        _id:-1
+      }
+    });
+    console.log(mSuggestions);
     setSuggestions(mSuggestions);
   };
 
@@ -163,7 +171,6 @@ function SearchBar(props) {
       }
     />
   );
-
 }
 
 export default withRouter(SearchBar);
