@@ -11,11 +11,17 @@ function SearchPage({ location }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [results, setResults] = React.useState([]);
   const [wlcSnackBarIsShown, SetWlcSnackbarIsShown] = React.useState(true);
+  //set this to true when a fresh loading (a load via useEffect) is triggered,
+  //this is to give the illusion that the old results have been discarded while
+  // react is actually merging the new Queryresults with the old dataset
+  //this will also push the loading indicator to the top 
+  const [useBlankDataset,setUseBlankDataset]= React.useState(false);
   //if continueFetch couldn't find any more results
   const [noMoreResults, setNoMoreResults] =React.useState(false);
 
   React.useEffect(() => {
     setNoMoreResults(false);
+    setUseBlankDataset(true);
     //set the state to loading.
     setIsLoading(true);
 
@@ -25,6 +31,7 @@ function SearchPage({ location }) {
         limit:5
       });
       setResults(queryResults);
+      setUseBlankDataset(false);
       setIsLoading(false);
     }
     fetchResults();
@@ -35,6 +42,7 @@ function SearchPage({ location }) {
   };
 
   const continueResultsFetch= async ()=>{
+    console.log('enter')
     if (results && !isLoading){
     setIsLoading(true);
     let continueFrom = results[results.length-1]._id
@@ -50,12 +58,15 @@ function SearchPage({ location }) {
       setNoMoreResults(true);
     }
     setIsLoading(false)
+
     }
   }
 
+  const dataset= useBlankDataset? []: results
+  console.log(dataset)
   const content =(
     <React.Fragment>
-    <ResultsGrid noMoreResults={noMoreResults} isLoading={isLoading} dataset={results} />
+    <ResultsGrid noMoreResults={noMoreResults} isLoading={isLoading} dataset={dataset} />
     <Waypoint onEnter={continueResultsFetch} />
     </React.Fragment>
   );
