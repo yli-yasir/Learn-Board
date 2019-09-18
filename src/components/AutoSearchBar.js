@@ -7,9 +7,7 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import {
-  getSearchParams,
-  buildQueryString,
-  params as appParams
+  buildQueryString
 } from "../utils/URLUtils";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
@@ -112,12 +110,9 @@ function renderSuggestion(suggestionItem, queryString, classes) {
 function getSuggestionValue(suggestionItem) {
   return suggestionItem.topic;
 }
-
 function SearchBar(props) {
   const queryString = props.location.search;
-  const { q } = getSearchParams(queryString, appParams.q.PARAM_NAME);
 
-  const [text, setText] = useState(q ? q : "");
   const [suggestions, setSuggestions] = useState([]);
 
   const classes = useStyles();
@@ -140,12 +135,6 @@ function SearchBar(props) {
     setSuggestions([]);
   };
 
-  const handleChange = (event, { newValue }) => {
-    //do not use event.target.value, it will not contain the value
-    //when the input changes via another method than typing (e.g. suggestion click)
-    setText(newValue);
-  };
-
   return (
     <Autosuggest
       suggestions={suggestions}
@@ -154,8 +143,8 @@ function SearchBar(props) {
       onSuggestionsClearRequested={handleSuggestionsClearRequested}
       inputProps={{
         classes,
-        value: text,
-        onChange: handleChange,
+        value: props.text,
+        onChange: props.onTextChange,
         queryString
       }}
       theme={{

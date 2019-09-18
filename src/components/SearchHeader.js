@@ -6,8 +6,10 @@ import UserControlsView from "./UserControlsView";
 import SearchTabs from "./SearchTabs";
 import logo from "../assets/logo.svg";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { withRouter } from "react-router";
 import { useTheme } from "@material-ui/core/styles";
 import {makeStyles} from '@material-ui/core/styles';
+import {getSearchParams,params as appParams} from '../utils/URLUtils'
 
 const useStyles=makeStyles(theme=>({
 toolbar:{
@@ -17,10 +19,22 @@ toolbar:{
   }
 }
 }))
-function SearchHeader() {
+function SearchHeader(props) {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   let tabProps = isDesktop ? { centered: true } : { variant: "fullWidth" };
+
+  const queryString = props.location.search;
+  const { q } = getSearchParams(queryString, appParams.q.PARAM_NAME);
+  const [searchBarText,setSearchBarText]= React.useState(q ? q : "")
+
+  //this will be passed down to the searchbar
+  const handleSearchBarTextChange = (event, { newValue }) => {
+    //do not use event.target.value, it will not contain the value
+    //when the input changes via another method than typing (e.g. suggestion click)
+    setSearchBarText(newValue);
+  };
+
   const classes= useStyles();
   return (
     <AppBar color="default">
@@ -34,7 +48,7 @@ function SearchHeader() {
 
         {/*always show SEARCH CONTAINER */}
         <Box mx={1} display="flex" justifyContent="center" flex={2}>
-          <SearchBar />
+          <SearchBar text={searchBarText} onTextChange={handleSearchBarTextChange} />
         </Box>
 
         {/*Show the user control bar if we are on desktop */}
@@ -42,9 +56,9 @@ function SearchHeader() {
         desktopContainerProps={{flex:1,display:'flex',flexDirection:'row-reverse'}} />
       
       </Toolbar>
-      <SearchTabs tabProps={tabProps} />
+      <SearchTabs searchBarText={searchBarText} tabProps={tabProps} />
     </AppBar>
   );
 }
 
-export default SearchHeader;
+export default withRouter(SearchHeader);

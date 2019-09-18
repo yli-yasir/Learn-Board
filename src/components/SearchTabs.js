@@ -10,7 +10,7 @@ import {School,Create,Language} from '@material-ui/icons';
 function SearchTabs(props) {
 
   let queryString = props.location.search;
-  let {postType} = getSearchParams(queryString,appParams.postType.PARAM_NAME);
+  const {postType}= getSearchParams(queryString,appParams.postType.PARAM_NAME);
 
   //simple dictionary to map the post types to an index of its tab.
   const learnTypeIndex = { all: 0, offer: 1 , request: 2};
@@ -21,7 +21,7 @@ function SearchTabs(props) {
   const {tabProps} = props
 
   const getTabQueryString= (value)=>{
-    return buildQueryString(queryString,{[appParams.postType.PARAM_NAME]:value})
+    return buildQueryString(queryString,{[appParams.postType.PARAM_NAME]:value,[appParams.q.PARAM_NAME]:props.searchBarText})
   }
 
   return (

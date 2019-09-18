@@ -2,9 +2,6 @@ import React from "react";
 import Header from "../components/SearchHeader";
 import Box from "@material-ui/core/Box";
 import ResultsGrid from "../components/SearchResultsGrid";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { getSearchParams } from "../utils/URLUtils";
-import { params as appParams } from "../utils/URLUtils";
 import { searchPosts } from "../utils/DBUtils";
 import SimpleSnackbar from "../components/SimpleSnackbar";
 import { getEmail } from "../stitch";
@@ -14,17 +11,11 @@ function SearchPage({ location }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [results, setResults] = React.useState([]);
   const [wlcSnackBarIsShown, SetWlcSnackbarIsShown] = React.useState(true);
-  const [continueFetchFrom,setContinueFetchFrom] = React.useState('');
+  //if continueFetch couldn't find any more results
+  const [noMoreResults, setNoMoreResults] =React.useState(false);
 
-  //Grab the query parameters in order to perform search according to them.
-  let { q, postType } = getSearchParams(
-    location.search,
-    appParams.q.PARAM_NAME,
-    appParams.postType.PARAM_NAME
-  );
-
-  //This effect will be triggered if the params change.
   React.useEffect(() => {
+    setNoMoreResults(false);
     //set the state to loading.
     setIsLoading(true);
 
@@ -32,31 +23,40 @@ function SearchPage({ location }) {
       const queryResults = await searchPosts(location.search, null, {
         sort: { _id: -1 },
         limit:5
-      },continueFetchFrom);
-      console.log(queryResults)
-      setResults([...results,...queryResults]);
+      });
+      setResults(queryResults);
       setIsLoading(false);
     }
-
     fetchResults();
-  }, [location.search,continueFetchFrom]);
+  }, [location.search]);
 
   const handleWlcSnackbarClose = () => {
     SetWlcSnackbarIsShown(false);
   };
 
-  //Either a loading bar, if we are loading, or a grid with the results.
-  //waypoint will change the contiueFetchFrom state variable which will trigger
-  // a data fetch
-  const content = isLoading ? (
-    <CircularProgress size={50} color="primary" />
-  ) : (
+  const continueResultsFetch= async ()=>{
+    if (results && !isLoading){
+    setIsLoading(true);
+    let continueFrom = results[results.length-1]._id
+    const queryResults = await searchPosts(location.search, null, {
+      sort: { _id: -1 },
+      limit:5
+    },continueFrom);
+    if  (queryResults.length!==0){
+    setResults([...results,...queryResults]);
+    setNoMoreResults(false);
+    }
+    else{
+      setNoMoreResults(true);
+    }
+    setIsLoading(false)
+    }
+  }
+
+  const content =(
     <React.Fragment>
-    <ResultsGrid dataset={results} />
-    <Waypoint onEnter={() => {
-      let lastIndex = results[results.length-1]._id
-      console.log('setting to ' + lastIndex)
-      setContinueFetchFrom(lastIndex)}} />
+    <ResultsGrid noMoreResults={noMoreResults} isLoading={isLoading} dataset={results} />
+    <Waypoint onEnter={continueResultsFetch} />
     </React.Fragment>
   );
 
