@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import ResultsGrid from "../components/SearchResultsGrid";
 import { searchPosts } from "../utils/DBUtils";
 import SimpleSnackbar from "../components/SimpleSnackbar";
-import { getEmail } from "../stitch";
+import { getUserEmail } from "../stitch";
 import { Waypoint } from "react-waypoint";
 
 function SearchPage({ location }) {
@@ -81,7 +81,7 @@ function SearchPage({ location }) {
       <SimpleSnackbar
         open={wlcSnackBarIsShown}
         onClose={handleWlcSnackbarClose}
-        message={`Welcome ${getEmail()}`}
+        message={`Welcome ${getUserEmail()}`}
       />
     </div>
   );

@@ -5,9 +5,10 @@ import ProgressButton from "../components/ProgressButton";
 import FormPage from "./abstract/FormPage";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import db, { getEmail } from "../stitch";
-import LoadingPage from './LoadingPage';
-import SimpleSnackbar from '../components/SimpleSnackbar';
+import db, { getUserEmail, getUserId } from "../stitch";
+import LoadingPage from "./LoadingPage";
+import SimpleSnackbar from "../components/SimpleSnackbar";
+import { BSON } from "mongodb-stitch-core-sdk";
 
 const useStyles = makeStyles(theme => ({}));
 
@@ -16,31 +17,30 @@ function UserSettingsPage(props) {
 
   const [name, setName] = React.useState("");
   const [contactInfo, setContactInfo] = React.useState("");
-  const [isLoading,setIsLoading]= React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [isSnackbarOpen,setIsSnackbarOpen]= React.useState(false);
-  const [feedbackMessage,setFeedbackMessage]= React.useState('');
+  const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
+  const [feedbackMessage, setFeedbackMessage] = React.useState("");
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
+    async function load() {
+      try {
+        let currentDoc = await db
+          .collection("users")
+          .findOne({ email: getUserEmail() });
+        if (currentDoc) {
+          setName(currentDoc.name);
+          setContactInfo(currentDoc.contact);
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-   async function load(){
-     try{
-     let currentDoc = await db.collection('users').findOne({_id:getEmail()});
-     if(currentDoc){
-     setName(currentDoc.displayName);
-     setContactInfo(currentDoc.contact);
-     }
-     }
-     catch(e){
-       console.log(e)
-     }
-     finally{
-       setIsLoading(false);
-     }
-   }
-
-   load();
-  },[])
+    load();
+  }, []);
 
   let handleNameChange = event => {
     setName(event.target.value);
@@ -50,26 +50,30 @@ function UserSettingsPage(props) {
     setContactInfo(event.target.value);
   };
 
-  const handleSnackbarClose= ()=>{
+  const handleSnackbarClose = () => {
     setIsSnackbarOpen(false);
-  }
+  };
 
   const submit = async () => {
     setIsSubmitting(true);
-    console.log(getEmail());
     try {
-      await db
-        .collection("users")
-        .updateOne(
-          { _id: getEmail() },
-          { $set: { displayName: name, contact: contactInfo } },
-          { upsert: true }
-        );
+      await db.collection("users").updateOne(
+        { email: getUserEmail() },
+        {
+          $set: {
+            pageId: getUserId(),
+            name: name,
+            contact: contactInfo,
+            bio: "",
+          }
+        },
+        { upsert: true }
+      );
       console.log("submitted");
-      setFeedbackMessage('Settings updated!')
+      setFeedbackMessage("Settings updated!");
       setIsSnackbarOpen(true);
     } catch (error) {
-      setFeedbackMessage('Something went wrong!')
+      setFeedbackMessage("Something went wrong!");
       setIsSnackbarOpen(true);
       console.log(error);
     }
@@ -77,8 +81,8 @@ function UserSettingsPage(props) {
   };
 
   console.log(isLoading);
-  if (isLoading){
-    return <LoadingPage/>
+  if (isLoading) {
+    return <LoadingPage />;
   }
   return (
     <FormPage>
@@ -113,7 +117,11 @@ function UserSettingsPage(props) {
         isWorking={isSubmitting}
         onClick={submit}
       />
-      <SimpleSnackbar open={isSnackbarOpen} onClose={handleSnackbarClose} message={feedbackMessage}/>
+      <SimpleSnackbar
+        open={isSnackbarOpen}
+        onClose={handleSnackbarClose}
+        message={feedbackMessage}
+      />
     </FormPage>
   );
 }

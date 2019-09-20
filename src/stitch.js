@@ -39,8 +39,11 @@ export function isAnon() {
   return client.auth.user.loggedInProviderType === AnonymousAuthProvider.TYPE;
 }
 
-export function getEmail(){
+export function getUserEmail(){
   return client.auth.user.profile.email ? client.auth.user.profile.email : 'guest';
 }
 
+export function getUserId(){
+  return client.auth.user.id;
+}
 

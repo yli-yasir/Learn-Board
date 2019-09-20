@@ -1,7 +1,6 @@
 //TODO 
 
-1- infinitie scroll - 18th
-2- server validation and schemas -19th
+CREATE A UNIQUE INDEX ON THE EMAIL FIELD OF THE USERS COLLECTION
 3-finish post details page (text formatting,show author contact info) 20th 
 4-styling 20th
 5- code refactor 21st
@@ -10,14 +9,7 @@
 
 3-make a profile page for users
 
-
-//todo
  
-add a role that allows everyone to read other users info
-
-add a filter that omits the email field when reading other users info
-
-
 
 
 Collections 
@@ -28,9 +20,9 @@ Collections
 
 Posts Schema
 
-`topic` : String (max 60 chars)
+`topic` : String (min 3 max 60 chars)
 
-`shortDescription` : String (max 200 chars)
+`shortDescription` : String ( min 15 char max 200 chars)
 
 `description` : String (max 800 chars)
 
@@ -38,19 +30,33 @@ Posts Schema
 
 `postType` :  String ('request' | 'offer')
 
-`by` : String (displayName of user)
+`authorEmail` : String (email of author,determines the owner role in stitch rules
+by comparing to the runtime value of the active user, not readable by people without the owner role)
+
+`authorName`: String (name of author,this is to show a name without having to issue a second query)
+
+`authorPageId`: ObjectId (value of _id of author,this is readable by all, it will be used to make a link to the authors profile page)
 
 `city` : String
 
-`likes` : int (default 0 )
+<!-- `likes` : int (default 0 ) -->
 
 'icon': String
 
 Users Schema
 
-`_id` : String (email,unqiue) (has to be filtered out when read by users)
+`_id` : ObjectId
 
-`displayName` : ( String,unique)
+pageId: String (THIS IS THE CURRENT STITCH USER ID) (can be changed if the users run time id  on stitch has changed,
+it refers to the page wihch houses the info of the user
+scenario: stitch user deleted, has a new id, so his page id can be updated too,
+this is because this field is mutable and allows this . this is in case of an upsert )
+
+`email`:String (email,unqiue) (has to be filtered out when read by users)
+
+`name` : ( String)
+
+`bio`: String
 
 `contact` : String
 

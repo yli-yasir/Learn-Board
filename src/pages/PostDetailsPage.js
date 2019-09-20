@@ -57,7 +57,7 @@ function PostDetailsPage({ match }) {
         </Typography>
         <Box>
 
-         <Chip className={classes.chip} label={authorDoc.displayName} icon={<Person/>}></Chip> 
+         <Chip className={classes.chip} label={authorDoc.name} icon={<Person/>}></Chip> 
             {postDoc.languages.map(language=><Chip className={classes.chip} key={language} label={language} icon={<Chat/>}></Chip>)}
         </Box>
         <Typography variant="body1">{postDoc.description}</Typography>

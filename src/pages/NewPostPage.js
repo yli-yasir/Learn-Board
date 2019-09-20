@@ -21,7 +21,7 @@ import { Redirect } from "react-router-dom";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import { makeStyles } from "@material-ui/core/styles";
 import db from "../stitch";
-import { getEmail } from "../stitch";
+import { getUserEmail } from "../stitch";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -70,13 +70,14 @@ function NewPostPage({match}) {
 
   const hasError = topicError || shortDescriptionError || addedLanguagesError;
 
+  const pageId = match.params.id
+
   React.useEffect(()=>{
-    const id = match.params.id
     //if there is an id define fetch Data and call it 
-    if (id){
+    if (pageId){
       async function fetchData(){
         try{
-        const doc = await db.collection('posts').findOne({_id: new BSON.ObjectID(id)});
+        const doc = await db.collection('posts').findOne({_id: new BSON.ObjectID(pageId)});
         if (doc){
           console.log('fetch')
           setPostType(doc.postType);
@@ -98,7 +99,7 @@ function NewPostPage({match}) {
     else{
       setIsLoading(false);
     }
-  },[match.params.id])
+  },[pageId])
 
   const post = async () => {
     //check if there is any error
@@ -110,7 +111,7 @@ function NewPostPage({match}) {
     try {
       setIsWorking(true);
       //check if the user has a document in the users collection
-      const userDoc = await db.collection("users").findOne({ _id: getEmail() });
+      const userDoc = await db.collection("users").findOne({ email: getUserEmail() });
       //If the user doc is null
       if (!userDoc) {
         console.log("no user doc found");
@@ -123,11 +124,17 @@ function NewPostPage({match}) {
           shortDescription,
           description,
           city,
-          by: getEmail()
+          authorPageId: userDoc.pageId,
+          authorName: userDoc.name,
+          authorEmail: userDoc.email
         };
 
         const query = { _id: new BSON.ObjectID(match.params.id) };
-        
+
+        //If there is a new document
+        if (!pageId){
+          document.likes=[]
+        }
         //if so then continue to insert
         await db.collection("posts").updateOne(
           query,

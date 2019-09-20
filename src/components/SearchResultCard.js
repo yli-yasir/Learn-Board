@@ -3,12 +3,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import { ThumbUpOutlined,TextFormatOutlined, School, Edit} from "@material-ui/icons";
-import Button from "@material-ui/core/Button";
+import {School, Edit} from "@material-ui/icons";
 import test from '../assets/test.svg';
 import {Link} from 'react-router-dom';
-import {getEmail} from '../stitch'
 import { Badge } from "@material-ui/core";
+import PostControls from './PostControls'
+import { getUserEmail } from "../stitch";
 
 const useStyles = makeStyles(theme=>({
   badge:{
@@ -63,13 +63,7 @@ function SearchResultCard(props) {
       <Typography className={classes.topic} variant="body1">{props.topic}</Typography>
       </Link>
       <Typography className={classes.body} variant="body2">{props.shortDescription}</Typography>
-      <Box className={classes.controlsContainer} mb={1}>
-        {props.by===getEmail() &&
-        <Link to={`/posts/${props.id}/edit`}>
-        <Button className={classes.control} variant="outlined"><TextFormatOutlined/>&nbsp;Edit</Button> 
-        </Link>}
-        <Button className={classes.control} variant="outlined"><ThumbUpOutlined></ThumbUpOutlined>&nbsp;{props.likes}</Button>
-      </Box>
+      <PostControls isOwner={props.authorEmail===getUserEmail()} postId={props.id}/>
       </Box>
     </Paper>
     </Badge>
