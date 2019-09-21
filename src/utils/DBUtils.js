@@ -61,23 +61,20 @@ export async function searchPosts(queryString,term,options,continueFrom) {
 
 
 export async function likePost(postId){
-  try{
   const updateResult = await db.collection("posts").updateOne({_id: new BSON.ObjectID(postId)},{$push:{likes:getUserId()}});
-  return updateResult.nModified !==0? true: false
-  }
-  catch (e){
-    console.log(e)
-    return false;
-  }
+  return updateResult.modifiedCount ===1;
+
 }
 
 export async function unlikePost(postId){
-  try{
     const updateResult = await db.collection("posts").updateOne({_id: new BSON.ObjectID(postId)},{$pull:{likes:getUserId()}});
-    return updateResult.nModified !==0? true: false
-    }
-    catch (e){
-      console.log(e)
-      return false;
-    }
+    console.log(updateResult)
+    return updateResult.modifiedCount ===1;
+
+}
+
+export async function deletePost(postId){
+    const deleteResult = await db.collection("posts").deleteOne({_id: new BSON.ObjectID(postId)});
+    return deleteResult.deletedCount ===1;
+
 }

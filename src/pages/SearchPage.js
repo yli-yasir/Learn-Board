@@ -62,11 +62,16 @@ function SearchPage({ location }) {
     }
   }
 
+  const removeFromResults= (postId)=>{
+    setResults(results.filter((post)=>post._id!==postId ));
+    console.log('removed');
+  }
+
   const dataset= useBlankDataset? []: results
   console.log(dataset)
   const content =(
     <React.Fragment>
-    <ResultsGrid noMoreResults={noMoreResults} isLoading={isLoading} dataset={dataset} />
+    <ResultsGrid removeFromResults={removeFromResults} noMoreResults={noMoreResults} isLoading={isLoading} dataset={dataset} />
     <Waypoint onEnter={continueResultsFetch} />
     </React.Fragment>
   );

@@ -1,48 +1,49 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
 import {
-  Stitch,
-  UserPasswordAuthProviderClient,
   BSON
 } from "mongodb-stitch-browser-sdk";
 import FormPage from "./abstract/FormPage";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import { Link } from "react-router-dom";
-import db, { getUserEmail } from "../stitch";
+import db, { getUserId } from "../stitch";
 import LoadingPage from "./LoadingPage";
-import ProgressButton from '../components/ProgressButton';
-
+import ProgressButton from "../components/ProgressButton";
 
 function ReportPostPage({ match }) {
   const [postTitle, setPostTitle] = React.useState("");
   const [message, setMessage] = React.useState("");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [isPageLoading,setIsPageLoading] = React.useState(true);
+  const [isPageLoading, setIsPageLoading] = React.useState(true);
 
-  const postId = match.params.id
-  React.useEffect(()=>{
-    async function fetchPostDetails(){
-        setIsPageLoading(true);
-        try{
-     const postDoc = await db.collection('posts').findOne({_id: new BSON.ObjectID(postId)});
-    setPostTitle(postDoc.topic)
-        }
-        catch(e)
-        {console.log(e)}
-        finally{
-            setIsPageLoading(false);
-        }
-}
-fetchPostDetails();
-  },[postId])
-
+  const postId = match.params.id;
+  React.useEffect(() => {
+    async function fetchPostDetails() {
+      setIsPageLoading(true);
+      try {
+        const postDoc = await db
+          .collection("posts")
+          .findOne({ _id: new BSON.ObjectID(postId) });
+        setPostTitle(postDoc.topic);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setIsPageLoading(false);
+      }
+    }
+    fetchPostDetails();
+  }, [postId]);
 
   let submitReport = async () => {
     setIsSubmitting(true);
     try {
-      await db.collection("reports").insertOne({ postId,message,reporterEmail: getUserEmail() });
+      await db
+        .collection("reports")
+        .insertOne({
+          postId,
+          message,
+          reporterStitchUserId: getUserId()
+        });
     } catch (e) {
       console.log(e);
     } finally {
@@ -54,8 +55,8 @@ fetchPostDetails();
     setMessage(event.target.value);
   };
 
-  if (isPageLoading){
-      return <LoadingPage/>
+  if (isPageLoading) {
+    return <LoadingPage />;
   }
 
   return (

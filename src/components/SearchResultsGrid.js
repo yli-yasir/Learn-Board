@@ -17,7 +17,6 @@ function ResultsGrid(props){
   const classes = useStyles();
 
   let dataset=[];
-
   if (props.dataset){
    dataset =  props.dataset.map(item => (
         <ResultCard 
@@ -30,6 +29,7 @@ function ResultsGrid(props){
         authorEmail={item.authorEmail}
         postType={item.postType}
         className={classes.resultCard} 
+        removeFromResults={props.removeFromResults}
         />
       ))
   }
