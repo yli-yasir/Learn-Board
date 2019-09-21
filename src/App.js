@@ -9,6 +9,7 @@ import NewPostPage from "./pages/NewPostPage";
 import PostDetailsPage from "./pages/PostDetailsPage";
 import UserSettingsPage from "./pages/UserSettingsPage";
 import CssBaseline from '@material-ui/core/CssBaseline';
+import ReportPostPage from './pages/ReportPostPage';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { login } from "./stitch";
 
@@ -45,6 +46,7 @@ function App() {
       <Route path="/posts/new" exact component={NewPostPage} />
       <Route path="/posts/:id" exact component={PostDetailsPage} />
       <Route path="/posts/:id/edit" exact component={NewPostPage} />
+      <Route path="/posts/:id/report" exact component={ReportPostPage} />
       <Route path="/user/settings" exact component={UserSettingsPage} />
       </Switch>
     </Router>

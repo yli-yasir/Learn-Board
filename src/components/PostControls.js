@@ -29,20 +29,17 @@ function PostControls(props) {
   const classes = useStyles();
 
   const handleLikeButtonClick = async ()=>{
+    setIsLiking(true);
     try{
     if (!isLiked){
-    setIsLiking(true);
     const likeAdded = await likePost(props.postId);
-    setIsLiking(false);
     if (likeAdded){
       setLikeCount(likeCount+1);
       setIsLiked(true);
     }
   }
     else{
-      setIsLiking(true);
       const likeRemoved = await unlikePost(props.postId);
-      setIsLiking(false);
       if (likeRemoved){
         setLikeCount(likeCount-1);
         setIsLiked(false);
@@ -50,7 +47,8 @@ function PostControls(props) {
     }
   }
   catch(e){
-    console.log(e)
+    console.log(e);
+    setIsLiking(false);
   }
 }
 
@@ -61,9 +59,12 @@ function PostControls(props) {
   }
   return (
     <Box className={classes.controlsContainer} mb={1}>
+      
+          <Link to={`/posts/${props.postId}/report`}>
       <Button color="secondary" className={classes.control} variant="outlined">
         <WarningRounded />
       </Button>
+      </Link>
       {props.isOwner && (
         <Link to={`/posts/${props.postId}/edit`}>
           <Button className={classes.control} variant="outlined">
