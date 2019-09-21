@@ -1,7 +1,7 @@
 import db from "../stitch";
 import { BSON } from "mongodb-stitch-browser-sdk";
 import { params as appParams, getSearchParams } from "./URLUtils";
-
+import {getUserId} from '../stitch';
 
 // if term is provided then it will replace q 
 // if not then the value of q is the value from the params
@@ -60,3 +60,24 @@ export async function searchPosts(queryString,term,options,continueFrom) {
 }
 
 
+export async function likePost(postId){
+  try{
+  const updateResult = await db.collection("posts").updateOne({_id: new BSON.ObjectID(postId)},{$push:{likes:getUserId()}});
+  return updateResult.nModified !==0? true: false
+  }
+  catch (e){
+    console.log(e)
+    return false;
+  }
+}
+
+export async function unlikePost(postId){
+  try{
+    const updateResult = await db.collection("posts").updateOne({_id: new BSON.ObjectID(postId)},{$pull:{likes:getUserId()}});
+    return updateResult.nModified !==0? true: false
+    }
+    catch (e){
+      console.log(e)
+      return false;
+    }
+}

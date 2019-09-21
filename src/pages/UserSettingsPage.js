@@ -61,7 +61,7 @@ function UserSettingsPage(props) {
         { email: getUserEmail() },
         {
           $set: {
-            pageId: getUserId(),
+            stitchUserId: getUserId(),
             name: name,
             contact: contactInfo,
             bio: "",

@@ -35,7 +35,7 @@ by comparing to the runtime value of the active user, not readable by people wit
 
 `authorName`: String (name of author,this is to show a name without having to issue a second query)
 
-`authorPageId`: ObjectId (value of _id of author,this is readable by all, it will be used to make a link to the authors profile page)
+`authorStitchUserId`: ObjectId (value of _id of r,this is readable by all, it will be used to make a link to the authors profile page)
 
 `city` : String
 
@@ -47,10 +47,11 @@ Users Schema
 
 `_id` : ObjectId
 
-pageId: String (THIS IS THE CURRENT STITCH USER ID) (can be changed if the users run time id  on stitch has changed,
-it refers to the page wihch houses the info of the user
-scenario: stitch user deleted, has a new id, so his page id can be updated too,
-this is because this field is mutable and allows this . this is in case of an upsert )
+`stitchUserId`: String (stitch user id, might get out of sync with _id in case account is deleted then recreated. and this matters because, you need to validate that the authorPageId for a post is indeed the id of the user via %%user.data.id and that won't work if they are out of sync
+
+in other words, when a user creates a post you need a way to check if they are
+posting as themselves or not, check the _id field against the %%user.id is not a good way since they might not be equal in case the stitch user was 
+deleted then recreated ( they wont be in sync) mean while this field stays up to date with the stitch id as its always equal to the current stich id and validated)
 
 `email`:String (email,unqiue) (has to be filtered out when read by users)
 

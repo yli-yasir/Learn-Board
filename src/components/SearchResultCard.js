@@ -63,7 +63,7 @@ function SearchResultCard(props) {
       <Typography className={classes.topic} variant="body1">{props.topic}</Typography>
       </Link>
       <Typography className={classes.body} variant="body2">{props.shortDescription}</Typography>
-      <PostControls isOwner={props.authorEmail===getUserEmail()} postId={props.id}/>
+      <PostControls isOwner={props.authorEmail===getUserEmail()} likes={props.likes} postId={props.id}/>
       </Box>
     </Paper>
     </Badge>

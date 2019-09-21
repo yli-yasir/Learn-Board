@@ -124,7 +124,7 @@ function NewPostPage({match}) {
           shortDescription,
           description,
           city,
-          authorPageId: userDoc.pageId,
+          authorStitchUserId: userDoc.stitchUserId,
           authorName: userDoc.name,
           authorEmail: userDoc.email
         };
