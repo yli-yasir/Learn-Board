@@ -4,7 +4,7 @@ import {
   ThumbUpOutlined,
   TextFormatOutlined,
   WarningRounded,
-  DeleteSweepOutlined
+  DeleteOutlined
 } from "@material-ui/icons";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
@@ -118,7 +118,7 @@ function PostControls(props) {
           <ProgressButton
             className={classes.control}
             variant="outlined"
-            label={<DeleteSweepOutlined />}
+            label={<DeleteOutlined/>}
             isWorking={isDeleting}
             onClick={handleDeleteButtonClick}
           />
@@ -137,7 +137,7 @@ function PostControls(props) {
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Your post will be lost forever after deletion!
+              Your post will be lost forever!
             </DialogContentText>
           </DialogContent>
           <DialogActions>

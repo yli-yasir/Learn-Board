@@ -131,7 +131,7 @@ function NewPostPage({match}) {
 
         const query = { _id: new BSON.ObjectID(match.params.id) };
 
-        //If there is a new document
+        //If this is a new document
         if (!pageId){
           document.likes=[]
         }

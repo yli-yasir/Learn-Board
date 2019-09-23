@@ -1,4 +1,8 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { login } from "./stitch";
+//pages
 import LoadingPage from "./pages/LoadingPage";
 import StartPage from "./pages/StartPage";
 import SearchPage from "./pages/SearchPage";
@@ -7,23 +11,22 @@ import ConfirmEmailPage from "./pages/ConfirmEmailPage";
 import LoginPage from "./pages/LoginPage";
 import NewPostPage from "./pages/NewPostPage";
 import PostDetailsPage from "./pages/PostDetailsPage";
-import UserSettingsPage from "./pages/UserSettingsPage";
-import CssBaseline from '@material-ui/core/CssBaseline';
+import AccountSettingsPage from "./pages/AccountSettingsPage";
 import ReportPostPage from './pages/ReportPostPage';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { login } from "./stitch";
+
 
 function App() {
   const [isLoading, setIsloading] = React.useState(true);
 
   React.useEffect(() => {
-
     async function init() {
       try {
         await login();
-        setIsloading(false);
       } catch (e) {
         console.log(e);
+      }
+      finally{
+        setIsloading(false);
       }
     }
     init();
@@ -47,7 +50,7 @@ function App() {
       <Route path="/posts/:id" exact component={PostDetailsPage} />
       <Route path="/posts/:id/edit" exact component={NewPostPage} />
       <Route path="/posts/:id/report" exact component={ReportPostPage} />
-      <Route path="/user/settings" exact component={UserSettingsPage} />
+      <Route path="/account/settings" exact component={AccountSettingsPage} />
       </Switch>
     </Router>
     </React.Fragment>

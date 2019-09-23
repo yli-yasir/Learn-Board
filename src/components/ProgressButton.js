@@ -6,8 +6,11 @@ export default function ProgressButton(props){
     let {isWorking,label,...rest} = props
     return (
         <Button {...rest}>
-            {props.label}&nbsp;&nbsp;
-            {isWorking && <CircularProgress size={20} color="secondary"/>}
+            {props.label}
+            {isWorking && <React.Fragment>
+                &nbsp;&nbsp;
+                <CircularProgress size={20} color="primary"/>
+            </React.Fragment>}
             </Button>
     )
 }
