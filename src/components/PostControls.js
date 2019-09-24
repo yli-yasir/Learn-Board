@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
 import { likePost, unlikePost, deletePost } from "../utils/DBUtils";
-import { getUserId } from "../stitch";
+import { getUserId, getUserEmail } from "../stitch";
 import ProgressButton from "./ProgressButton";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -31,9 +31,9 @@ const useStyles = makeStyles(theme => ({
 
 function PostControls(props) {
   const [isLiked, setIsLiked] = React.useState(
-    props.likes.includes(getUserId())
+    props.post.likes.includes(getUserId())
   );
-  const [likeCount, setLikeCount] = React.useState(props.likes.length);
+  const [likeCount, setLikeCount] = React.useState(props.post.likes.length);
   const [isLiking, setIsLiking] = React.useState(false);
   const [isDeleteDialogShown, setIsDeleteDialogShown] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
@@ -43,14 +43,14 @@ function PostControls(props) {
     setIsLiking(true);
     try {
       if (!isLiked) {
-        const likeAdded = await likePost(props.postId);
+        const likeAdded = await likePost(props.post._id);
         if (likeAdded) {
           console.log('liked')
           setLikeCount(likeCount + 1);
           setIsLiked(true);
         }
       } else {
-        const likeRemoved = await unlikePost(props.postId);
+        const likeRemoved = await unlikePost(props.post._id);
         if (likeRemoved) {
           console.log('unliked')
           setLikeCount(likeCount - 1);
@@ -76,9 +76,9 @@ function PostControls(props) {
   const handleDeleteConfirmed = async () => {
     setIsDeleting(true);
     try {
-      const deleteResult = await deletePost(props.postId)
+      const deleteResult = await deletePost(props.post._d)
       if(deleteResult){
-        props.removeFromResults(props.postId);
+        props.removeFromResults(props.post._id);
       }
     } catch (e) {
       console.log('dete failedd')
@@ -95,9 +95,12 @@ function PostControls(props) {
   if (isLiked) {
     likeButtonProps.color = "primary";
   }
+
+  const isOwner = props.post.authorEmail===getUserEmail();
+  
   return (
     <Box className={classes.controlsContainer} mb={1}>
-      <Link to={`/posts/${props.postId}/report`}>
+      <Link to={`/posts/${props.post._id}/report`}>
         <Button
           color="secondary"
           className={classes.control}
@@ -107,9 +110,9 @@ function PostControls(props) {
         </Button>
       </Link>
 
-      {props.isOwner && (
+      {isOwner && (
         <React.Fragment>
-          <Link to={`/posts/${props.postId}/edit`}>
+          <Link to={`/posts/${props.post._id}/edit`}>
             <Button className={classes.control} variant="outlined">
               <TextFormatOutlined />
             </Button>

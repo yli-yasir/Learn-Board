@@ -40,7 +40,7 @@ function SearchPage({ location }) {
   const [hasError, setHasError] = React.useState(false);
 
   //The number of results to fetch per search.
-  const resultsPerSearch = 5;
+  const nResultsPerSearch = 5;
 
   //Fresh search (non-continue-search) is performed each time location.search
   //(query string) changes.
@@ -57,11 +57,11 @@ function SearchPage({ location }) {
 
     async function fetchResults() {
       try {
-        console.log('Executing fresh-search through SearchPage.js useEffect hook.')
+        console.log('executing fresh-search through SearchPage.js useEffect hook.')
         //execute the query
         const queryResults = await searchPosts(location.search, null, {
           sort: { _id: -1 },
-          limit: resultsPerSearch
+          limit: nResultsPerSearch
         });
         //update the state results with the new results.
         setResults(queryResults);
@@ -96,14 +96,14 @@ function SearchPage({ location }) {
 
       try {
 
-      console.log("Executing a Continue search through searchPage.js continueSearch()");
+      console.log("executing a continue-search through searchPage.js continueSearch()");
       //execute the search query
       const queryResults = await searchPosts(
         location.search,
         null,
         {
           sort: { _id: -1 },
-          limit: resultsPerSearch
+          limit: nResultsPerSearch
         },
         continueFromId
       );
@@ -166,6 +166,7 @@ function SearchPage({ location }) {
       <Waypoint onEnter={continueSearch} />
       </React.Fragment>
       }
+
 
       {/*If there was an error then we indicate that to the user */}
       {hasError &&

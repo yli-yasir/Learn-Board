@@ -7,8 +7,6 @@ import {School, Edit} from "@material-ui/icons";
 import test from '../assets/test.svg';
 import {Link} from 'react-router-dom';
 import { Badge } from "@material-ui/core";
-import PostControls from './PostControls'
-import { getUserEmail } from "../stitch";
 
 const useStyles = makeStyles(theme=>({
   badge:{
@@ -63,7 +61,7 @@ function SearchResultCard(props) {
       <Typography className={classes.topic} variant="body1">{props.topic}</Typography>
       </Link>
       <Typography className={classes.body} variant="body2">{props.shortDescription}</Typography>
-      <PostControls removeFromResults={props.removeFromResults} isOwner={props.authorEmail===getUserEmail()} likes={props.likes} postId={props.id}/>
+      {props.postControls}
       </Box>
     </Paper>
     </Badge>
