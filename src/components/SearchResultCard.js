@@ -10,7 +10,11 @@ import { Chip } from "@material-ui/core";
 
 const useStyles = makeStyles(theme=>({
   topic:{
-    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(0.5),
+    marginBottom: theme.spacing(1.5),
+    color: theme.palette.primary.dark,
+    lineHeight:'1.2',
+    fontWeight:'bold'
   },
   link:{
     textDecoration:'none'
@@ -20,10 +24,7 @@ const useStyles = makeStyles(theme=>({
     height:"100px",
     float:'left'
   },
-  controlsContainer:{
-overflow:'auto'
-  },
-  control:{
+  chip:{
     margin:theme.spacing(0,0.5,0,0.5),
     float:'right'
   }
@@ -50,13 +51,15 @@ function SearchResultCard(props) {
 
       <Box display="flex" flexDirection="flexRow" mb={1}>
         {props.postType === 'offer' ?
-        <Chip className={classes.control} color="primary" icon={<School/>} label="Offer"/>:
-        <Chip className={classes.control} color="primary" icon={<Edit/>} label="Request"/>}
-        <Chip className={classes.control} color="primary" icon={<Chat/>} label={props.languages.length + ' Languages'}/>
-        <Chip className={classes.control} color="primary" icon={<Person/>} label={props.authorName}/>
+        <Chip className={classes.chip} color="primary" icon={<School/>} label="Offer"/>:
+        <Chip className={classes.chip} color="primary" icon={<Edit/>} label="Request"/>}
+        <Chip className={classes.chip} color="primary" icon={<Chat/>} label={props.languages.length + ' Languages'}/>
+        <Chip className={classes.chip} color="primary" icon={<Person/>} label={props.authorName}/>
         </Box>
+
       <Typography className={classes.body} variant="body2" paragraph>{props.shortDescription}</Typography>
       {props.postControls}
+      
       </Box>
 
     </Paper>

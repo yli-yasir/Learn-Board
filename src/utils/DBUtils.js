@@ -68,13 +68,14 @@ export async function likePost(postId){
 
 export async function unlikePost(postId){
     const updateResult = await db.collection("posts").updateOne({_id: new BSON.ObjectID(postId)},{$pull:{likes:getUserId()}});
-    console.log(updateResult)
+    console.log(`updated ${updateResult.modifiedCount} documents`);
     return updateResult.modifiedCount ===1;
 
 }
 
 export async function deletePost(postId){
     const deleteResult = await db.collection("posts").deleteOne({_id: new BSON.ObjectID(postId)});
+    console.log(`deleted ${deleteResult.deletedCount} documents`);
     return deleteResult.deletedCount ===1;
 
 }
