@@ -3,31 +3,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import {School, Edit} from "@material-ui/icons";
+import {School, Edit, Chat, Person} from "@material-ui/icons";
 import test from '../assets/test.svg';
 import {Link} from 'react-router-dom';
-import { Badge } from "@material-ui/core";
+import { Chip } from "@material-ui/core";
 
 const useStyles = makeStyles(theme=>({
-  badge:{
-    padding:theme.spacing(0.5),
-    height:"initial",
-    borderRadius: theme.spacing(2)
-  }
-  ,
   topic:{
-    margin:theme.spacing(1,0,0,0),
-    lineHeight:'1.2'
-  },
-  body:{
-    padding: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   link:{
     textDecoration:'none'
-  },
-  card: {
-  width: '100%',
-  overflow: 'hidden'
   },
   media: {
     width:"100px",
@@ -35,7 +21,7 @@ const useStyles = makeStyles(theme=>({
     float:'left'
   },
   controlsContainer:{
-overflow:'hidden'
+overflow:'auto'
   },
   control:{
     margin:theme.spacing(0,0.5,0,0.5),
@@ -47,24 +33,33 @@ function SearchResultCard(props) {
 
   const classes = useStyles();
 
-  const badgeIcon = props.postType === "offer" ? <School/> : <Edit/>
   return (
-    <Badge classes={{badge:classes.badge}} className={props.className} badgeContent={badgeIcon} color="primary">
-    <Paper className={classes.card}>
+    <Paper className={props.className}>
+
        <img
       className={classes.media}
       src={test}
       alt="a cat"
       />
-      <Box>
+
+      <Box p={1}>
+
         <Link className={classes.link} to={`/posts/${props.id}`}>
       <Typography className={classes.topic} variant="body1">{props.topic}</Typography>
       </Link>
-      <Typography className={classes.body} variant="body2">{props.shortDescription}</Typography>
+
+      <Box display="flex" flexDirection="flexRow" mb={1}>
+        {props.postType === 'offer' ?
+        <Chip className={classes.control} color="primary" icon={<School/>} label="Offer"/>:
+        <Chip className={classes.control} color="primary" icon={<Edit/>} label="Request"/>}
+        <Chip className={classes.control} color="primary" icon={<Chat/>} label={props.languages.length + ' Languages'}/>
+        <Chip className={classes.control} color="primary" icon={<Person/>} label={props.authorName}/>
+        </Box>
+      <Typography className={classes.body} variant="body2" paragraph>{props.shortDescription}</Typography>
       {props.postControls}
       </Box>
+
     </Paper>
-    </Badge>
   );
 }
 

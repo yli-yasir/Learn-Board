@@ -152,7 +152,7 @@ function SearchPage({ location }) {
     <div>
       <Header />
       {/*Add some padding top so the contents can be pushed below the the header */}
-      <Box pt={20} pb={2}>
+      <Box pt={19} pb={2}>
       
       {/*If there is no error then the following is shown */}
       {!hasError &&

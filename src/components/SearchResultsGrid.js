@@ -9,10 +9,9 @@ import PostControls from "./PostControls";
 
 const useStyles = makeStyles(theme=>({
 resultCard:{
-  margin: theme.spacing(1),
+  margin: theme.spacing(0,1,2,1),
   width:'100%'
 }
-
 }))
 
 function ResultsGrid(props){
@@ -30,6 +29,7 @@ function ResultsGrid(props){
         shortDescription={item.shortDescription}
         likes={item.likes}
         authorEmail={item.authorEmail}
+        authorName={item.authorName}
         postType={item.postType}
         className={classes.resultCard} 
         postControls={
@@ -67,9 +67,12 @@ function ResultsGrid(props){
       <Grid key="leftSide" sm item></Grid>
       <Grid key="middle" justify="center" xs={12} sm={10} md={8} container item>
       {dataset}
-      <Box display="flex" mt={1} width="100%" justifyContent="center">
-        {statusIndicator}
-      </Box>
+
+      {statusIndicator && 
+            <Box display="flex" mt={1} width="100%" justifyContent="center">
+            {statusIndicator}
+          </Box>}
+
       
       </Grid>
       <Grid key="rightSide" sm item></Grid>
