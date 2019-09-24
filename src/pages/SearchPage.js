@@ -40,7 +40,7 @@ function SearchPage({ location }) {
   const [hasError, setHasError] = React.useState(false);
 
   //The number of results to fetch per search.
-  const nResultsPerSearch = 5;
+  const nResultsPerSearch = 15;
 
   //Fresh search (non-continue-search) is performed each time location.search
   //(query string) changes.
@@ -152,7 +152,7 @@ function SearchPage({ location }) {
     <div>
       <Header />
       {/*Add some padding top so the contents can be pushed below the the header */}
-      <Box pt={20}>
+      <Box pt={20} pb={2}>
       
       {/*If there is no error then the following is shown */}
       {!hasError &&
@@ -177,8 +177,9 @@ function SearchPage({ location }) {
         </i>
       </Typography>)
     }
-
       </Box>
+
+
     </div>
   );
 }

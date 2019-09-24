@@ -91,7 +91,6 @@ function PostControls(props) {
 }
 
   const likeButtonProps = {};
-  console.log(isLiked);
   if (isLiked) {
     likeButtonProps.color = "primary";
   }

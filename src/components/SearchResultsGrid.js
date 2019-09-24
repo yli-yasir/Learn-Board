@@ -12,6 +12,7 @@ resultCard:{
   margin: theme.spacing(1),
   width:'100%'
 }
+
 }))
 
 function ResultsGrid(props){
@@ -40,7 +41,7 @@ function ResultsGrid(props){
       ))
   }
 
-  let statusIndicator=false;
+  let statusIndicator;
   if (props.isLoading){
     statusIndicator=<CircularProgress color="primary" size={20}/>;
   }
@@ -57,20 +58,19 @@ function ResultsGrid(props){
   </Typography>)
   }
   else{
-    statusIndicator=(
-      <Typography variant="caption" align='center' gutterBottom>
-      <i>Something unexpected occured, please contact us if it persists.</i>
-    </Typography>)
+    statusIndicator=false;
   }
+
 
   return (
     <Grid container>
       <Grid key="leftSide" sm item></Grid>
       <Grid key="middle" justify="center" xs={12} sm={10} md={8} container item>
       {dataset}
-      <Box display="flex" mt={1} mb={3} width="100%" justifyContent="center">
+      <Box display="flex" mt={1} width="100%" justifyContent="center">
         {statusIndicator}
       </Box>
+      
       </Grid>
       <Grid key="rightSide" sm item></Grid>
     </Grid>
