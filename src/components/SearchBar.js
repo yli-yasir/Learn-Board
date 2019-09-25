@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { InputBase } from "@material-ui/core";
+import { InputBase} from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import { withRouter } from "react-router";
 import {
   buildQueryString
 } from "../utils/URLUtils";
@@ -49,21 +48,20 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     paddingLeft: theme.spacing(2)
   },
-  searchButton: {
-    borderRadius: theme.spacing(2),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.primary.light, 0.5)
-    }
+  searchButton:{
+    borderRadius: theme.spacing(2)
   }
 }));
 
 //Render the input component contained in the autosuggest root
 function renderInputComponent(props) {
+
   const { classes, queryString, ...other } = props;
+
   return (
     <Box className={classes.searchInputContainer}>
       <InputBase
-        placeholder="What are you teaching or learning?"
+        placeholder="Search"
         classes={{
           root: classes.inputRoot,
           input: classes.input
@@ -111,7 +109,8 @@ function getSuggestionValue(suggestionItem) {
   return suggestionItem.topic;
 }
 function SearchBar(props) {
-  const queryString = props.location.search;
+
+  const queryString = props.queryString;
 
   const [suggestions, setSuggestions] = useState([]);
 
@@ -127,7 +126,8 @@ function SearchBar(props) {
         _id:-1
       }
     });
-    console.log(mSuggestions);
+    console.log('suggestions:')
+    console.log(suggestions);
     setSuggestions(mSuggestions);
   };
 
@@ -162,4 +162,4 @@ function SearchBar(props) {
   );
 }
 
-export default withRouter(SearchBar);
+export default SearchBar;

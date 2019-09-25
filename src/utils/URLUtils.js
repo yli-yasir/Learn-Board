@@ -26,6 +26,9 @@ export function buildQueryString(oldQueryString,options){
         if (options[key]){
         params.set(key,options[key])
         }
+        else{
+            params.delete(key)
+        }
     })
      return "?" + params.toString();
 }

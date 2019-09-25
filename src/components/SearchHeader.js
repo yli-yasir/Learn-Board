@@ -1,7 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
-import SearchBar from "./AutoSearchBar";
+import SearchBar from "./SearchBar";
 import UserControlsView from "./UserControlsView";
 import SearchTabs from "./SearchTabs";
 import logo from "../assets/logo.svg";
@@ -20,22 +20,27 @@ toolbar:{
 }
 }))
 function SearchHeader(props) {
+
   const theme = useTheme();
+
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+
   let tabProps = isDesktop ? { centered: true } : { variant: "fullWidth" };
 
   const queryString = props.location.search;
   const { q } = getSearchParams(queryString, appParams.q.PARAM_NAME);
+
   const [searchBarText,setSearchBarText]= React.useState(q ? q : "")
 
   //this will be passed down to the searchbar
   const handleSearchBarTextChange = (event, { newValue }) => {
     //do not use event.target.value, it will not contain the value
-    //when the input changes via another method than typing (e.g. suggestion click)
+    //when the input changes via a method other than typing (e.g. suggestion click)
     setSearchBarText(newValue);
   };
 
   const classes= useStyles();
+  
   return (
     <AppBar color="default">
       <Toolbar className={classes.toolbar}>
@@ -48,7 +53,7 @@ function SearchHeader(props) {
 
         {/*always show SEARCH CONTAINER */}
         <Box mx={1} display="flex" justifyContent="center" flex={2}>
-          <SearchBar text={searchBarText} onTextChange={handleSearchBarTextChange} />
+          <SearchBar queryString={queryString} text={searchBarText} onTextChange={handleSearchBarTextChange} />
         </Box>
 
         {/*Show the user control bar if we are on desktop */}
@@ -56,7 +61,9 @@ function SearchHeader(props) {
         desktopContainerProps={{flex:1,display:'flex',flexDirection:'row-reverse'}} />
       
       </Toolbar>
+
       <SearchTabs searchBarText={searchBarText} tabProps={tabProps} />
+
     </AppBar>
   );
 }
