@@ -17,6 +17,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import { Tooltip } from "@material-ui/core";
 
 
 const useStyles = makeStyles(theme => ({
@@ -121,6 +122,7 @@ function PostControls(props) {
 
       {/*always show the report button*/}
       <Link to={`/posts/${props.post._id}/report`}>
+        <Tooltip title="Report">
         <Button
           color="secondary"
           className={classes.control}
@@ -128,24 +130,27 @@ function PostControls(props) {
         >
           <WarningRounded />
         </Button>
+        </Tooltip>
       </Link>
 
 
       {isOwner && (
         <React.Fragment>
-
       <ProgressButton
             className={classes.control}
             variant="outlined"
             label={<DeleteOutlined/>}
             isWorking={isDeleting}
             onClick={handleDeleteButtonClick}
+            tip="Delete"
           />
 
           <Link to={`/posts/${props.post._id}/edit`}>
+            <Tooltip title="Edit">
             <Button className={classes.control} variant="outlined">
               <TextFormatOutlined />
             </Button>
+            </Tooltip>
           </Link>
 
 
@@ -164,7 +169,9 @@ function PostControls(props) {
           </React.Fragment>
         }
         isWorking={isLiking}
-      />}
+        tip={isLiked? "Unlike" : "Like"}
+      />
+      }
 
 
 
