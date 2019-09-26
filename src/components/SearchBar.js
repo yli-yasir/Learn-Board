@@ -50,6 +50,13 @@ const useStyles = makeStyles(theme => ({
   },
   searchButton:{
     borderRadius: theme.spacing(2)
+  },
+  suggestionItem:{
+    width:'100%',
+    display:'block',
+    whiteSpace:'nowrap',
+    overflow:'hidden',
+    textOverflow:'ellipsis'
   }
 }));
 
@@ -97,9 +104,11 @@ function renderSuggestion(suggestionItem, queryString, classes) {
         search: buildQueryString(queryString, { q: suggestionItem.topic })
       }}
     >
-      <MenuItem component="div">
+      <MenuItem component="div" >
         <SearchIcon color="primary" />
+        <div className={classes.suggestionItem}>
         &nbsp;&nbsp;&nbsp;{suggestionItem.topic}
+        </div>
       </MenuItem>
     </Link>
   );

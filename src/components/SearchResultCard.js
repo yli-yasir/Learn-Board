@@ -24,8 +24,9 @@ const useStyles = makeStyles(theme=>({
     height:"100px",
     float:'left'
   },
+
   chip:{
-    margin:theme.spacing(0,0.5,0,0.5),
+    margin:theme.spacing(0.5),
     float:'right'
   }
 }));
@@ -49,7 +50,7 @@ function SearchResultCard(props) {
       <Typography className={classes.topic} variant="body1">{props.topic}</Typography>
       </Link>
 
-      <Box display="flex" flexDirection="flexRow" mb={1}>
+      <Box display="flex" flexDirection="flexRow" flexWrap="wrap" mb={1}>
         {props.postType === 'offer' ?
         <Chip className={classes.chip} color="primary" icon={<School/>} label="Offer"/>:
         <Chip className={classes.chip} color="primary" icon={<Edit/>} label="Request"/>}

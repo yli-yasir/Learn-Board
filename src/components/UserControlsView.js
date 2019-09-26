@@ -15,7 +15,7 @@ import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
 import { client, isAnon as isAnonStitch } from "../stitch";
 import { AnonymousCredential } from "mongodb-stitch-core-sdk";
-import { Tooltip } from "@material-ui/core";
+import { Tooltip, ListSubheader } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -46,28 +46,6 @@ export default function UserBar(props) {
 
   const classes = useStyles();
 
-  const openDrawer = () => {
-    setIsDrawerOpen(true);
-  };
-
-  const closeDrawer = () => {
-    setIsDrawerOpen(false);
-  };
-
-  const openUserOptionsMenu = event => {
-    setUserOptionsAnchorEl(event.currentTarget);
-  };
-  const closeUserOptionsMenu = event => {
-    setUserOptionsAnchorEl(null);
-  };
-
-  const openLanguagesMenu = event => {
-    setLanguageMenuAnchorEl(event.currentTarget);
-  };
-  const closeLanguagesMenu = event => {
-    setLanguageMenuAnchorEl(null);
-  };
-
   let logout = async () => {
     try {
       await client.auth.logout();
@@ -78,10 +56,26 @@ export default function UserBar(props) {
     }
   };
 
+  //On large display sizes
   if (props.desktop) {
+    const openUserOptionsMenu = event => {
+      setUserOptionsAnchorEl(event.currentTarget);
+    };
+
+    const closeUserOptionsMenu = event => {
+      setUserOptionsAnchorEl(null);
+    };
+
+    const openLanguagesMenu = event => {
+      setLanguageMenuAnchorEl(event.currentTarget);
+    };
+
+    const closeLanguagesMenu = event => {
+      setLanguageMenuAnchorEl(null);
+    };
+
     return (
       <Box {...props.desktopContainerProps}>
-
         <Link to="/feedback">
           <Tooltip title="Give Feedback">
             <IconButton>
@@ -116,42 +110,37 @@ export default function UserBar(props) {
           open={Boolean(userOptionsAnchorEl)}
           onClose={closeUserOptionsMenu}
         >
-          {!isAnon && (
-            <React.Fragment>
-              <Link className={classes.link} to="/self/contact">
-                <MenuItem>
-                  <ContactPhoneOutlined />
-                  &nbsp;My Contact Info
-                </MenuItem>
-              </Link>
-
-              <MenuItem>
-                <CollectionsBookmarkOutlined />
-                &nbsp;My Posts
-              </MenuItem>
-            </React.Fragment>
-          )}
-
-          {isAnon ? (
-            <React.Fragment>
+          {isAnon ? ([
               <Link className={classes.link} to="/register">
                 <MenuItem>
                   <HowToRegOutlined />
                   &nbsp;Register
                 </MenuItem>
-              </Link>
+              </Link>,
               <Link className={classes.link} to="/login">
                 <MenuItem>
                   <VpnKeyOutlined />
                   &nbsp;Login
                 </MenuItem>
-              </Link>
-            </React.Fragment>
+              </Link>]
           ) : (
-            <MenuItem button onClick={logout}>
-              <LockOutlined />
-              &nbsp;Logout
-            </MenuItem>
+            [
+              <Link key="selfContact" className={classes.link} to="/self/contact">
+                <MenuItem>
+                  <ContactPhoneOutlined />
+                  &nbsp;My Contact Info
+                </MenuItem>
+              </Link>,
+  
+              <MenuItem key="myPosts">
+                <CollectionsBookmarkOutlined />
+                &nbsp;My Posts
+              </MenuItem>,
+              <MenuItem key="logOut" button onClick={logout}>
+                <LockOutlined />
+                &nbsp;Logout
+              </MenuItem>
+            ]
           )}
         </Menu>
 
@@ -198,62 +187,18 @@ export default function UserBar(props) {
         </Menu>
       </Box>
     );
-  } 
-  
+  }
+
   //Small display sizes...
   else {
-    const loginButton = (
-      <Link className={classes.link} to="/login">
-        <ListItem button key="login">
-          <ListItemIcon>
-            <VpnKeyOutlined />
-          </ListItemIcon>
-          <ListItemText primary="Login" />
-        </ListItem>
-      </Link>
-    );
+    const openDrawer = () => {
+      setIsDrawerOpen(true);
+    };
 
-    const logoutButton = (
-      <ListItem button onClick={logout} key="logout">
-        <ListItemIcon>
-          <LockOutlined />
-        </ListItemIcon>
-        <ListItemText primary="Log Out" />
-      </ListItem>
-    );
+    const closeDrawer = () => {
+      setIsDrawerOpen(false);
+    };
 
-    const profileButton = (
-      <Link className={classes.link} to="/user/settings">
-        <ListItem button key="accountSettings">
-          <ListItemIcon>
-            <PersonOutlined />
-          </ListItemIcon>
-          <ListItemText primary="Account Settings" />
-        </ListItem>
-      </Link>
-    );
-
-    const newPostButton = (
-      <Link className={classes.link} to="/posts/new">
-        <ListItem button key="newPost">
-          <ListItemIcon>
-            <NoteAddOutlined />
-          </ListItemIcon>
-          <ListItemText primary="New Post" />
-        </ListItem>
-      </Link>
-    );
-    const drawerContent = (
-      <div role="presentation" onClick={closeDrawer}>
-        <List>
-          {isAnon ? loginButton : logoutButton}
-
-          {!isAnon && profileButton}
-
-          {!isAnon && newPostButton}
-        </List>
-      </div>
-    );
     return (
       <React.Fragment>
         <IconButton
@@ -264,8 +209,87 @@ export default function UserBar(props) {
         >
           <MenuIcon />
         </IconButton>
+
         <Drawer anchor="top" open={isDrawerOpen} onClose={closeDrawer}>
-          {drawerContent}
+          <div role="presentation" onClick={closeDrawer}>
+            <List>
+
+              {!isAnon && (
+                <Link className={classes.link} to="/posts/new">
+                  <ListItem button key="newPost">
+                    <NoteAddOutlined />
+                    &nbsp;&nbsp;&nbsp;
+                    <ListItemText primary="New Post" />
+                  </ListItem>
+                </Link>
+              )}
+
+              <ListSubheader>User Options</ListSubheader>
+
+              {/*If user is anon then show register + login button else logout */}
+              {isAnon ? (
+                <React.Fragment>
+                  <Link className={classes.link} to="/register">
+                    <ListItem button key="register">
+                      <HowToRegOutlined />
+                      &nbsp;&nbsp;&nbsp;
+                      <ListItemText primary="Register" />
+                    </ListItem>
+                  </Link>
+
+                  <Link className={classes.link} to="/login">
+                    <ListItem button key="login">
+                      <VpnKeyOutlined />
+                      &nbsp;&nbsp;&nbsp;
+                      <ListItemText primary="Login" />
+                    </ListItem>
+                  </Link>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <Link className={classes.link} to="/self/contact">
+                    <ListItem button key="myContactInfo">
+                      <ContactPhoneOutlined />
+                      &nbsp;&nbsp;&nbsp;
+                      <ListItemText primary="My Contact Info" />
+                    </ListItem>
+                  </Link>
+
+                  <ListItem button key="myPosts">
+                    <CollectionsBookmarkOutlined />
+                    &nbsp;&nbsp;&nbsp;
+                    <ListItemText primary="My Posts" />
+                  </ListItem>
+
+                  <ListItem button onClick={logout} key="logout">
+                    <LockOutlined />
+                    &nbsp;&nbsp;&nbsp;
+                    <ListItemText primary="Log Out" />
+                  </ListItem>
+                </React.Fragment>
+              )}
+
+        <ListSubheader>App Language</ListSubheader>
+
+        <ListItem button key="englishLanguage">
+                    <TranslateOutlined />
+                    &nbsp;&nbsp;&nbsp;
+                    <ListItemText primary="English" />
+                  </ListItem>
+
+                  <ListItem button key="turkishLanguage">
+                    <TranslateOutlined />
+                    &nbsp;&nbsp;&nbsp;
+                    <ListItemText primary="Türkçe" />
+                  </ListItem>
+
+                  <ListItem button key="arabicLanguage">
+                    <TranslateOutlined />
+                    &nbsp;&nbsp;&nbsp;
+                    <ListItemText primary="العربية" />
+                  </ListItem>
+            </List>
+          </div>
         </Drawer>
       </React.Fragment>
     );
