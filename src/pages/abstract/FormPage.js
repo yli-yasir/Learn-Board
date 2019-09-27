@@ -1,34 +1,65 @@
-import React from 'react';
-import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
-import {makeStyles} from '@material-ui/core/styles';
-import logo from '../../assets/logo.svg';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import logo from "../../assets/logo.svg";
+import { Typography, Divider, Paper, Box } from "@material-ui/core";
+import ProgressButton from "../../components/ProgressButton";
+import { borderRadius } from "@material-ui/system";
 
-const useStyles = makeStyles((theme)=>({
-    paper: {
-        margin:theme.spacing(3,2,1,2),
-        display:'flex',
-        flexDirection:'column',
-        padding: theme.spacing(2),
-        [theme.breakpoints.up('md')]:{
-            width: '40%'
-        }
+const useStyles = makeStyles(theme => ({
+  paper: {
+    margin: "auto",
+    display: "flex",
+    flexDirection: "column",
+    padding: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      width: "40%"
     }
-})
-)
+  },
+  submitButton: {
+    marginBottom: theme.spacing(0.5)
+  },
+  icon: {
+    margin: "8px auto 16px",
+    display: "block"
+  }
+}));
 
-function FormPage(props){
+function FormPage(props) {
+  const classes = useStyles();
 
-    const classes = useStyles();
+  return (
+    <Box pt={1}>
+      <img src={logo} className={classes.icon} height="75px" />
 
-    return (
-    <Box component={Paper} className={classes.paper} mx="auto">
-        <img src={logo} alt="logo" height="100"></img>
+      <Paper className={classes.paper}>
+        <Typography align="center" className={classes.formTitle} variant="h2">
+          {props.formTitle}
+        </Typography>
+
         {props.children}
-        </Box>
-        )
 
+        {props.errorMessage ? (
+          <Typography variant="overline" color="error">
+            {props.errorMessage}
+          </Typography>
+        ) : (
+          ""
+        )}
 
+        <ProgressButton
+          className={classes.submitButton}
+          variant="contained"
+          color="primary"
+          tip={props.submitButtonTip}
+          label={props.submitButtonLabel}
+          isWorking={props.isSubmitting}
+          onClick={props.onSubmit}
+        />
+
+        <Typography variant="caption">{props.belowSubmitButton}</Typography>
+      </Paper>
+    </Box>
+  );
 }
 
 export default FormPage;

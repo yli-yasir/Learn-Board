@@ -45,7 +45,17 @@ function LoginPage() {
 
 
   return (
-    <FormPage>
+    <FormPage
+    formTitle="Login"
+    submitButtonLabel="Login"
+    submitButtonTip="Click here to Login"
+    isSubmitting={isWorking}
+    onSubmit={login}
+    belowSubmitButton={<Typography variant="caption">
+    Don't have an account? <Link to="/register">Register here!</Link>
+  </Typography>}
+    errorMessage={errorMessage}
+    >
       <TextField
         id="email"
         label="Email"
@@ -65,13 +75,8 @@ function LoginPage() {
         margin="normal"
       />
 
-      {errorMessage ? <Typography variant="overline" color="error">{errorMessage}</Typography> : ''}
 
-      <ProgressButton variant="contained" color="primary" label="Login" isWorking={isWorking} onClick={login}/>
 
-      <Typography variant="caption">
-        Don't have an account? <Link to="/register">Register here!</Link>
-      </Typography>
     </FormPage>
   );
 }
