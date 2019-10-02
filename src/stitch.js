@@ -3,6 +3,8 @@ import {
   RemoteMongoClient,
   AnonymousCredential,
   AnonymousAuthProvider,
+  UserPasswordAuthProviderClient
+
 } from "mongodb-stitch-browser-sdk";
 
 export const client = Stitch.initializeDefaultAppClient("learnboard-ksqnz");
@@ -13,7 +15,7 @@ const db = client
 
 export default db;
 
-export function login() {
+export function initialLogin() {
   if (!client.auth.isLoggedIn) {
     return client.auth
       .loginWithCredential(new AnonymousCredential())
@@ -47,3 +49,9 @@ export function getUserId(){
   return client.auth.user.id;
 }
 
+export function resendConfirmationEmail(){
+  return client.auth.res
+}
+
+export const emailPassClient = client.auth
+.getProviderClient(UserPasswordAuthProviderClient.factory);

@@ -111,13 +111,13 @@ export default function UserBar(props) {
           onClose={closeUserOptionsMenu}
         >
           {isAnon ? ([
-              <Link className={classes.link} to="/register">
+              <Link key="register"className={classes.link} to="/register">
                 <MenuItem>
                   <HowToRegOutlined />
                   &nbsp;Register
                 </MenuItem>
               </Link>,
-              <Link className={classes.link} to="/login">
+              <Link key="login" className={classes.link} to="/login">
                 <MenuItem>
                   <VpnKeyOutlined />
                   &nbsp;Login

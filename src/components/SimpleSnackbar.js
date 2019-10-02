@@ -21,7 +21,7 @@ export default function SimpleSnackbar(props) {
           horizontal: 'left',
         }}
         open={props.open}
-        autoHideDuration={2000}
+        autoHideDuration={5000}
         onClose={props.onClose}
         ContentProps={{
           'aria-describedby': 'message-id',

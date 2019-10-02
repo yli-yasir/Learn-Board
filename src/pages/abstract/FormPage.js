@@ -1,9 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import logo from "../../assets/logo.svg";
-import { Typography, Divider, Paper, Box } from "@material-ui/core";
+import { Typography, Paper, Box } from "@material-ui/core";
 import ProgressButton from "../../components/ProgressButton";
-import { borderRadius } from "@material-ui/system";
+import {Redirect} from 'react-router';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -27,19 +27,23 @@ const useStyles = makeStyles(theme => ({
 function FormPage(props) {
   const classes = useStyles();
 
+  if (props.isDone){
+    return <Redirect to={props.redirectWhenDone}/>
+  }
+
   return (
-    <Box pt={1}>
+    <Box pt={1} px={1}>
       <img src={logo} className={classes.icon} height="75px" />
 
       <Paper className={classes.paper}>
-        <Typography align="center" className={classes.formTitle} variant="h2">
+        <Typography align="center" className={classes.formTitle} variant="h4">
           {props.formTitle}
         </Typography>
 
         {props.children}
 
         {props.errorMessage ? (
-          <Typography variant="overline" color="error">
+          <Typography style={{overflowWrap:'break-word',textTransform:"capitalize"}} paragraph variant="caption" color="error">
             {props.errorMessage}
           </Typography>
         ) : (
@@ -54,6 +58,7 @@ function FormPage(props) {
           label={props.submitButtonLabel}
           isWorking={props.isSubmitting}
           onClick={props.onSubmit}
+          progressColor="secondary"
         />
 
         <Typography variant="caption">{props.belowSubmitButton}</Typography>

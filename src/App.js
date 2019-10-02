@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { login } from "./stitch";
+import { initialLogin } from "./stitch";
 //pages
 import LoadingPage from "./pages/LoadingPage";
 import StartPage from "./pages/StartPage";
@@ -13,6 +13,8 @@ import NewPostPage from "./pages/NewPostPage";
 import PostDetailsPage from "./pages/PostDetailsPage";
 import AccountSettingsPage from "./pages/AccountSettingsPage";
 import ReportPostPage from './pages/ReportPostPage';
+import ResendConfirmationPage from './pages/ResendConfirmationPage';
+
 
 
 function App() {
@@ -21,7 +23,7 @@ function App() {
   React.useEffect(() => {
     async function init() {
       try {
-        await login();
+        await initialLogin();
       } catch (e) {
         console.log(e);
       }
@@ -51,6 +53,7 @@ function App() {
       <Route path="/posts/:id/edit" exact component={NewPostPage} />
       <Route path="/posts/:id/report" exact component={ReportPostPage} />
       <Route path="/account/settings" exact component={AccountSettingsPage} />
+      <Route path="/resend-confirmation-email" exact component={ResendConfirmationPage}/>
       </Switch>
     </Router>
     </React.Fragment>
