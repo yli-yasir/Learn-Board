@@ -1,11 +1,10 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button'
+import {TextField,Typography,IconButton} from '@material-ui/core';
+import {Done} from '@material-ui/icons';
 import {emailPassClient} from "../stitch";
 import FormPage from './abstract/FormPage';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import {Link} from 'react-router-dom';
+import SimpleSnackbar from '../components/SimpleSnackbar'
 
 function RegisterPage(){
 
@@ -15,7 +14,7 @@ const [confirmPassword, setConfirmPassword] = React.useState('');
 const [isRegisteringUser,setIsRegisteringUser] = React.useState(false);
 const [isDone,setIsDone] = React.useState(false);
 const [errorMessage,setErrorMessage]=React.useState('');
-
+const [isSuccessSnackbarOpen,setIsSuccessSnackbarOpen]= React.useState('');
 let registerUser = async () => {
 
     //front side validation
@@ -36,7 +35,7 @@ let registerUser = async () => {
     await emailPassClient.registerWithEmail(email, password);
     console.log("successfully sent account confirmation email!");
     setIsRegisteringUser(false);
-    setIsDone(true);
+    setIsSuccessSnackbarOpen(true);
   }
   catch(e){
     console.log(e);
@@ -112,6 +111,22 @@ variant="outlined"
 type="password"
 />
 
+
+<SimpleSnackbar
+        open={isSuccessSnackbarOpen}
+        onClose={() =>{}}
+        action={          
+        <Link style={{color:"white"}} to="/search">
+          <IconButton
+          key="done"
+          aria-label="done"
+          color="inherit"
+        >
+          <Done />
+        </IconButton>
+        </Link>}
+        message="Success! You should receive an email from 'no-reply+stitch@mongodb.com' soon!"
+      />
 </FormPage>
 );
 

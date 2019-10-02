@@ -27,7 +27,8 @@ export default function SimpleSnackbar(props) {
           'aria-describedby': 'message-id',
         }}
         message={<span id="message-id">{props.message}</span>}
-        action={[
+        action={!props.action? 
+
           <IconButton
             key="close"
             aria-label="close"
@@ -36,8 +37,10 @@ export default function SimpleSnackbar(props) {
             onClick={props.onClose}
           >
             <CloseIcon />
-          </IconButton>,
-        ]}
+          </IconButton>
+          :
+          props.action
+        }
       />
   );
 }

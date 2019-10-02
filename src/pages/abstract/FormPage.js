@@ -42,13 +42,12 @@ function FormPage(props) {
 
         {props.children}
 
-        {props.errorMessage ? (
+        {props.errorMessage && (
           <Typography style={{overflowWrap:'break-word',textTransform:"capitalize"}} paragraph variant="caption" color="error">
             {props.errorMessage}
           </Typography>
-        ) : (
-          ""
-        )}
+        ) 
+        }
 
         <ProgressButton
           className={classes.submitButton}
