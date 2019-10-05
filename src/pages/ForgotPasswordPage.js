@@ -5,9 +5,10 @@ import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 import FormPage from "./abstract/FormPage";
 import SimpleSnackbar from "../components/SimpleSnackbar";
-import { IconButton } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import {Done} from "@material-ui/icons"
-function ResendConfirmationPage() {
+
+function ForgotPasswordPage() {
   const [email, setEmail] = React.useState("");
   const [isDone, setIsDone] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
@@ -16,18 +17,19 @@ function ResendConfirmationPage() {
     false
   );
 
-  let resendConfirmation = async () => {
+  let sendPasswordResetEmail = async () => {
     try {
       setIsWorking(true);
-      console.log("attempting to resend confirmation email");
-      await emailPassClient.resendConfirmationEmail(email);
-      console.log("successfully sent confirmation email");
+      console.log("attempting to send reset password email");
+      await emailPassClient.sendResetPasswordEmail(email);
+      console.log("successfully sent password reset email");
       setEmail('');
+      setErrorMessage('');
+      setIsWorking(false);
       setIsSuccessSnackbarOpen(true);
     } catch (error) {
       setIsWorking(false);
       setErrorMessage(error.message);
-
     }
   };
 
@@ -37,11 +39,11 @@ function ResendConfirmationPage() {
 
   return (
     <FormPage
-      formTitle="Resend Confirmation Email"
-      submitButtonLabel="Resend"
-      submitButtonTip="Click here to get another confirmation email"
+      formTitle="Forgot Password"
+      submitButtonLabel="Request New Password"
+      submitButtonTip="Click here to request a new password"
       isSubmitting={isWorking}
-      onSubmit={resendConfirmation}
+      onSubmit={sendPasswordResetEmail}
       belowSubmitButton={
         <Typography variant="caption">
           Please <Link to="/feedback">Contact us</Link> if you are still having
@@ -61,23 +63,23 @@ function ResendConfirmationPage() {
         margin="normal"
       />
 
-      <SimpleSnackbar
+<SimpleSnackbar
         open={isSuccessSnackbarOpen}
         onClose={() =>{}}
         action={          
-        <Link style={{color:"white"}} to="/search">
-          <IconButton
+          <Button
           key="done"
           aria-label="done"
           color="inherit"
+          variant="outlined"
+          onClick={()=>{setIsDone(true)}}
         >
-          <Done />
-        </IconButton>
-        </Link>}
-        message="Success! You should receive an email from 'no-reply+stitch@mongodb.com' soon!"
+          <Done />&nbsp;&nbsp;&nbsp;Back to main page
+        </Button>}
+        message="Success! You should receive an email from 'no-reply+stitch@mongodb.com' soon. Follow the email to reset your password!"
       />
     </FormPage>
   );
 }
 
-export default ResendConfirmationPage;
+export default ForgotPasswordPage;

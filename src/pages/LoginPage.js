@@ -44,9 +44,16 @@ function LoginPage() {
     submitButtonTip="Click here to Login"
     isSubmitting={isWorking}
     onSubmit={login}
-    belowSubmitButton={<Typography variant="caption">
+    belowSubmitButton={
+      <React.Fragment>
+          <Typography variant="caption" display="block">
+    Forgot your password? <Link to="/forgot-password">Click here!</Link> 
+  </Typography>
+    <Typography variant="caption" display="block">
     Don't have an account? <Link to="/register">Register here!</Link>
-  </Typography>}
+  </Typography>
+
+  </React.Fragment>}
     errorMessage={errorMessage}
     isDone={isDone}
     redirectWhenDone="/search"
@@ -69,6 +76,7 @@ function LoginPage() {
         variant="outlined"
         margin="normal"
       />
+      <Typography variant="caption"></Typography>
 
 
 

@@ -13,10 +13,9 @@ import NewPostPage from "./pages/NewPostPage";
 import PostDetailsPage from "./pages/PostDetailsPage";
 import AccountSettingsPage from "./pages/AccountSettingsPage";
 import ReportPostPage from './pages/ReportPostPage';
-import ResendConfirmationPage from './pages/ResendConfirmationPage';
-
-
-
+import ResendConfirmationEmailPage from './pages/ResendConfirmationEmailPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import resetPasswordPage from './pages/ResetPasswordPage';
 function App() {
   const [isLoading, setIsloading] = React.useState(true);
 
@@ -46,14 +45,16 @@ function App() {
       <Route path="/" exact component={StartPage} />
       <Route path="/search" exact component={SearchPage} />
       <Route path="/register" exact component={RegisterPage} />
-      <Route path="/confirmEmail" exact component={ConfirmEmailPage} />
+      <Route path="/confirm-email" exact component={ConfirmEmailPage} />
       <Route path="/login" exact component={LoginPage} />
       <Route path="/posts/new" exact component={NewPostPage} />
       <Route path="/posts/:id" exact component={PostDetailsPage} />
       <Route path="/posts/:id/edit" exact component={NewPostPage} />
       <Route path="/posts/:id/report" exact component={ReportPostPage} />
       <Route path="/account/settings" exact component={AccountSettingsPage} />
-      <Route path="/resend-confirmation-email" exact component={ResendConfirmationPage}/>
+      <Route path="/resend-confirmation-email" exact component={ResendConfirmationEmailPage}/>
+      <Route path="/forgot-password" exact component={ForgotPasswordPage}/>
+      <Route path="/reset-password" exact component={resetPasswordPage}/>
       </Switch>
     </Router>
     </React.Fragment>

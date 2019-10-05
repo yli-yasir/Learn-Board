@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import logo from "../../assets/logo.svg";
 import { Typography, Paper, Box } from "@material-ui/core";
 import ProgressButton from "../../components/ProgressButton";
-import {Redirect} from 'react-router';
+import { Redirect } from "react-router";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -21,14 +21,15 @@ const useStyles = makeStyles(theme => ({
   icon: {
     margin: "8px auto 16px",
     display: "block"
-  }
+  },
+  errorMessage: { overflowWrap: "break-word", textTransform: "capitalize" }
 }));
 
 function FormPage(props) {
   const classes = useStyles();
 
-  if (props.isDone){
-    return <Redirect to={props.redirectWhenDone}/>
+  if (props.isDone) {
+    return <Redirect to={props.redirectWhenDone} />;
   }
 
   return (
@@ -43,11 +44,15 @@ function FormPage(props) {
         {props.children}
 
         {props.errorMessage && (
-          <Typography style={{overflowWrap:'break-word',textTransform:"capitalize"}} paragraph variant="caption" color="error">
+          <Typography
+            className={classes.errorMessage}
+            paragraph
+            variant="caption"
+            color="error"
+          >
             {props.errorMessage}
           </Typography>
-        ) 
-        }
+        )}
 
         <ProgressButton
           className={classes.submitButton}

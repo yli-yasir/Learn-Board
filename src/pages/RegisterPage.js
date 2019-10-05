@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextField,Typography,IconButton} from '@material-ui/core';
+import {TextField,Typography,Button} from '@material-ui/core';
 import {Done} from '@material-ui/icons';
 import {emailPassClient} from "../stitch";
 import FormPage from './abstract/FormPage';
@@ -14,7 +14,7 @@ const [confirmPassword, setConfirmPassword] = React.useState('');
 const [isRegisteringUser,setIsRegisteringUser] = React.useState(false);
 const [isDone,setIsDone] = React.useState(false);
 const [errorMessage,setErrorMessage]=React.useState('');
-const [isSuccessSnackbarOpen,setIsSuccessSnackbarOpen]= React.useState('');
+const [isSuccessSnackbarOpen,setIsSuccessSnackbarOpen]= React.useState(false);
 let registerUser = async () => {
 
     //front side validation
@@ -36,6 +36,10 @@ let registerUser = async () => {
     console.log("successfully sent account confirmation email!");
     setIsRegisteringUser(false);
     setIsSuccessSnackbarOpen(true);
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setErrorMessage('');
   }
   catch(e){
     console.log(e);
@@ -116,16 +120,16 @@ type="password"
         open={isSuccessSnackbarOpen}
         onClose={() =>{}}
         action={          
-        <Link style={{color:"white"}} to="/search">
-          <IconButton
+          <Button
           key="done"
           aria-label="done"
           color="inherit"
+          variant="outlined"
+          onClick={()=>{setIsDone(true)}}
         >
-          <Done />
-        </IconButton>
-        </Link>}
-        message="Success! You should receive an email from 'no-reply+stitch@mongodb.com' soon!"
+          <Done />&nbsp;&nbsp;&nbsp;Back to main page
+        </Button>}
+        message="Success! You should receive an email from 'no-reply+stitch@mongodb.com' soon. Follow the email to verify your account!"
       />
 </FormPage>
 );
