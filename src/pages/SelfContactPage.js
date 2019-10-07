@@ -10,7 +10,9 @@ import LoadingPage from "./LoadingPage";
 import SimpleSnackbar from "../components/SimpleSnackbar";
 import { BSON } from "mongodb-stitch-core-sdk";
 
-const useStyles = makeStyles(theme => ({}));
+const useStyles = makeStyles(theme => ({
+
+}));
 
 function UserSettingsPage(props) {
   const classes = useStyles();

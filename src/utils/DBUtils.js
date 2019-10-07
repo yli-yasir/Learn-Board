@@ -5,11 +5,14 @@ import {getUserId} from '../stitch';
 
 // if term is provided then it will replace q 
 // if not then the value of q is the value from the params
+// options are the mongodb stitch query options, you can see their documenation for 
+// details
 export async function searchPosts(queryString,term,options,continueFrom) {
-  let { q, postType } = getSearchParams(
+  let { q, postType,by } = getSearchParams(
     queryString,
     appParams.q.PARAM_NAME,
-    appParams.postType.PARAM_NAME
+    appParams.postType.PARAM_NAME,
+    appParams.by.PARAM_NAME
   );
 
   //if a term is provided then it will override the value of q in the params
@@ -46,10 +49,15 @@ export async function searchPosts(queryString,term,options,continueFrom) {
     filter.postType = postType;
   }
 
+  if (by){
+    filter.authorStitchUserId=by
+  }
+
   if (continueFrom){
     filter._id={$lt:continueFrom}
   }
 
+  console.log('search filter:')
   console.log(filter)
   const queryResults = await db
     .collection("posts")

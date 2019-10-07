@@ -32,9 +32,9 @@ function SearchTabs(props) {
         {...tabProps}
       >
         {/* must correspond to the tabsIndex variable above*/ }
-        <Tab label="All" icon={<Language/>} component={Link} to={{pathname:"/search",search:getTabQueryString(appParams.postType.ALL)}} />
-        <Tab label="Offers" icon={<School/>} component={Link} to={{pathname:"/search",search:getTabQueryString(appParams.postType.OFFER)}} />
-        <Tab label="Requests" icon={<Create/>} component={Link} to={{pathname:"/search",search:getTabQueryString(appParams.postType.REQUEST)}}/>
+        <Tab label="All" icon={<Language/>} component={Link} to={getTabQueryString(appParams.postType.ALL)} />
+        <Tab label="Offers" icon={<School/>} component={Link} to={getTabQueryString(appParams.postType.OFFER)} />
+        <Tab label="Requests" icon={<Create/>} component={Link} to={getTabQueryString(appParams.postType.REQUEST)}/>
       </Tabs>
   );
 }

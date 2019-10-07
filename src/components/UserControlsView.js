@@ -9,7 +9,9 @@ import {
   InfoOutlined,
   HowToRegOutlined,
   TranslateOutlined,
-  FeedbackOutlined
+  FeedbackOutlined,
+  CheckBoxOutlined,
+  CheckBoxOutlineBlankOutlined
 } from "@material-ui/icons";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
@@ -21,11 +23,12 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { withRouter } from "react-router-dom";
+import { toggleMyPostsOnly, isMyPostsOnly as initIsMyPostsOnly } from "../utils/URLUtils";
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -34,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function UserBar(props) {
+function UserControlsView(props) {
   //user options menu anchor - null when its hidden
   const [userOptionsAnchorEl, setUserOptionsAnchorEl] = React.useState(null);
 
@@ -44,9 +47,11 @@ export default function UserBar(props) {
 
   const [isAnon, setIsAnon] = React.useState(isAnonStitch());
 
+  const [isMyPostsOnly,setIsMyPostsOnly] = React.useState(initIsMyPostsOnly(props.location.search));
+
   const classes = useStyles();
 
-  let logout = async () => {
+  const logout = async () => {
     try {
       await client.auth.logout();
       await client.auth.loginWithCredential(new AnonymousCredential());
@@ -110,38 +115,49 @@ export default function UserBar(props) {
           open={Boolean(userOptionsAnchorEl)}
           onClose={closeUserOptionsMenu}
         >
-          {isAnon ? ([
-              <Link key="register"className={classes.link} to="/register">
-                <MenuItem>
-                  <HowToRegOutlined />
-                  &nbsp;Register
+          {isAnon
+            ? [
+                <Link key="register" className={classes.link} to="/register">
+                  <MenuItem>
+                    <HowToRegOutlined />
+                    &nbsp;Register
+                  </MenuItem>
+                </Link>,
+                <Link key="login" className={classes.link} to="/login">
+                  <MenuItem>
+                    <VpnKeyOutlined />
+                    &nbsp;Login
+                  </MenuItem>
+                </Link>
+              ]
+            : [
+                <Link
+                  key="selfContact"
+                  className={classes.link}
+                  to="/self/contact"
+                >
+                  <MenuItem>
+                    <ContactPhoneOutlined />
+                    &nbsp;My Contact Info
+                  </MenuItem>
+                </Link>,
+
+                <Link
+                  key="myPosts"
+                  className={classes.link}
+                  to={toggleMyPostsOnly(props.location.search)}
+                  onClick={()=>setIsMyPostsOnly(!isMyPostsOnly)}
+                >
+                  <MenuItem>
+                   {isMyPostsOnly ?<CheckBoxOutlined/>: <CheckBoxOutlineBlankOutlined/>}
+                    &nbsp;Only My Posts
+                  </MenuItem>
+                </Link>,
+                <MenuItem key="logOut" button onClick={logout}>
+                  <LockOutlined />
+                  &nbsp;Logout
                 </MenuItem>
-              </Link>,
-              <Link key="login" className={classes.link} to="/login">
-                <MenuItem>
-                  <VpnKeyOutlined />
-                  &nbsp;Login
-                </MenuItem>
-              </Link>]
-          ) : (
-            [
-              <Link key="selfContact" className={classes.link} to="/self/contact">
-                <MenuItem>
-                  <ContactPhoneOutlined />
-                  &nbsp;My Contact Info
-                </MenuItem>
-              </Link>,
-  
-              <MenuItem key="myPosts">
-                <CollectionsBookmarkOutlined />
-                &nbsp;My Posts
-              </MenuItem>,
-              <MenuItem key="logOut" button onClick={logout}>
-                <LockOutlined />
-                &nbsp;Logout
-              </MenuItem>
-            ]
-          )}
+              ]}
         </Menu>
 
         {!isAnon && (
@@ -213,7 +229,6 @@ export default function UserBar(props) {
         <Drawer anchor="top" open={isDrawerOpen} onClose={closeDrawer}>
           <div role="presentation" onClick={closeDrawer}>
             <List>
-
               {!isAnon && (
                 <Link className={classes.link} to="/posts/new">
                   <ListItem button key="newPost">
@@ -255,11 +270,13 @@ export default function UserBar(props) {
                     </ListItem>
                   </Link>
 
-                  <ListItem button key="myPosts">
+                  <Link key="myPosts" className={classes.link} to={toggleMyPostsOnly(props.location.search)}>
+                  <ListItem >
                     <CollectionsBookmarkOutlined />
                     &nbsp;&nbsp;&nbsp;
                     <ListItemText primary="My Posts" />
                   </ListItem>
+                  </Link>
 
                   <ListItem button onClick={logout} key="logout">
                     <LockOutlined />
@@ -269,25 +286,25 @@ export default function UserBar(props) {
                 </React.Fragment>
               )}
 
-        <ListSubheader>App Language</ListSubheader>
+              <ListSubheader>App Language</ListSubheader>
 
-        <ListItem button key="englishLanguage">
-                    <TranslateOutlined />
-                    &nbsp;&nbsp;&nbsp;
-                    <ListItemText primary="English" />
-                  </ListItem>
+              <ListItem button key="englishLanguage">
+                <TranslateOutlined />
+                &nbsp;&nbsp;&nbsp;
+                <ListItemText primary="English" />
+              </ListItem>
 
-                  <ListItem button key="turkishLanguage">
-                    <TranslateOutlined />
-                    &nbsp;&nbsp;&nbsp;
-                    <ListItemText primary="Türkçe" />
-                  </ListItem>
+              <ListItem button key="turkishLanguage">
+                <TranslateOutlined />
+                &nbsp;&nbsp;&nbsp;
+                <ListItemText primary="Türkçe" />
+              </ListItem>
 
-                  <ListItem button key="arabicLanguage">
-                    <TranslateOutlined />
-                    &nbsp;&nbsp;&nbsp;
-                    <ListItemText primary="العربية" />
-                  </ListItem>
+              <ListItem button key="arabicLanguage">
+                <TranslateOutlined />
+                &nbsp;&nbsp;&nbsp;
+                <ListItemText primary="العربية" />
+              </ListItem>
             </List>
           </div>
         </Drawer>
@@ -295,3 +312,5 @@ export default function UserBar(props) {
     );
   }
 }
+
+export default withRouter(UserControlsView);
