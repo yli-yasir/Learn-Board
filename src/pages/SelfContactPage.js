@@ -19,8 +19,7 @@ function UserSettingsPage(props) {
   const [contactInfo, setContactInfo] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(true);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false);
-  const [feedbackMessage, setFeedbackMessage] = React.useState("");
+  const [isDone, setIsDone] = React.useState(false);
 
   React.useEffect(() => {
     async function load() {
@@ -31,12 +30,12 @@ function UserSettingsPage(props) {
         if (currentDoc) {
           setName(currentDoc.name);
           setContactInfo(currentDoc.contact);
+          setIsLoading(false);
         }
       } catch (e) {
         console.log(e);
-      } finally {
         setIsLoading(false);
-      }
+      } 
     }
 
     load();
@@ -50,9 +49,6 @@ function UserSettingsPage(props) {
     setContactInfo(event.target.value);
   };
 
-  const handleSnackbarClose = () => {
-    setIsSnackbarOpen(false);
-  };
 
   const submit = async () => {
     setIsSubmitting(true);
@@ -70,22 +66,26 @@ function UserSettingsPage(props) {
         { upsert: true }
       );
       console.log("submitted");
-      setFeedbackMessage("Settings updated!");
-      setIsSnackbarOpen(true);
+      setIsDone(true);
     } catch (error) {
-      setFeedbackMessage("Something went wrong!");
-      setIsSnackbarOpen(true);
       console.log(error);
     }
     setIsSubmitting(false);
   };
 
-  console.log(isLoading);
   if (isLoading) {
     return <LoadingPage />;
   }
+
   return (
-    <FormPage>
+    <FormPage
+    formTitle="My Contact Info"
+    submitButtonLabel="Save"
+    submitButtonTip="Click here to save your contact info"
+    isSubmitting={isSubmitting}
+    onSubmit={submit}
+    isDone={isDone}
+    redirectWhenDone="/search">
       <TextField
         id="name"
         label="Name"
@@ -110,18 +110,6 @@ function UserSettingsPage(props) {
         label="I agree to have above information shared publicly in my posts."
       />
 
-      <ProgressButton
-        variant="contained"
-        color="primary"
-        label="save"
-        isWorking={isSubmitting}
-        onClick={submit}
-      />
-      <SimpleSnackbar
-        open={isSnackbarOpen}
-        onClose={handleSnackbarClose}
-        message={feedbackMessage}
-      />
     </FormPage>
   );
 }

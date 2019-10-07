@@ -1,36 +1,43 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
-import ProgressButton from "../components/ProgressButton";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Box from "@material-ui/core/Box";
-import Chip from "@material-ui/core/Chip";
+import { Link } from "react-router-dom";
+
+import db, { getUserEmail } from "../stitch";
+import { BSON } from "mongodb-stitch-core-sdk";
+
+import FormPage from "../pages/abstract/FormPage";
+import LoadingPage from "./LoadingPage";
+
+import { makeStyles } from "@material-ui/core/styles";
+
+import {
+  TextField,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormLabel,
+  Select,
+  InputLabel,
+  MenuItem,
+  Box,
+  Chip,
+  FormHelperText,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  Button,
+  Tooltip,
+  Typography
+} from "@material-ui/core";
+
 import { Chat } from "@material-ui/icons";
+import postIcons from "../values/PostIcons";
 import {
   languages as languagesList,
   cities as citiesList
 } from "../values/strings/global";
-import FormPage from "../pages/abstract/FormPage";
-import { Redirect } from "react-router-dom";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import { makeStyles } from "@material-ui/core/styles";
-import db from "../stitch";
-import { getUserEmail } from "../stitch";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
-import { BSON } from "mongodb-stitch-core-sdk";
-import LoadingPage from "./LoadingPage";
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -42,79 +49,109 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     textDecoration: "none"
+  },
+  selectionContainer: {
+    marginBottom: theme.spacing(1),
+    borderStyle: "solid",
+    borderColor: theme.palette.grey[500],
+    borderRadius: theme.spacing(1),
+    borderWidth: "1px",
+    minHeight: "100px",
+    padding: theme.spacing(1)
+  },
+  postIconContainer: {
+    margin: theme.spacing(0.5)
+  },
+  selectedIcon: {
+    borderColor: theme.palette.primary.light
   }
 }));
 
-function NewPostPage({match}) {
-
+function NewPostPage({ match }) {
   //if fetching data (in case of edit)
-  const [isLoading,setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(true);
+
   //if the page is working on inserting your data to the db
   const [isWorking, setIsWorking] = React.useState(false);
+
   //If it's done submitting
   const [isDone, setIsDone] = React.useState(false);
+
   const [postType, setPostType] = React.useState("offer");
   const [topic, setTopic] = React.useState("");
+
   const [selectedLanguage, setSelectedLanguage] = React.useState("English");
   const [addedLanguages, setAddedLanguages] = React.useState(["English"]);
+
   const [shortDescription, setShortDescription] = React.useState("");
   const [description, setDescription] = React.useState("");
+
   const [city, setCity] = React.useState("Lefkoşa");
+
+  const [selectedIconName, setSelectedIconName] = React.useState("ydu");
+
   const [
     missingUserInfoDialogIsOpen,
     setMissingUserInfoDialogIsOpen
   ] = React.useState(false);
-  const topicError = topic.length > 60;
-  const shortDescriptionError = shortDescription.length > 150;
-  const addedLanguagesError = addedLanguages.length === 0;
 
-  const hasError = topicError || shortDescriptionError || addedLanguagesError;
+  const [errors, setErrors] = React.useState([]);
 
-  const pageId = match.params.id
+  const hasError = errors.length > 0;
 
-  React.useEffect(()=>{
-    //if there is an id define fetch Data and call it 
-    if (pageId){
-      async function fetchData(){
-        try{
-        const doc = await db.collection('posts').findOne({_id: new BSON.ObjectID(pageId)});
-        if (doc){
-          console.log('fetch')
-          setPostType(doc.postType);
-          setTopic(doc.topic);
-          setShortDescription(doc.shortDescription);
-          setDescription(doc.description);
-          setAddedLanguages(doc.languages);
+  const pageId = match.params.id;
+
+  React.useEffect(() => {
+    //if there is an id (it means its post is being edited) fetch the post data
+    if (pageId) {
+      async function fetchData() {
+        try {
+          //try to find the post doc
+          console.log("attempting post document fetch");
+          const doc = await db
+            .collection("posts")
+            .findOne({ _id: new BSON.ObjectID(pageId) });
+          //if a doc for the post was found,populate the form with its info
+
+          if (doc) {
+            console.log("document found!");
+            setPostType(doc.postType);
+            setTopic(doc.topic);
+            setShortDescription(doc.shortDescription);
+            setDescription(doc.description);
+            setAddedLanguages(doc.languages);
+          }
+        } catch (e) {
+          console.log(e);
+          console.log("something went wrong while fetching post data");
+        } finally {
+          setIsLoading(false);
         }
       }
-      catch(e){
-        console.log(e)
-      }
-      finally{
-        setIsLoading(false);
-      }
-    }
-    fetchData();
-    }
-    else{
+      fetchData();
+    } else {
       setIsLoading(false);
     }
-  },[pageId])
+  }, [pageId]);
 
   const post = async () => {
-    //check if there is any error
+    //todo
+    //check if there is any front end error
     if (hasError) {
       //handle front end error here
-      console.log("front end form error");
+      console.log(errors);
+      console.log("front end form error, look above");
       return;
     }
     try {
       setIsWorking(true);
       //check if the user has a document in the users collection
-      const userDoc = await db.collection("users").findOne({ email: getUserEmail() });
+      const userDoc = await db
+        .collection("users")
+        .findOne({ email: getUserEmail() });
       //If the user doc is null
       if (!userDoc) {
-        console.log("no user doc found");
+        console.log("no user document found");
         openMissingUserInfoDialog();
       } else {
         const document = {
@@ -126,25 +163,26 @@ function NewPostPage({match}) {
           city,
           authorStitchUserId: userDoc.stitchUserId,
           authorName: userDoc.name,
-          authorEmail: userDoc.email
+          authorEmail: userDoc.email,
+          icon: selectedIconName
         };
 
+        //this is the filter which will be used for inserting
         const query = { _id: new BSON.ObjectID(match.params.id) };
 
         //If this is a new document
-        if (!pageId){
-          document.likes=[]
+        if (!pageId) {
+          document.likes = [];
         }
-        //if so then continue to insert
-        await db.collection("posts").updateOne(
-          query,
-          { $set: document },
-          { upsert: true }
-        );
+
+        //inser the document
+        await db
+          .collection("posts")
+          .updateOne(query, { $set: document }, { upsert: true });
+
+        setIsWorking(false);
         setIsDone(true);
       }
-
-      setIsWorking(false);
     } catch (error) {
       console.log(error);
       setIsWorking(false);
@@ -154,6 +192,7 @@ function NewPostPage({match}) {
   const handlePostTypeChange = event => {
     setPostType(event.target.value);
   };
+
   const handleTopicChange = event => {
     setTopic(event.target.value);
   };
@@ -172,9 +211,11 @@ function NewPostPage({match}) {
 
   const handleSelectedLanguageChange = event => {
     const targetLanguage = event.target.value;
+
     if (!addedLanguages.includes(targetLanguage)) {
       setAddedLanguages([...addedLanguages, targetLanguage]);
     }
+
     setSelectedLanguage(event.target.value);
   };
 
@@ -193,17 +234,23 @@ function NewPostPage({match}) {
   };
 
   const classes = useStyles();
+  console.log(classes);
 
-  if (isDone) {
-    return <Redirect to="/search" />;
+  if (isLoading) {
+    return <LoadingPage />;
   }
 
-
-  if (isLoading){
-    return <LoadingPage/>
-  }
   return (
-    <FormPage>
+    <FormPage
+      formTitle="New Post"
+      submitButtonLabel="Post"
+      submitButtonTip="Click here to submit your post"
+      isSubmitting={isWorking}
+      onSubmit={post}
+      isDone={isDone}
+      redirectWhenDone="/search"
+    >
+      {/*post type */}
       <FormControl component="fieldset" className={classes.formControl}>
         <FormLabel component="legend">Type:</FormLabel>
         <RadioGroup
@@ -221,7 +268,9 @@ function NewPostPage({match}) {
           />
         </RadioGroup>
       </FormControl>
+      {/*end of post type*/}
 
+      {/*topic */}
       <TextField
         id="topic"
         label="Topic"
@@ -229,10 +278,11 @@ function NewPostPage({match}) {
         value={topic}
         onChange={handleTopicChange}
         margin="normal"
-        helperText="A title for your post. (Max 60 characters)"
-        error={topicError}
+        helperText="A title for your post."
       />
+      {/*end of topic */}
 
+      {/*short description */}
       <TextField
         id="shortDescription"
         label="Short Description"
@@ -241,10 +291,11 @@ function NewPostPage({match}) {
         onChange={handleShortDescriptionChange}
         margin="normal"
         multiline
-        helperText="A brief description. (Max 150 characters)"
-        error={shortDescriptionError}
+        helperText="A brief description."
       />
+      {/*end of short description*/}
 
+      {/*description */}
       <TextField
         id="description"
         label="Description"
@@ -253,9 +304,11 @@ function NewPostPage({match}) {
         onChange={handleDescriptionChange}
         margin="normal"
         multiline={true}
-        helperText="Write as much as you want."
+        helperText="A more indepth description."
       />
+      {/*end of description */}
 
+      {/*city */}
       <FormControl className={classes.formControl}>
         <InputLabel htmlFor="cities">City</InputLabel>
         <Select
@@ -273,7 +326,9 @@ function NewPostPage({match}) {
         </Select>
         <FormHelperText>Where will the learning happen?</FormHelperText>
       </FormControl>
+      {/*end of city */}
 
+      {/*languages*/}
       <FormControl className={classes.formControl}>
         <InputLabel htmlFor="languages">Add Language</InputLabel>
         <Select
@@ -282,7 +337,6 @@ function NewPostPage({match}) {
           inputProps={{
             id: "languages"
           }}
-          error={addedLanguagesError}
         >
           {languagesList.map(language => (
             <MenuItem key={language} value={language}>
@@ -293,7 +347,7 @@ function NewPostPage({match}) {
         <FormHelperText>Which languages can be used?</FormHelperText>
       </FormControl>
 
-      <Box mb={1} border={1} borderRadius={16} minHeight={100} padding={1}>
+      <Box className={classes.selectionContainer}>
         {addedLanguages.map(language => (
           <Chip
             key={language}
@@ -304,14 +358,37 @@ function NewPostPage({match}) {
           />
         ))}
       </Box>
+      {/*end of languages */}
 
-      <ProgressButton
-        variant="contained"
-        color="primary"
-        label="Submit"
-        isWorking={isWorking}
-        onClick={post}
-      />
+      {/*select an icon for the post */}
+      <Typography variant="caption" color="textSecondary" >Select icon</Typography>
+      <Box className={classes.selectionContainer}>
+        {Object.keys(postIcons).map(key => {
+          const iconDoc= postIcons[key];
+          const selectedIconClass = iconDoc.name=== selectedIconName? classes.selectedIcon : ''
+          return (
+            <Tooltip title={iconDoc.alt}>
+            <Button
+              variant="outlined"
+              key={iconDoc.name}
+              className={classes.postIconContainer + ' ' + selectedIconClass}
+              onClick={() => {
+                setSelectedIconName(iconDoc.name)
+              }}
+            >
+              <img
+                className={classes.postIcon}
+                alt={iconDoc.name}
+                src={iconDoc.icon}
+                height="50px"
+                width="50px"
+              />
+            </Button>
+            </Tooltip>
+          );
+        })}
+      </Box>
+      {/*end of post icon */}
 
       {/* this dialog is shown if the user hasn't filled his contact info */}
       <Dialog
@@ -339,6 +416,7 @@ function NewPostPage({match}) {
           </Link>
         </DialogActions>
       </Dialog>
+      {/*end of missing user info dialog */}
     </FormPage>
   );
 }

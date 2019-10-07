@@ -11,7 +11,7 @@ import ConfirmEmailPage from "./pages/ConfirmEmailPage";
 import LoginPage from "./pages/LoginPage";
 import NewPostPage from "./pages/NewPostPage";
 import PostDetailsPage from "./pages/PostDetailsPage";
-import AccountSettingsPage from "./pages/AccountSettingsPage";
+import SelfContactPage from "./pages/SelfContactPage";
 import ReportPostPage from './pages/ReportPostPage';
 import ResendConfirmationEmailPage from './pages/ResendConfirmationEmailPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -51,7 +51,7 @@ function App() {
       <Route path="/posts/:id" exact component={PostDetailsPage} />
       <Route path="/posts/:id/edit" exact component={NewPostPage} />
       <Route path="/posts/:id/report" exact component={ReportPostPage} />
-      <Route path="/account/settings" exact component={AccountSettingsPage} />
+      <Route path="/self/contact" exact component={SelfContactPage} />
       <Route path="/resend-confirmation-email" exact component={ResendConfirmationEmailPage}/>
       <Route path="/forgot-password" exact component={ForgotPasswordPage}/>
       <Route path="/reset-password" exact component={resetPasswordPage}/>

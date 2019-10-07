@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import logo from "../../assets/logo.svg";
+import icon from "../../assets/brand/icon.svg";
 import { Typography, Paper, Box } from "@material-ui/core";
 import ProgressButton from "../../components/ProgressButton";
 import { Redirect } from "react-router";
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   submitButton: {
-    marginBottom: theme.spacing(0.5)
+    marginTop: theme.spacing(1)
   },
   icon: {
     margin: "8px auto 16px",
@@ -34,7 +34,7 @@ function FormPage(props) {
 
   return (
     <Box pt={1} px={1}>
-      <img src={logo} className={classes.icon} height="75px" />
+      <img src={icon} className={classes.icon} height="75px" />
 
       <Paper className={classes.paper}>
         <Typography align="center" className={classes.formTitle} variant="h4">

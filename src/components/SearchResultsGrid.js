@@ -31,6 +31,7 @@ function ResultsGrid(props){
         authorEmail={item.authorEmail}
         authorName={item.authorName}
         postType={item.postType}
+        iconName={item.icon}
         className={classes.resultCard} 
         postControls={
         <PostControls 

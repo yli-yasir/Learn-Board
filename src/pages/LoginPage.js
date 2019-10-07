@@ -53,7 +53,8 @@ function LoginPage() {
     Don't have an account? <Link to="/register">Register here!</Link>
   </Typography>
 
-  </React.Fragment>}
+  </React.Fragment>
+  }
     errorMessage={errorMessage}
     isDone={isDone}
     redirectWhenDone="/search"

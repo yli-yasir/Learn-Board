@@ -4,9 +4,9 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import {School, Edit, Chat, Person} from "@material-ui/icons";
-import test from '../assets/test.svg';
 import {Link} from 'react-router-dom';
 import { Chip } from "@material-ui/core";
+import postIcons from '../values/PostIcons';
 
 const useStyles = makeStyles(theme=>({
   topic:{
@@ -20,9 +20,10 @@ const useStyles = makeStyles(theme=>({
     textDecoration:'none'
   },
   media: {
-    width:"100px",
-    height:"100px",
-    float:'left'
+    width:"75px",
+    height:"75px",
+    float:'left',
+    margin:theme.spacing(1)
   },
 
   chip:{
@@ -35,13 +36,16 @@ function SearchResultCard(props) {
 
   const classes = useStyles();
 
+  const iconDocument = postIcons[props.iconName]
+
+  const postIconProps= iconDocument? {src:iconDocument.icon,alt:iconDocument.alt}:{}
+
   return (
     <Paper className={props.className}>
 
        <img
       className={classes.media}
-      src={test}
-      alt="a cat"
+      {...postIconProps}
       />
 
       <Box p={1}>

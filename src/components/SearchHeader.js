@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import SearchBar from "./SearchBar";
 import UserControlsView from "./UserControlsView";
 import SearchTabs from "./SearchTabs";
-import logo from "../assets/logo.svg";
+import logo from "../assets/brand/logo.svg";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { withRouter } from "react-router";
 import { useTheme } from "@material-ui/core/styles";

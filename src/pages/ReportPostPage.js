@@ -15,6 +15,7 @@ function ReportPostPage({ match }) {
   const [message, setMessage] = React.useState("");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isPageLoading, setIsPageLoading] = React.useState(true);
+  
 
   const postId = match.params.id;
   React.useEffect(() => {
