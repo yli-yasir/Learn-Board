@@ -64,6 +64,5 @@ export function toggleMyPostsOnly(queryString){
 
 export function isMyPostsOnly(queryString){
     const {by} = getSearchParams(queryString,params.by.PARAM_NAME);
-    console.log(by)
     return by === getUserId();
 }

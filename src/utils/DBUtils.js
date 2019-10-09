@@ -87,3 +87,5 @@ export async function deletePost(postId){
     return deleteResult.deletedCount ===1;
 
 }
+
+export default {name: 'yasir'}

@@ -29,6 +29,8 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withRouter } from "react-router-dom";
 import { toggleMyPostsOnly, isMyPostsOnly as initIsMyPostsOnly } from "../utils/URLUtils";
+import LanguageContext from '../context/LanguageContext';
+import appStrings from '../values/strings';
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -80,7 +82,8 @@ function UserControlsView(props) {
     };
 
     return (
-      <Box {...props.desktopContainerProps}>
+      <LanguageContext.Consumer>
+        { languageContext=>(<Box {...props.desktopContainerProps}>
         <Link to="/feedback">
           <Tooltip title="Give Feedback">
             <IconButton>
@@ -126,7 +129,7 @@ function UserControlsView(props) {
                 <Link key="login" className={classes.link} to="/login">
                   <MenuItem>
                     <VpnKeyOutlined />
-                    &nbsp;Login
+                    &nbsp;{appStrings[languageContext.language].login}
                   </MenuItem>
                 </Link>
               ]
@@ -196,12 +199,14 @@ function UserControlsView(props) {
             <TranslateOutlined />
             &nbsp;Türkçe
           </MenuItem>
-          <MenuItem>
+          <MenuItem onClick={()=>{languageContext.setLanguage('ar')}}>
             <TranslateOutlined />
             &nbsp;العربية
           </MenuItem>
         </Menu>
       </Box>
+        )}
+      </LanguageContext.Consumer>
     );
   }
 

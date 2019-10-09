@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { initialLogin } from "./stitch";
+import LanguageContext from './context/LanguageContext';
+
 //pages
 import LoadingPage from "./pages/LoadingPage";
 import StartPage from "./pages/StartPage";
@@ -16,8 +18,16 @@ import ReportPostPage from './pages/ReportPostPage';
 import ResendConfirmationEmailPage from './pages/ResendConfirmationEmailPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import resetPasswordPage from './pages/ResetPasswordPage';
+
 function App() {
   const [isLoading, setIsloading] = React.useState(true);
+
+  const [languageContext,setLanguageContext] = React.useState({
+    language:'en',
+    setLanguage: (lang)=> {
+      setLanguageContext({...languageContext,language:lang})
+      }
+  });
 
   React.useEffect(() => {
     async function init() {
@@ -40,6 +50,7 @@ function App() {
   return (
     <React.Fragment>
     <CssBaseline />
+    <LanguageContext.Provider value={languageContext}>
     <Router>
       <Switch>
       <Route path="/" exact component={StartPage} />
@@ -57,6 +68,7 @@ function App() {
       <Route path="/reset-password" exact component={resetPasswordPage}/>
       </Switch>
     </Router>
+    </LanguageContext.Provider>
     </React.Fragment>
   );
 }

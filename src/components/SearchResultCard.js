@@ -45,6 +45,7 @@ function SearchResultCard(props) {
 
        <img
       className={classes.media}
+      alt='post icon'
       {...postIconProps}
       />
 

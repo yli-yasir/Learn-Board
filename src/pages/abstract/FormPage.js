@@ -34,7 +34,7 @@ function FormPage(props) {
 
   return (
     <Box pt={1} px={1}>
-      <img src={icon} className={classes.icon} height="75px" />
+      <img src={icon} className={classes.icon} height="75px" alt="logo" />
 
       <Paper className={classes.paper}>
         <Typography align="center" className={classes.formTitle} variant="h4">
