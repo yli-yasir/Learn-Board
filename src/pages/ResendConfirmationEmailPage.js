@@ -6,7 +6,9 @@ import { Link } from "react-router-dom";
 import FormPage from "./abstract/FormPage";
 import SimpleSnackbar from "../components/SimpleSnackbar";
 import { Button } from "@material-ui/core";
-import {Done} from "@material-ui/icons"
+import { Done } from "@material-ui/icons";
+import appStrings from "../values/strings";
+import LanguageContext from "../context/LanguageContext";
 
 function ResendConfirmationEmailPage() {
   const [email, setEmail] = React.useState("");
@@ -23,14 +25,13 @@ function ResendConfirmationEmailPage() {
       console.log("attempting to resend confirmation email");
       await emailPassClient.resendConfirmationEmail(email);
       console.log("successfully sent confirmation email");
-      setEmail('');
-      setErrorMessage('');
+      setEmail("");
+      setErrorMessage("");
       setIsWorking(false);
       setIsSuccessSnackbarOpen(true);
     } catch (error) {
       setIsWorking(false);
       setErrorMessage(error.message);
-
     }
   };
 
@@ -39,47 +40,60 @@ function ResendConfirmationEmailPage() {
   };
 
   return (
-    <FormPage
-      formTitle="Resend Confirmation Email"
-      submitButtonLabel="Resend"
-      submitButtonTip="Click here to get another confirmation email"
-      isSubmitting={isWorking}
-      onSubmit={resendConfirmation}
-      belowSubmitButton={
-        <Typography variant="caption">
-          Please <Link to="/feedback">Contact us</Link> if you are still having
-          issues
-        </Typography>
-      }
-      errorMessage={errorMessage}
-      isDone={isDone}
-      redirectWhenDone="/search"
-    >
-      <TextField
-        id="email"
-        label="Email"
-        value={email}
-        onChange={handleEmailChange}
-        variant="outlined"
-        margin="normal"
-      />
+    <LanguageContext.Consumer>
+      {langContext => {
+        const strings = appStrings[langContext.language];
 
-<SimpleSnackbar
-        open={isSuccessSnackbarOpen}
-        onClose={() =>{}}
-        action={          
-          <Button
-          key="done"
-          aria-label="done"
-          color="inherit"
-          variant="outlined"
-          onClick={()=>{setIsDone(true)}}
-        >
-          <Done />&nbsp;&nbsp;&nbsp;Back to main page
-        </Button>}
-        message="Success! You should receive an email from 'no-reply+stitch@mongodb.com' soon. Follow the email to verify your account!"
-      />
-    </FormPage>
+        return (
+          <FormPage
+            formTitle={strings.resendConfirmationEmail}
+            submitButtonLabel={strings.resend}
+            submitButtonTip={strings.resendConfirmationEmailTooltip}
+            isSubmitting={isWorking}
+            onSubmit={resendConfirmation}
+            belowSubmitButton={
+              <Typography variant="caption">
+                {strings.please}
+                <Link to="/feedback">Contact us</Link>
+                {" " + strings.ifStillIssues}
+              </Typography>
+            }
+            errorMessage={errorMessage}
+            isDone={isDone}
+            redirectWhenDone="/search"
+          >
+            <TextField
+              id='email'
+              label={strings.email}
+              value={email}
+              onChange={handleEmailChange}
+              variant="outlined"
+              margin="normal"
+            />
+
+            <SimpleSnackbar
+              open={isSuccessSnackbarOpen}
+              onClose={() => {}}
+              action={
+                <Button
+                  key="done"
+                  aria-label="done"
+                  color="inherit"
+                  variant="outlined"
+                  onClick={() => {
+                    setIsDone(true);
+                  }}
+                >
+                  <Done />
+                  &nbsp;&nbsp;&nbsp;{strings.backToMainPage}
+                </Button>
+              }
+              message={strings.resendConfirmationEmailSuccess}
+            />
+          </FormPage>
+        );
+      }}
+    </LanguageContext.Consumer>
   );
 }
 

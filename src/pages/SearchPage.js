@@ -5,6 +5,8 @@ import Box from "@material-ui/core/Box";
 import { searchPosts } from "../utils/DBUtils";
 import { Waypoint } from "react-waypoint";
 import { Typography } from "@material-ui/core";
+import LanguageContext from "../context/LanguageContext";
+import appStrings from '../values/strings';
 
 function SearchPage({ location }) {
   //location.search is the query string.
@@ -149,7 +151,8 @@ function SearchPage({ location }) {
   const dataset = useBlankResults ? [] : results;
 
   return (
-    <div>
+    <LanguageContext.Consumer>
+      { langContext=>(<div>
       <Header />
       {/*Add some padding top so the contents can be pushed below the the header */}
       <Box pt={19} pb={2}>
@@ -172,15 +175,18 @@ function SearchPage({ location }) {
       {hasError &&
         (<Typography align="center">
         <i>
-          Something went wrong while searching, check your network connection.<br/>
-          If the error persists then please contact us.
+          { appStrings[langContext.language].somethingWentWrong}
+          <br/>
+          {' ' +  appStrings[langContext.language].ifTheErrorPersists}
         </i>
       </Typography>)
     }
       </Box>
 
 
-    </div>
+    </div>)
+      }
+    </LanguageContext.Consumer>
   );
 }
 

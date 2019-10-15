@@ -9,12 +9,12 @@ import db, { getUserEmail, getUserId } from "../stitch";
 import LoadingPage from "./LoadingPage";
 import SimpleSnackbar from "../components/SimpleSnackbar";
 import { BSON } from "mongodb-stitch-core-sdk";
+import LanguageContext from "../context/LanguageContext";
+import appStrings from "../values/strings";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({}));
 
-}));
-
-function UserSettingsPage(props) {
+function SelfContactPage(props) {
   const classes = useStyles();
 
   const [name, setName] = React.useState("");
@@ -23,6 +23,7 @@ function UserSettingsPage(props) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isDone, setIsDone] = React.useState(false);
 
+  //attempt to pre-populate with user info
   React.useEffect(() => {
     async function load() {
       try {
@@ -37,7 +38,7 @@ function UserSettingsPage(props) {
       } catch (e) {
         console.log(e);
         setIsLoading(false);
-      } 
+      }
     }
 
     load();
@@ -51,7 +52,6 @@ function UserSettingsPage(props) {
     setContactInfo(event.target.value);
   };
 
-
   const submit = async () => {
     setIsSubmitting(true);
     try {
@@ -62,7 +62,7 @@ function UserSettingsPage(props) {
             stitchUserId: getUserId(),
             name: name,
             contact: contactInfo,
-            bio: "",
+            bio: ""
           }
         },
         { upsert: true }
@@ -80,40 +80,47 @@ function UserSettingsPage(props) {
   }
 
   return (
-    <FormPage
-    formTitle="My Contact Info"
-    submitButtonLabel="Save"
-    submitButtonTip="Click here to save your contact info"
-    isSubmitting={isSubmitting}
-    onSubmit={submit}
-    isDone={isDone}
-    redirectWhenDone="/search">
-      <TextField
-        id="name"
-        label="Name"
-        value={name}
-        onChange={handleNameChange}
-        variant="outlined"
-        margin="normal"
-      />
+    <LanguageContext.Consumer>
+      {langContext => {
+        const strings = appStrings[langContext.language];
+      return (
+      <FormPage
+          formTitle={strings.myContactInfo}
+          submitButtonLabel={strings.save}
+          submitButtonTip={strings.saveButtonTooltip}
+          isSubmitting={isSubmitting}
+          onSubmit={submit}
+          isDone={isDone}
+          redirectWhenDone="/search"
+        >
+          <TextField
+            id="name"
+            label={strings.name}
+            value={name}
+            onChange={handleNameChange}
+            variant="outlined"
+            margin="normal"
+          />
 
-      <TextField
-        id="contactInfo"
-        label="Contact Information"
-        multiline
-        value={contactInfo}
-        onChange={handleContactInfoChange}
-        variant="outlined"
-        margin="normal"
-      />
+          <TextField
+            id="contactInfo"
+            label={strings.contactInfo}
+            multiline
+            value={contactInfo}
+            onChange={handleContactInfoChange}
+            variant="outlined"
+            margin="normal"
+          />
 
-      <FormControlLabel
-        control={<Checkbox checked={true} />}
-        label="I agree to have above information shared publicly in my posts."
-      />
-
-    </FormPage>
+          <FormControlLabel
+            control={<Checkbox checked={true} />}
+            label={strings.iAgreeToShareMyInfo}
+          />
+        </FormPage>)
+        }
+      }
+    </LanguageContext.Consumer>
   );
 }
 
-export default UserSettingsPage;
+export default SelfContactPage;

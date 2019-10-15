@@ -5,7 +5,8 @@ import {withRouter} from 'react-router';
 import { Link } from "react-router-dom";
 import {getSearchParams,buildQueryString,params as appParams} from '../utils/URLUtils';
 import {School,Create,Language} from '@material-ui/icons';
-
+import appStrings from '../values/strings';
+import LanguageContext from '../context/LanguageContext';
 
 function SearchTabs(props) {
 
@@ -25,17 +26,22 @@ function SearchTabs(props) {
   }
 
   return (
-      <Tabs
+    <LanguageContext.Consumer>
+      {languageContext=>(<Tabs
         value={chosenTabIndex}
         indicatorColor="primary"
         textColor="primary"
         {...tabProps}
       >
         {/* must correspond to the tabsIndex variable above*/ }
-        <Tab label="All" icon={<Language/>} component={Link} to={getTabQueryString(appParams.postType.ALL)} />
-        <Tab label="Offers" icon={<School/>} component={Link} to={getTabQueryString(appParams.postType.OFFER)} />
-        <Tab label="Requests" icon={<Create/>} component={Link} to={getTabQueryString(appParams.postType.REQUEST)}/>
-      </Tabs>
+        <Tab label={appStrings[languageContext.language].all} icon={<Language/>} component={Link} to={getTabQueryString(appParams.postType.ALL)} />
+        <Tab label={appStrings[languageContext.language].offers} icon={<School/>} component={Link} to={getTabQueryString(appParams.postType.OFFER)} />
+        <Tab label={appStrings[languageContext.language].requests} icon={<Create/>} component={Link} to={getTabQueryString(appParams.postType.REQUEST)}/>
+      </Tabs>)
+    }      
+</LanguageContext.Consumer>
+      
+      
   );
 }
 

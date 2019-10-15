@@ -7,6 +7,8 @@ import FormPage from "./abstract/FormPage";
 import SimpleSnackbar from "../components/SimpleSnackbar";
 import { Button } from "@material-ui/core";
 import { Done } from "@material-ui/icons";
+import LanguageContext from "../context/LanguageContext";
+import appStrings from "../values/strings";
 
 function ResetPasswordPage({ location }) {
   const [newPassword, setNewPassword] = React.useState("");
@@ -24,7 +26,7 @@ function ResetPasswordPage({ location }) {
       const tokenId = params.get("tokenId");
       setIsWorking(true);
       console.log("attempting to reset password");
-      await emailPassClient.resetPassword(token,tokenId,newPassword);
+      await emailPassClient.resetPassword(token, tokenId, newPassword);
       console.log("successfully reset password");
       setNewPassword("");
       setErrorMessage("");
@@ -41,52 +43,60 @@ function ResetPasswordPage({ location }) {
   };
 
   return (
-    <FormPage
-      formTitle="Reset Password"
-      submitButtonLabel="Reset Password"
-      submitButtonTip="Click here to reset your password"
-      isSubmitting={isWorking}
-      onSubmit={resetPassword}
-      belowSubmitButton={
-        <Typography variant="caption">
-          Please <Link to="/feedback">Contact us</Link> if you are still having
-          issues
-        </Typography>
-      }
-      errorMessage={errorMessage}
-      isDone={isDone}
-      redirectWhenDone="/search"
-    >
-      <TextField
-        id="newPassowrd"
-        label="New Password"
-        value={newPassword}
-        onChange={handleNewPasswordChange}
-        variant="outlined"
-        margin="normal"
-        type="password"
-      />
-
-      <SimpleSnackbar
-        open={isSuccessSnackbarOpen}
-        onClose={() => {}}
-        action={
-          <Button
-            key="done"
-            aria-label="done"
-            color="inherit"
-            variant="outlined"
-            onClick={() => {
-              setIsDone(true);
-            }}
+    <LanguageContext.Consumer>
+      {langContext => {
+        const strings = appStrings[langContext.language];
+        return (
+          <FormPage
+            formTitle={strings.resetPassword}
+            submitButtonLabel={strings.resetPassword}
+            submitButtonTip={strings.resetPasswordTooltip}
+            isSubmitting={isWorking}
+            onSubmit={resetPassword}
+            belowSubmitButton={
+              <Typography variant="caption">
+                {strings.please}
+                <Link to="/feedback">{strings.contactUs}</Link>
+                {" " + strings.ifStillIssues}
+              </Typography>
+            }
+            errorMessage={errorMessage}
+            isDone={isDone}
+            redirectWhenDone="/search"
           >
-            <Done />
-            &nbsp;&nbsp;&nbsp;Back to main page
-          </Button>
-        }
-        message="Success! Your password has been reset!"
-      />
-    </FormPage>
+            <TextField
+              id="newPassword"
+              label={strings.newPassword}
+              value={newPassword}
+              onChange={handleNewPasswordChange}
+              variant="outlined"
+              margin="normal"
+              type="password"
+            />
+
+            <SimpleSnackbar
+              open={isSuccessSnackbarOpen}
+              onClose={() => {}}
+              action={
+                <Button
+                  key="done"
+                  aria-label="done"
+                  color="inherit"
+                  variant="outlined"
+                  onClick={() => {
+                    setIsDone(true);
+                  }}
+                >
+                  <Done />
+                  &nbsp;&nbsp;&nbsp;{strings.backToMainPage}
+                </Button>
+              }
+              message={strings.passwordResetSuccess}
+            />
+          </FormPage>
+        );
+      }}
+    </LanguageContext.Consumer>
   );
 }
 
