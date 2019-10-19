@@ -5,7 +5,8 @@ import {emailPassClient} from "../stitch";
 import FormPage from './abstract/FormPage';
 import {Link} from 'react-router-dom';
 import SimpleSnackbar from '../components/SimpleSnackbar'
-
+import appStrings from '../values/strings';
+import LanguageContext from '../context/LanguageContext';
 function RegisterPage(){
 
 const [email, setEmail] = React.useState('');
@@ -15,10 +16,9 @@ const [isRegisteringUser,setIsRegisteringUser] = React.useState(false);
 const [isDone,setIsDone] = React.useState(false);
 const [errorMessage,setErrorMessage]=React.useState('');
 const [isSuccessSnackbarOpen,setIsSuccessSnackbarOpen]= React.useState(false);
+
 let registerUser = async () => {
-
     //front side validation
-
     if (!email.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
       setErrorMessage("INVALID EMAIL")
       return;
@@ -63,20 +63,24 @@ let handleConfirmPasswordChange = (event) => {
 
 
 return   (
-
-<FormPage
-    formTitle="Register"
-    submitButtonLabel="Register"
-    submitButtonTip="Click here to register"
+<LanguageContext.Consumer>
+{langContext=>{
+  const strings = appStrings[langContext.language]; 
+  return (<FormPage
+    formTitle={strings.register}
+    submitButtonLabel={strings.register}
+    submitButtonTip={strings.registerTooltip}
     isSubmitting={isRegisteringUser}
     onSubmit={registerUser}
     belowSubmitButton={
       <React.Fragment>
     <Typography variant="caption" display="block">
-    Already have an account? <Link to="/login">Login here!</Link>
+    {strings.alreadyAccount} 
+    <Link to="/login">{strings.login}</Link>
   </Typography>
   <Typography variant="caption">
-    Problems with confirmation email? <Link to="/resend-confirmation-email">Click here!</Link>
+    {strings.confirmationEmailProblem} 
+    <Link to="/resend-confirmation-email">{strings.clickHere}</Link>
   </Typography>
   </React.Fragment>
   }
@@ -88,7 +92,7 @@ return   (
 
  <TextField
 id="email"
-label="Email"
+label={strings.email}
 value={email}
 onChange={handleEmailChange}
 margin="normal"
@@ -97,7 +101,7 @@ variant="outlined"
 
 <TextField
 id="password"
-label="Password"
+label={strings.password}
 value={password}
 onChange= {handlePasswordChange}
 margin="normal"
@@ -107,7 +111,7 @@ type="password"
 
 <TextField
 id="confirmPassword"
-label="Confirm Password"
+label={strings.confirmPassword}
 value={confirmPassword}
 onChange= {handleConfirmPasswordChange}
 margin="normal"
@@ -127,11 +131,12 @@ type="password"
           variant="outlined"
           onClick={()=>{setIsDone(true)}}
         >
-          <Done />&nbsp;&nbsp;&nbsp;Back to main page
+          <Done />&nbsp;&nbsp;&nbsp;{strings.backToMainPage}
         </Button>}
-        message="Success! You should receive an email from 'no-reply+stitch@mongodb.com' soon. Follow the email to verify your account!"
+        message={strings.confirmationEmailSentSuccess}
       />
-</FormPage>
+</FormPage>)}}
+</LanguageContext.Consumer>
 );
 
 }

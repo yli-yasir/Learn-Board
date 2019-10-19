@@ -1,7 +1,10 @@
 export default {
     en:{
-        login: `login`,
+        login: `Login`,
+        loginToolTip: `Click here to login`,
         all:`All`,
+        offer: `Offer`,
+        request: `Request`,
         requests:`Requests`,
         offers:`Offers`,
         somethingWentWrong: `Something went wrong while searching, check your network
@@ -25,6 +28,8 @@ export default {
          resend: `Resend`,
          resendConfirmationEmailTooltip: `Click here to get another confirmation Email`,
          email:`Email`,
+         password: `Password`,
+         confirmPassword: `Confirm Password`,
          confirmationEmailSentSuccess:`Success! You should receive an email 
          from 'no-reply+stitch@mongodb.com' soon. Follow the email to verify
          your account!`,
@@ -35,7 +40,39 @@ export default {
          message:`Message`,
          submitReport:`Submit Report`,
          weAreSorry: `We are sorry for your experience`,
-         
+         register: `Register`,
+         registerTooltip: `Click here to register`,
+         alreadyAccount: `Already have an account?`,
+         confirmationEmailProblem: `Problems with confirmation email?`,
+         clickHere: `Click here`,
+         contact: `Contact`,
+         newPost:`New Post`,
+         submitPostTooltip: `Click here to submit your post`,
+         type: `type`,
+         topic:`Topic`,
+         topicHelp: `A title for your post`,
+         shortDescription: `Short Description`,
+         shortDescriptionHelp: `A brief description`,
+         description: `Description`,
+         descirptionHelp: `A more in=depth description about your post`,
+         city:`city`,
+         cityHelp: `Where will the learning happen?`,
+         addLanguage: `Add Language`,
+         addLanguageHelp: `Which languages can be used?`,
+         selectIcon: `Select Icon`,
+         selectIconHelp: `An icon for your post`,
+         peopleCantContact:    `People can't contact you!`,
+         provideContactInfo: `Please provide your contact information in User Settings`,
+         goUserSettings: `Go to User Settings`,
+         openInNewTab: `(Opens in new tab)`,
+         forgotPassword:`Forgot your password?`,
+         requestNewPassword: `Request new password`,
+         requestNewPasswordTooltip: `Click here to request a new password`,
+         dontHaveAccount: `Don't have an account?`,
+         registerHere: `Register here!`,
+         forgotPasswordEmailSuccess: `Success! You should receive an email from 'no-reply+stitch@mongodb.com' soon. Follow the email to reset your password!`,
+         emailConfirmed:``
+
 
     },
     ar:{

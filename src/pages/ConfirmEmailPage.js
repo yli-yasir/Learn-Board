@@ -1,6 +1,8 @@
 import React from 'react';
 import {withRouter} from 'react-router';
 import {Stitch,UserPasswordAuthProviderClient} from "mongodb-stitch-browser-sdk";
+import appStrings from '../values/appStrings';
+import LanguageContext from '../context/LanguageContext';
 
 
 function ConfirmEmailPage({location}){

@@ -7,8 +7,11 @@ import { BSON } from "mongodb-stitch-browser-sdk";
 import LoadingPage from "./LoadingPage";
 import { Typography, Divider } from "@material-ui/core";
 import { Person, Chat } from "@material-ui/icons";
-import Chip from "@material-ui/core/Chip"
-import PostControls from "../components/PostControls"
+import Chip from "@material-ui/core/Chip";
+import PostControls from "../components/PostControls";
+import appStrings from "../values/strings";
+import LanguageContext from "../context/LanguageContext";
+
 const useStyles = makeStyles(theme => ({
   paper: {
     margin: theme.spacing(3,1,1,1),
@@ -60,7 +63,10 @@ function PostDetailsPage({ match }) {
 
   } else {
     return (
-      <Box component={Paper} className={classes.paper} mx="auto">
+      <LanguageContext.Consumer>
+      {langContext=>{
+        const strings = appStrings[langContext.language]
+        return (<Box component={Paper} className={classes.paper} mx="auto">
         <Typography gutterBottom={true} align="center" variant="h6">
           {postDoc.topic}
         </Typography>
@@ -74,12 +80,14 @@ function PostDetailsPage({ match }) {
 
         <Typography className={classes.contact} variant="subtitle2">Contact:</Typography>
         <Typography paragraph className={classes.contact}  variant="caption">
+          {strings.contact}
           "{authorDoc.contact}"
         </Typography>
 
         <PostControls postId={postDoc._id} isOwner={postDoc.authorStitchUserId===getUserId()}
         likes={postDoc.likes}/>
-      </Box>
+      </Box>)}}
+      </LanguageContext.Consumer>
     );
   }
 }
