@@ -1,6 +1,6 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import { emailPassClient } from "../stitch";
+import { resendAccountConfirmationEmail } from "../utils/AuthUtils";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 import FormPage from "./abstract/FormPage";
@@ -23,7 +23,7 @@ function ResendConfirmationEmailPage() {
     try {
       setIsWorking(true);
       console.log("attempting to resend confirmation email");
-      await emailPassClient.resendConfirmationEmail(email);
+      await resendAccountConfirmationEmail(email);
       console.log("successfully sent confirmation email");
       setEmail("");
       setErrorMessage("");

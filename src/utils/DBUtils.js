@@ -1,14 +1,14 @@
 import db from "../stitch";
 import { BSON } from "mongodb-stitch-browser-sdk";
 import { params as appParams, getSearchParams } from "./URLUtils";
-import {getUserId} from '../stitch';
+import { getUserId } from "../stitch";
 
-// if term is provided then it will replace q 
+// if term is provided then it will replace q
 // if not then the value of q is the value from the params
-// options are the mongodb stitch query options, you can see their documenation for 
+// options are the mongodb stitch query options, you can see their documenation for
 // details
-export async function searchPosts(queryString,term,options,continueFrom) {
-  let { q, postType,by } = getSearchParams(
+export async function searchPosts(queryString, term, options, continueFrom) {
+  let { q, postType, by } = getSearchParams(
     queryString,
     appParams.q.PARAM_NAME,
     appParams.postType.PARAM_NAME,
@@ -16,7 +16,7 @@ export async function searchPosts(queryString,term,options,continueFrom) {
   );
 
   //if a term is provided then it will override the value of q in the params
-  if (term){
+  if (term) {
     q = term;
   }
 
@@ -49,43 +49,72 @@ export async function searchPosts(queryString,term,options,continueFrom) {
     filter.postType = postType;
   }
 
-  if (by){
-    filter.authorStitchUserId=by
+  if (by) {
+    filter.authorStitchUserId = by;
   }
 
-  if (continueFrom){
-    filter._id={$lt:continueFrom}
+  if (continueFrom) {
+    filter._id = { $lt: continueFrom };
   }
 
-  console.log('search filter:')
-  console.log(filter)
+  console.log("search filter:");
+  console.log(filter);
   const queryResults = await db
     .collection("posts")
-    .find(filter,options)
+    .find(filter, options)
     .asArray();
 
   return queryResults;
 }
 
-
-export async function likePost(postId){
-  const updateResult = await db.collection("posts").updateOne({_id: new BSON.ObjectID(postId)},{$push:{likes:getUserId()}});
-  return updateResult.modifiedCount ===1;
-
+//returns post object
+export async function findUser(query) {
+  return await db.collection("users").findOne(query);
 }
 
-export async function unlikePost(postId){
-    const updateResult = await db.collection("posts").updateOne({_id: new BSON.ObjectID(postId)},{$pull:{likes:getUserId()}});
-    console.log(`updated ${updateResult.modifiedCount} documents`);
-    return updateResult.modifiedCount ===1;
-
+//query: Object  (Which user to update e.g. {name: 'eric'} )
+//fields: Object (The fields to update e.g. : {name: newName})
+export async function updateUser(query,fields){
+  await db.collection("users").updateOne(
+    query,
+    {
+      $set: fields
+    },
+    { upsert: true }
+  );
 }
 
-export async function deletePost(postId){
-    const deleteResult = await db.collection("posts").deleteOne({_id: new BSON.ObjectID(postId)});
-    console.log(`deleted ${deleteResult.deletedCount} documents`);
-    return deleteResult.deletedCount ===1;
-
+export async function likePost(postId) {
+  const updateResult = await db
+    .collection("posts")
+    .updateOne(
+      { _id: new BSON.ObjectID(postId) },
+      { $push: { likes: getUserId() } }
+    );
+  return updateResult.modifiedCount === 1;
 }
 
-export default {name: 'yasir'}
+export async function unlikePost(postId) {
+  const updateResult = await db
+    .collection("posts")
+    .updateOne(
+      { _id: new BSON.ObjectID(postId) },
+      { $pull: { likes: getUserId() } }
+    );
+  console.log(`updated ${updateResult.modifiedCount} documents`);
+  return updateResult.modifiedCount === 1;
+}
+
+export async function deletePost(postId) {
+  const deleteResult = await db
+    .collection("posts")
+    .deleteOne({ _id: new BSON.ObjectID(postId) });
+  console.log(`deleted ${deleteResult.deletedCount} documents`);
+  return deleteResult.deletedCount === 1;
+}
+
+//report is a document 
+export async function reportPost(report){
+  await db.collection("reports").insertOne(report);
+
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import { emailPassClient } from "../stitch";
+import { resetPassword as resetPass } from "../utils/AuthUtils";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 import FormPage from "./abstract/FormPage";
@@ -22,12 +22,11 @@ function ResetPasswordPage({ location }) {
   let resetPassword = async () => {
     try {
       const params = new URLSearchParams(location.search);
-      const token = params.get("token");
-      const tokenId = params.get("tokenId");
       setIsWorking(true);
-      console.log("attempting to reset password");
-      await emailPassClient.resetPassword(token, tokenId, newPassword);
-      console.log("successfully reset password");
+      await resetPass(
+        { token: params.get("token"), tokenId: params.get("tokenId") },
+        newPassword
+      );
       setNewPassword("");
       setErrorMessage("");
       setIsWorking(false);

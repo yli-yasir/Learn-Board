@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { initialLogin } from "./stitch";
 import LanguageContext from './context/LanguageContext';
+import { init as initApp } from './utils/AppUtils';
 
 //pages
 import LoadingPage from "./pages/LoadingPage";
@@ -20,6 +20,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import resetPasswordPage from './pages/ResetPasswordPage';
 
 function App() {
+
   const [isLoading, setIsloading] = React.useState(true);
 
   const [languageContext,setLanguageContext] = React.useState({
@@ -32,10 +33,11 @@ function App() {
   React.useEffect(() => {
     async function init() {
       try {
-        await initialLogin();
+        await initApp();
       } catch (e) {
         console.log(e);
       }
+      //todo
       finally{
         setIsloading(false);
       }
@@ -53,7 +55,6 @@ function App() {
     <LanguageContext.Provider value={languageContext}>
     <Router>
       <Switch>
-      <Route path="/" exact component={StartPage} />
       <Route path="/search" exact component={SearchPage} />
       <Route path="/register" exact component={RegisterPage} />
       <Route path="/confirm-email" exact component={ConfirmEmailPage} />

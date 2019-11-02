@@ -13,11 +13,11 @@ function SearchPage({ location }) {
 
   //Two types of searches:
 
-  //Fresh-search: A new search. typically old results should be discarded, but
+  //fresh-search: A new search. typically old results should be discarded, but
   //react probably merges the new results with the old results under the hood
   //and keeps relevant ones. Triggered whenever location.search changes.
 
-  //Continue-search: triggered whenever page is scrolled to bottom to  fetch
+  //continue-search: triggered whenever page is scrolled to bottom to  fetch
   //more results according to the same query string params, the new results
   //are appended to the results already in state.
   //(no change in location.search in a Continue search)

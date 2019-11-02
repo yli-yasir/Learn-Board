@@ -68,7 +68,7 @@ function renderInputComponent(props) {
   return (
     <Box className={classes.searchInputContainer}>
       <InputBase
-        placeholder="Search"
+        placeholder='LearnBoard'
         classes={{
           root: classes.inputRoot,
           input: classes.input
@@ -126,6 +126,7 @@ function SearchBar(props) {
   const classes = useStyles();
 
   const handleSuggestionsFetchRequested = async ({ value }) => {
+    try{
     const mSuggestions = await searchPosts(queryString, value, {
       limit: 5,
       projection:{
@@ -134,10 +135,16 @@ function SearchBar(props) {
       sort:{
         _id:-1
       }
-    });
+    }
+    );
     console.log('suggestions:')
     console.log(suggestions);
     setSuggestions(mSuggestions);
+  }
+  catch(e){
+    console.log(e)
+  }
+
   };
 
   const handleSuggestionsClearRequested = () => {

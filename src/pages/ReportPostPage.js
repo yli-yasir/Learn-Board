@@ -1,6 +1,7 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import { BSON } from "mongodb-stitch-browser-sdk";
+import { reportPost } from "../utils/DBUtils";
+import {getLoggedInUserEmail} from "../utils/AuthUtils";
 import FormPage from "./abstract/FormPage";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
@@ -41,17 +42,16 @@ function ReportPostPage({ match }) {
   let submitReport = async () => {
     setIsSubmitting(true);
     try {
-      await db.collection("reports").insertOne({
+      await reportPost({
         postId,
         message,
-        reporterStitchUserId: getUserId()
-      });
+        reporterStitchUserId: getLoggedInUserEmail()
+      })
       setIsDone(true);
     } catch (e) {
       console.log(e);
-    } finally {
       setIsSubmitting(false);
-      
+    } finally {
     }
   };
 

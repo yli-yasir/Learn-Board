@@ -1,7 +1,7 @@
 import React from 'react';
 import {TextField,Typography,Button} from '@material-ui/core';
 import {Done} from '@material-ui/icons';
-import {emailPassClient} from "../stitch";
+import {register} from "../utils/AuthUtils";
 import FormPage from './abstract/FormPage';
 import {Link} from 'react-router-dom';
 import SimpleSnackbar from '../components/SimpleSnackbar'
@@ -32,7 +32,7 @@ let registerUser = async () => {
   try{
     console.log('attempting to register user');
     setIsRegisteringUser(true);
-    await emailPassClient.registerWithEmail(email, password);
+    await register(email, password);
     console.log("successfully sent account confirmation email!");
     setIsRegisteringUser(false);
     setIsSuccessSnackbarOpen(true);

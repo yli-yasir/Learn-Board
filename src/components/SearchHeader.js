@@ -2,7 +2,7 @@ import React from "react";
 import { AppBar, Toolbar } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import SearchBar from "./SearchBar";
-import UserControlsView from "./UserControlsView";
+import AppControls from "./AppControls/AppControls";
 import SearchTabs from "./SearchTabs";
 import logo from "../assets/brand/logo.svg";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -57,8 +57,7 @@ function SearchHeader(props) {
         </Box>
 
         {/*Show the user control bar if we are on desktop */}
-        <UserControlsView desktop={isDesktop} 
-        desktopContainerProps={{flex:1,display:'flex',flexDirection:'row-reverse'}} />
+        <AppControls desktop={isDesktop}/>
       
       </Toolbar>
 

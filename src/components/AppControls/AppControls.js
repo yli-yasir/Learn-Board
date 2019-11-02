@@ -15,7 +15,7 @@ import {
 } from "@material-ui/icons";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
-import { client, isAnon as isAnonStitch } from "../stitch";
+import { client, isAnon as isAnonStitch } from "../../stitch";
 import { AnonymousCredential } from "mongodb-stitch-core-sdk";
 import { Tooltip, ListSubheader } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -28,9 +28,11 @@ import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withRouter } from "react-router-dom";
-import { toggleMyPostsOnly, isMyPostsOnly as initIsMyPostsOnly } from "../utils/URLUtils";
-import LanguageContext from '../context/LanguageContext';
-import appStrings from '../values/strings';
+import { toggleMyPostsOnly, isMyPostsOnly as initIsMyPostsOnly } from "../../utils/URLUtils";
+import LanguageContext from '../../context/LanguageContext';
+import appStrings from '../../values/strings';
+
+import AppControlsLarge from './AppControlsLarge';
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -39,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function UserControlsView(props) {
+function AppControls(props) {
   //user options menu anchor - null when its hidden
   const [userOptionsAnchorEl, setUserOptionsAnchorEl] = React.useState(null);
 
@@ -65,149 +67,7 @@ function UserControlsView(props) {
 
   //On large display sizes
   if (props.desktop) {
-    const openUserOptionsMenu = event => {
-      setUserOptionsAnchorEl(event.currentTarget);
-    };
-
-    const closeUserOptionsMenu = event => {
-      setUserOptionsAnchorEl(null);
-    };
-
-    const openLanguagesMenu = event => {
-      setLanguageMenuAnchorEl(event.currentTarget);
-    };
-
-    const closeLanguagesMenu = event => {
-      setLanguageMenuAnchorEl(null);
-    };
-
-    return (
-      <LanguageContext.Consumer>
-        { languageContext=>(<Box {...props.desktopContainerProps}>
-        <Link to="/feedback">
-          <Tooltip title="Give Feedback">
-            <IconButton>
-              <FeedbackOutlined />
-            </IconButton>
-          </Tooltip>
-        </Link>
-
-        <Link to="/about">
-          <Tooltip title="About">
-            <IconButton className={classes.button}>
-              <InfoOutlined />
-            </IconButton>
-          </Tooltip>
-        </Link>
-
-        <Tooltip title="User Options">
-          <IconButton
-            aria-controls="options-menu"
-            aria-haspopup="true"
-            onClick={openUserOptionsMenu}
-            className={classes.button}
-          >
-            <PersonOutlined />
-          </IconButton>
-        </Tooltip>
-
-        <Menu
-          id="options-menu"
-          anchorEl={userOptionsAnchorEl}
-          keepMounted
-          open={Boolean(userOptionsAnchorEl)}
-          onClose={closeUserOptionsMenu}
-        >
-          {isAnon
-            ? [
-                <Link key="register" className={classes.link} to="/register">
-                  <MenuItem>
-                    <HowToRegOutlined />
-                    &nbsp;Register
-                  </MenuItem>
-                </Link>,
-                <Link key="login" className={classes.link} to="/login">
-                  <MenuItem>
-                    <VpnKeyOutlined />
-                    &nbsp;{appStrings[languageContext.language].login}
-                  </MenuItem>
-                </Link>
-              ]
-            : [
-                <Link
-                  key="selfContact"
-                  className={classes.link}
-                  to="/self/contact"
-                >
-                  <MenuItem>
-                    <ContactPhoneOutlined />
-                    &nbsp;My Contact Info
-                  </MenuItem>
-                </Link>,
-
-                <Link
-                  key="myPosts"
-                  className={classes.link}
-                  to={toggleMyPostsOnly(props.location.search)}
-                  onClick={()=>setIsMyPostsOnly(!isMyPostsOnly)}
-                >
-                  <MenuItem>
-                   {isMyPostsOnly ?<CheckBoxOutlined/>: <CheckBoxOutlineBlankOutlined/>}
-                    &nbsp;Only My Posts
-                  </MenuItem>
-                </Link>,
-                <MenuItem key="logOut" button onClick={logout}>
-                  <LockOutlined />
-                  &nbsp;Logout
-                </MenuItem>
-              ]}
-        </Menu>
-
-        {!isAnon && (
-          <Link to="/posts/new">
-            <Tooltip title="New Post">
-              <IconButton>
-                <NoteAddOutlined />
-              </IconButton>
-            </Tooltip>
-          </Link>
-        )}
-
-        <Tooltip title="Website Language">
-          <IconButton
-            aria-controls="languages-menu"
-            aria-haspopup="true"
-            onClick={openLanguagesMenu}
-            className={classes.button}
-          >
-            <TranslateOutlined />
-          </IconButton>
-        </Tooltip>
-
-        <Menu
-          id="languges-menu"
-          anchorEl={languageMenuAnchorEl}
-          keepMounted
-          open={Boolean(languageMenuAnchorEl)}
-          onClose={closeLanguagesMenu}
-        >
-          <MenuItem>
-            <TranslateOutlined />
-            &nbsp;English
-          </MenuItem>
-          <MenuItem>
-            <TranslateOutlined />
-            &nbsp;Türkçe
-          </MenuItem>
-          <MenuItem onClick={()=>{languageContext.setLanguage('ar')}}>
-            <TranslateOutlined />
-            &nbsp;العربية
-          </MenuItem>
-        </Menu>
-      </Box>
-        )}
-      </LanguageContext.Consumer>
-    );
+   return <AppControlsLarge/>
   }
 
   //Small display sizes...
@@ -318,4 +178,4 @@ function UserControlsView(props) {
   }
 }
 
-export default withRouter(UserControlsView);
+export default withRouter(AppControls);

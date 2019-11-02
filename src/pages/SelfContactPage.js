@@ -1,22 +1,15 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import ProgressButton from "../components/ProgressButton";
 import FormPage from "./abstract/FormPage";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import db, { getUserEmail, getUserId } from "../stitch";
+import { getLoggedInUserEmail, getLoggedInUserId } from "../utils/AuthUtils";
+import { findUser, updateUser } from "../utils/DBUtils";
 import LoadingPage from "./LoadingPage";
-import SimpleSnackbar from "../components/SimpleSnackbar";
-import { BSON } from "mongodb-stitch-core-sdk";
 import LanguageContext from "../context/LanguageContext";
 import appStrings from "../values/strings";
 
-const useStyles = makeStyles(theme => ({}));
-
-function SelfContactPage(props) {
-  const classes = useStyles();
-
+function SelfContactPage() {
   const [name, setName] = React.useState("");
   const [contactInfo, setContactInfo] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(true);
@@ -27,12 +20,10 @@ function SelfContactPage(props) {
   React.useEffect(() => {
     async function load() {
       try {
-        let currentDoc = await db
-          .collection("users")
-          .findOne({ email: getUserEmail() });
-        if (currentDoc) {
-          setName(currentDoc.name);
-          setContactInfo(currentDoc.contact);
+        const user = findUser({ email: getLoggedInUserEmail() });
+        if (user) {
+          setName(user.name);
+          setContactInfo(user.contact);
           setIsLoading(false);
         }
       } catch (e) {
@@ -55,18 +46,17 @@ function SelfContactPage(props) {
   const submit = async () => {
     setIsSubmitting(true);
     try {
-      await db.collection("users").updateOne(
-        { email: getUserEmail() },
+      await updateUser(
+        { email: getLoggedInUserEmail() },
         {
-          $set: {
-            stitchUserId: getUserId(),
-            name: name,
-            contact: contactInfo,
-            bio: ""
-          }
-        },
-        { upsert: true }
+          stitchUserId: getLoggedInUserId(),
+          name: name,
+          contact: contactInfo,
+          bio: ""
+        }
       );
+      {
+      }
       console.log("submitted");
       setIsDone(true);
     } catch (error) {
@@ -83,42 +73,42 @@ function SelfContactPage(props) {
     <LanguageContext.Consumer>
       {langContext => {
         const strings = appStrings[langContext.language];
-      return (
-      <FormPage
-          formTitle={strings.myContactInfo}
-          submitButtonLabel={strings.save}
-          submitButtonTip={strings.saveButtonTooltip}
-          isSubmitting={isSubmitting}
-          onSubmit={submit}
-          isDone={isDone}
-          redirectWhenDone="/search"
-        >
-          <TextField
-            id="name"
-            label={strings.name}
-            value={name}
-            onChange={handleNameChange}
-            variant="outlined"
-            margin="normal"
-          />
+        return (
+          <FormPage
+            formTitle={strings.myContactInfo}
+            submitButtonLabel={strings.save}
+            submitButtonTip={strings.saveButtonTooltip}
+            isSubmitting={isSubmitting}
+            onSubmit={submit}
+            isDone={isDone}
+            redirectWhenDone="/search"
+          >
+            <TextField
+              id="name"
+              label={strings.name}
+              value={name}
+              onChange={handleNameChange}
+              variant="outlined"
+              margin="normal"
+            />
 
-          <TextField
-            id="contactInfo"
-            label={strings.contactInfo}
-            multiline
-            value={contactInfo}
-            onChange={handleContactInfoChange}
-            variant="outlined"
-            margin="normal"
-          />
+            <TextField
+              id="contactInfo"
+              label={strings.contactInfo}
+              multiline
+              value={contactInfo}
+              onChange={handleContactInfoChange}
+              variant="outlined"
+              margin="normal"
+            />
 
-          <FormControlLabel
-            control={<Checkbox checked={true} />}
-            label={strings.iAgreeToShareMyInfo}
-          />
-        </FormPage>)
-        }
-      }
+            <FormControlLabel
+              control={<Checkbox checked={true} />}
+              label={strings.iAgreeToShareMyInfo}
+            />
+          </FormPage>
+        );
+      }}
     </LanguageContext.Consumer>
   );
 }
